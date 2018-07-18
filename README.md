@@ -1,6 +1,6 @@
-# jike-ws-boss
+# jike-business-boss
 
-> 微商boss雷达
+> 智推-BOSS端
 
 ## Build Setup
 

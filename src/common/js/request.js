@@ -1,16 +1,25 @@
 'use strict'
 
 import axios from 'axios'
+import {BASE_URL} from './config'
+import storage from 'storage-controller'
+import utils from './utils'
 
 const TIME_OUT = 10000
-const COMMON_HEADER = {}
 const ERR_OK = 0
 const ERR_NO = -404
 
+const COMMON_HEADER = {
+  Radar: 'boss'
+}
+
 const http = axios.create({
-  timeout: TIME_OUT,
-  headers: COMMON_HEADER
+  timeout: TIME_OUT
 })
+
+http.defaults.headers = COMMON_HEADER
+
+http.defaults.baseURL = BASE_URL.api
 
 http.interceptors.request.use(config => {
   // 请求数据前的拦截
@@ -46,7 +55,9 @@ function checkCode(res) {
   }
   // 如果网络请求成功，而提交的数据，或者是后端的一些未知错误所导致的，可以根据实际情况进行捕获异常
   if (res.data && (res.data.code !== ERR_OK)) {
-    throw requestException(res)
+    const code = res.data.code
+    utils._handleErrorType(code)
+    throw requestException(res.data)
   }
   return res.data
 }
@@ -69,7 +80,10 @@ export default {
     return http({
       method: 'post',
       url,
-      data // post 请求时带的参数
+      data, // post 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -80,7 +94,10 @@ export default {
     return http({
       method: 'get',
       url,
-      params // get 请求时带的参数
+      params, // get 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -91,7 +108,10 @@ export default {
     return http({
       method: 'put',
       url,
-      data // put 请求时带的参数
+      data, // put 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -102,7 +122,10 @@ export default {
     return http({
       method: 'delete',
       url,
-      data // put 请求时带的参数
+      data, // put 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {

@@ -1,7 +1,7 @@
 {
-  "name": "jike-ws-boss",
+  "name": "jike-business-boss",
   "version": "1.0.0",
-  "description": "微商boss雷达",
+  "description": "智推-BOSS端",
   "author": "Ben <xuedengheng@outlook.com>",
   "private": true,
   "scripts": {
@@ -15,8 +15,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "better-scroll": "^1.12.4",
+    "echarts": "^4.1.0",
     "fastclick": "^1.0.6",
+    "storage-controller": "^1.0.4",
     "vue": "^2.5.2",
+    "vue-clipboard2": "^0.2.0",
     "vue-lazyload": "^1.2.5",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

@@ -1,0 +1,26 @@
+//滑动转场动画
+.slide-enter-active, .slide-leave-active
+  transition: all 0.3s
+
+.slide-enter, .slide-leave-to
+  transform: translate3d(100%, 0, 0)
+
+//右向左滑动
+.right-enter, .right-leave-to
+  transform: translateX(-100%)
+
+.right-enter-active, right-leave-active
+  transition: 0.3s
+
+//渐隐渐显动画
+.fade-enter-active, .fade-leave-active
+  transition: all 0.3s
+
+.fade-enter, .fade-leave-to
+  opacity: 0
+
+// tab
+.tabR2L-enter-active,.tabR2L-leave-active
+  transition: all 2s
+.tabR2L-enter, .tabR2L-leave-to
+  transform: translate3d(50%, 50%, 50%)
