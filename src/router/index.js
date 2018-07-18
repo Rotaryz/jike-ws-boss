@@ -12,6 +12,7 @@ const CustomerData = () => import('pages/customer-data/customer-data')
 const CapacityModel = () => import('pages/capacity-model/capacity-model')
 const BusinessCard = () => import('pages/business-card/business-card')
 const PageError = () => import('pages/page-error/page-error')
+const Mine = () => import('pages/mine/mine')
 
 Vue.use(Router)
 
@@ -131,6 +132,13 @@ const route = new Router({
       component: CustomerDetail,
       meta: {
         title: '客户详情'
+      }
+    },
+    {
+      path: '/mine',
+      component: Mine,
+      meta: {
+        title: '我的'
       }
     },
     {
