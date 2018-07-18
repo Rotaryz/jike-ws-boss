@@ -14,6 +14,7 @@ const CapacityModel = () => import('pages/capacity-model/capacity-model')
 const BusinessCard = () => import('pages/business-card/business-card')
 const PageError = () => import('pages/page-error/page-error')
 const Mine = () => import('pages/mine/mine')
+const MangageMember = () => import('pages/manage-member/manage-member')
 
 Vue.use(Router)
 
@@ -138,17 +139,26 @@ const route = new Router({
       ]
     },
     {
-      path: '/customer-detail',
-      component: CustomerDetail,
-      meta: {
-        title: '客户详情'
-      }
-    },
-    {
       path: '/mine',
       component: Mine,
       meta: {
         title: '我的'
+      },
+      children: [
+        {
+          path: 'mangage-member',
+          component: MangageMember,
+          meta: {
+            title: '成员管理'
+          }
+        }
+      ]
+    },
+    {
+      path: '/customer-detail',
+      component: CustomerDetail,
+      meta: {
+        title: '客户详情'
       }
     },
     {

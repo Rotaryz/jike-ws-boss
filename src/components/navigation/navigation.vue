@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation">
+  <div class="navigation border-top-1px">
     <div class="item" @click="changeRoute(0)">
       <i class="icon icon-radar" :class="{active: current === 0}"></i>
       <span class="title">雷达</span>

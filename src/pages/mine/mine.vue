@@ -1,55 +1,93 @@
 <template>
-  <transition :name="slide">
-    <article class="mine-all">
-      <scroll>
-        <div class="mine-top">
-          <div class="mine-bg"></div>
-          <div class="mine-box">
-            <p>雅诗兰黛华南代理商</p>
-            <div class="mine-imgurl">
-              <img src="./pic-defaultavatar@2x.png" alt="">
-            </div>
+  <article class="mine-all">
+    <scroll>
+      <div class="mine-top">
+        <div class="mine-bg"></div>
+        <div class="mine-box">
+          <p>雅诗兰黛华南代理商</p>
+          <div class="mine-imgurl">
+            <img src="./pic-defaultavatar@2x.png" alt="">
           </div>
         </div>
-        <div class="order-box">
-          <div class="order-con">
-            <div class="order-top">
-              <div class="order-top-left">
-                <div class="order-top-left-text">实际销售(元)</div>
-                <div class="order-top-left-money">536.00</div>
+      </div>
+      <div class="order-box">
+        <div class="order-con">
+          <div class="order-top">
+            <div class="order-top-left">
+              <div class="order-top-left-text">实际销售(元)</div>
+              <div class="order-top-left-money">536.00</div>
+            </div>
+            <div class="order-top-right">
+              <img src="./icon-presed@2x.png" alt="">
+              <div class="right-jump"></div>
+            </div>
+          </div>
+          <div class="order-bottom">
+            <div class="add-box border-right-1px add-right">
+              <div class="add-box-left ">
+                <div class="title">累计收入(元)</div>
+                <div class="number">64.00</div>
               </div>
-              <div class="order-top-right">
+              <div class="add-box-right">
                 <img src="./icon-presed@2x.png" alt="">
                 <div class="right-jump"></div>
               </div>
             </div>
-            <div class="order-bottom">
-              <div class="add-box add-left">
-                <div class="add-box-left">
-                  <div class="title">累计收入(元)</div>
-                  <div class="number">64.00</div>
-                </div>
-                <div class="add-box-right">
-                  <img src="./icon-presed@2x.png" alt="">
-                  <div class="right-jump"></div>
-                </div>
+            <div class="add-box add-left">
+              <div class="add-box-left">
+                <div class="title">成交订单(元)</div>
+                <div class="number">64.00</div>
               </div>
-              <div class="add-box">
-                <div class="add-box-left">
-                  <div class="title">累计收入(元)</div>
-                  <div class="number">64.00</div>
-                </div>
-                <div class="add-box-right">
-                  <img src="./icon-presed@2x.png" alt="">
-                  <div class="right-jump"></div>
-                </div>
+              <div class="add-box-right">
+                <img src="./icon-presed@2x.png" alt="">
+                <div class="right-jump"></div>
               </div>
             </div>
           </div>
         </div>
-      </scroll>
-    </article>
-  </transition>
+      </div>
+      <div class="jump-list">
+        <div class="list-box">
+          <div class="list">
+            <div class="list-left">
+              <img src="./icon-member@2x.png" alt="" class="list-left-img">
+              <p class="text">成员管理</p>
+            </div>
+            <img src="./icon-presed@2x.png" alt="" class="list-right">
+          </div>
+          <div class="list">
+            <div class="list-left">
+              <img src="./icon-property@2x.png" alt="" class="list-left-img">
+              <p class="text">资产管理</p>
+            </div>
+            <img src="./icon-presed@2x.png" alt="" class="list-right">
+          </div>
+          <div class="list">
+            <div class="list-left">
+              <img src="./icon-member@2x.png" alt="" class="list-left-img">
+              <p class="text">产品管理</p>
+            </div>
+            <img src="./icon-presed@2x.png" alt="" class="list-right">
+          </div>
+          <div class="list">
+            <div class="list-left">
+              <img src="./icon-activity@2x.png" alt="" class="list-left-img">
+              <p class="text">活动管理</p>
+            </div>
+            <img src="./icon-presed@2x.png" alt="" class="list-right">
+          </div>
+          <div class="list">
+            <div class="list-left">
+              <img src="./icon-distribution@2x.png" alt="" class="list-left-img">
+              <p class="text">分销管理</p>
+            </div>
+            <img src="./icon-presed@2x.png" alt="" class="list-right">
+          </div>
+        </div>
+      </div>
+    </scroll>
+    <router-view></router-view>
+  </article>
 </template>
 
 <script type="text/ecmascript-6">
@@ -83,7 +121,8 @@
 
   .mine-all
     fill-box()
-    z-index: 21
+    z-index: 50
+    bottom: 50px
 
   .mine-top
     padding: 54px 15px 0
@@ -130,7 +169,7 @@
         justify-content: space-between
         align-items: center
         padding: 15px 0
-        border-bottom: 1px solid rgba(0,0,0,.1)
+        border-bottom: 0.5px solid rgba(0, 0, 0, .1)
         .order-top-left-text
           color: $color-text-88
           font-family: $font-family-regular
@@ -181,8 +220,42 @@
               top: -25px
               left: -25px
 
-        .add-left
+        .add-right
           padding-right: 15px
+        .add-left
+          padding-left: 15px
+
+  .jump-list
+    padding: 0 15px
+    margin-top: 10px
+    padding-bottom: 20px
+    .list-box
+      background: $color-white-fff
+      box-shadow: 0 4px 12px 0 rgba(43, 43, 145, 0.08)
+      border-radius: 2px
+      padding-left: 15px
+      .list
+        layout(row)
+        justify-content: space-between
+        align-items: center
+        height: 55px
+        padding-right: 15px
+        border-bottom: 0.5px solid rgba(0,0,0,.1)
+        .list-left
+          layout(row)
+          align-items: center
+          .list-left-img
+            margin-right: 10px
+            width: 18px
+            height: 18px
+            display: block
+          .text
+            color: $color-20202E
+            font-family: $font-family-regular
+            font-size: $font-size-14
+        .list-right
+          width: 8px
+          height: 16px
   .z
     width: 100%
 </style>
