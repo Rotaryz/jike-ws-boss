@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // import storage from 'storage-controller'
 
 const Oauth = () => import('pages/oauth/oauth')
+const Radar = () => import('pages/radar/radar')
 const Overview = () => import('pages/overview/overview')
 const Ranking = () => import('pages/ranking/ranking')
 const AI = () => import('pages/ai-analyse/ai-analyse')
@@ -19,10 +20,10 @@ Vue.use(Router)
 const route = new Router({
   mode: 'history',
   routes: [
-    {
-      path: '/',
-      redirect: '/overview'
-    },
+    // {
+    //   path: '/',
+    //   redirect: '/oauth'
+    // },
     {
       path: '/oauth',
       component: Oauth
@@ -35,93 +36,102 @@ const route = new Router({
       }
     },
     {
-      path: '/overview',
-      component: Overview,
+      path: '/radar',
+      component: Radar,
       meta: {
-        title: '总览'
+        title: '雷达'
       },
       children: [
         {
-          path: 'customer-list',
-          component: CustomerList,
+          path: '/overview',
+          component: Overview,
           meta: {
-            title: '客户列表'
+            title: '总览'
           },
           children: [
             {
-              path: 'customer-detail',
-              component: CustomerDetail,
+              path: 'customer-list',
+              component: CustomerList,
               meta: {
-                title: '客户详情'
+                title: '客户列表'
               },
               children: [
                 {
-                  path: 'customer-data',
-                  component: CustomerData,
+                  path: 'customer-detail',
+                  component: CustomerDetail,
                   meta: {
-                    title: '客户资料'
-                  }
+                    title: '客户详情'
+                  },
+                  children: [
+                    {
+                      path: 'customer-data',
+                      component: CustomerData,
+                      meta: {
+                        title: '客户资料'
+                      }
+                    }
+                  ]
                 }
               ]
             }
           ]
-        }
-      ]
-    },
-    {
-      path: '/ranking',
-      component: Ranking,
-      meta: {
-        title: '排行榜'
-      },
-      children: [
+        },
         {
-          path: 'customer-list',
-          component: CustomerList,
+          path: '/ranking',
+          component: Ranking,
           meta: {
-            title: '客户'
+            title: '排行榜'
           },
           children: [
             {
-              path: 'customer-detail',
-              component: CustomerDetail,
+              path: 'customer-list',
+              component: CustomerList,
               meta: {
-                title: '客户详情'
+                title: '客户'
               },
               children: [
                 {
-                  path: 'customer-data',
-                  component: CustomerData,
+                  path: 'customer-detail',
+                  component: CustomerDetail,
                   meta: {
-                    title: '客户资料'
-                  }
+                    title: '客户详情'
+                  },
+                  children: [
+                    {
+                      path: 'customer-data',
+                      component: CustomerData,
+                      meta: {
+                        title: '客户资料'
+                      }
+                    }
+                  ]
                 }
               ]
             }
           ]
-        }
-      ]
-    },
-    {
-      path: '/ai-analyse',
-      component: AI,
-      meta: {
-        title: 'AI分析'
-      },
-      children: [
+        },
         {
-          path: 'capacity-model',
-          component: CapacityModel,
+          path: '/ai-analyse',
+          component: AI,
           meta: {
-            title: '能力模型'
+            title: 'AI分析'
           },
           children: [
             {
-              path: 'business-card',
-              component: BusinessCard,
+              path: 'capacity-model',
+              component: CapacityModel,
               meta: {
-                title: '名片'
-              }
+                title: '能力模型'
+              },
+              children: [
+                {
+                  path: 'business-card',
+                  component: BusinessCard,
+                  meta: {
+                    title: '名片'
+                  }
+                }
+              ]
             }
           ]
         }
