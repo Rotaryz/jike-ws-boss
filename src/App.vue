@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <tab></tab>
     <router-view/>
+    <navigation></navigation>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import Tab from 'components/tab/tab'
+  import Navigation from 'components/navigation/navigation'
 
   const COMPONENT_NAME = 'App'
 
@@ -16,7 +16,7 @@
       return {}
     },
     components: {
-      Tab
+      Navigation
     }
   }
 </script>
