@@ -15,6 +15,12 @@ const BusinessCard = () => import('pages/business-card/business-card')
 const PageError = () => import('pages/page-error/page-error')
 const Mine = () => import('pages/mine/mine')
 const MangageMember = () => import('pages/manage-member/manage-member')
+const IncomeDetails = () => import('pages/income-details/income-details')
+const SalesDetails = () => import('pages/sales-details/sales-details')
+const OrderList = () => import('pages/order-list/order-list')
+const MineAssets = () => import('pages/mine-assets/mine-assets')
+const WithDraw = () => import('pages/with-draw/with-draw')
+const BankCard = () => import('pages/bank-card/bank-card')
 
 Vue.use(Router)
 
@@ -151,6 +157,43 @@ const route = new Router({
           meta: {
             title: '成员管理'
           }
+        }, {
+          path: 'income-details',
+          component: IncomeDetails,
+          meta: {
+            title: '收入明细'
+          }
+        }, {
+          path: 'sales-details',
+          component: SalesDetails,
+          meta: {
+            title: '销售明细'
+          }
+        }, {
+          path: 'order-list',
+          component: OrderList,
+          meta: {
+            title: '订单明细'
+          }
+        }, {
+          path: 'mine-assets',
+          component: MineAssets,
+          meta: {
+            title: '我的资产'
+          },
+          children: [{
+            path: 'with-draw',
+            component: WithDraw,
+            meta: {
+              title: '提现'
+            }
+          }, {
+            path: 'bank-card',
+            component: BankCard,
+            meta: {
+              title: '绑定银行卡'
+            }
+          }]
         }
       ]
     },
