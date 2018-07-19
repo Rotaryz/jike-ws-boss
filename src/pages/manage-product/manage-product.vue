@@ -2,38 +2,85 @@
   <transition name="slide">
     <div class="manage-box">
       <div class="product-tab">
-        <div class="tab-box" @click="changeTab(0)">已上架</div>
-        <div class="tab-box" @click="changeTab(1)">已下架</div>
-        <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+        <div class="tab-box" @click="changeTab(1)">已上架</div>
+        <div class="tab-box" @click="changeTab(0)">已下架</div>
+        <div class="line" :style="'transform:translate3d('+ (100 * (1 - menuIdx)) + '%, 0, 0)'">
           <div class="line-box"></div>
         </div>
       </div>
-      <scroll>
+      <scroll  ref="scroll"
+               :data="itemlist"
+               :probeType="probeType"
+               :pullUpLoad="pullUpLoadObj"
+               :showNoMore="false"
+               :listenScroll="listenScroll"
+               @pullingUp="onPullingUp">
         <div class="product-top"></div>
-        <div class="up-box">
+        <div class="up-box" v-if="menuIdx * 1 === 1">
           <ul class="up-list">
-            <li class="up-list-item">
+            <li class="up-list-item" v-for="(item, index) in upList" v-bind:key="index">
               <div class="up-list-bottom">
-                <img src="./pic-defaultavatar@2x.png" alt="" class="img_url">
+                <img :src="item.image_url" alt="" class="img_url">
                 <div class="bottom-right">
-                  <div class="title">卡诗（KERASTASE）新双重菁新双重菁纯修…</div>
+                  <div class="title">{{item.title}}</div>
                   <div class="info-box">
                     <div class="info-left">
                       <div class="info-text">
-                        <div class="price-text">团购价：¥100.00</div>
-                        <div class="price-text">销   量：999</div>
-                      </div>
-                      <div class="info-text">
-                        <div class="price-text price-right">原价：¥100.00</div>
-                        <div class="price-text">库存：999</div>
+                        <div class="price-box">
+                          <div class="price">现价：¥{{item.platform_price}}</div>
+                          <div class="line-price">¥{{item.original_price}}</div>
+                        </div>
+                        <div class="price-text">销   量：{{item.sale_count}}</div>
                       </div>
                     </div>
-                    <img src="./icon-operate@2x.png" alt="" class="info-img" @click="showChoose">
+                    <img src="./icon-operate@2x.png" v-if="showIndex !== index || !showBox" alt="" class="info-img" @click="showChoose(index)">
+                    <img src="./icon-operate_pressed@2x.png" alt="" class="info-img" @click="showChoose(index)" v-if="showBox && showIndex === index">
                   </div>
                 </div>
               </div>
               <div class="up-list-big-choose" >
-                <div class="up-list-choose" :class="showBox ? 'up-list-choose-active' : ''">
+                <div class="up-list-choose" :class="showBox && showIndex === index ? 'up-list-choose-active' : ''">
+                  <div class="choose-box">
+                    <img src="./icon-compile@2x.png" alt="" class="box-top">
+                    <p class="box-top-text">编辑</p>
+                  </div>
+                  <div class="choose-box" @click="downProductBtn(item)">
+                    <img src="./icon-shelves@2x.png" alt="" class="box-top">
+                    <p class="box-top-text">下架</p>
+                  </div>
+                  <div class="choose-box" @click="delProductBtn(item)">
+                    <img src="./icon-delete@2x.png" alt="" class="box-top">
+                    <p class="box-top-text">删除</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="up-box" v-if="menuIdx * 1 === 0">
+          <ul class="up-list">
+            <li class="up-list-item" v-for="(item, index) in downList" v-bind:key="index">
+              <div class="up-list-bottom">
+                <img :src="item.image_url" alt="" class="img_url">
+                <div class="bottom-right">
+                  <div class="title">{{item.title}}</div>
+                  <div class="info-box">
+                    <div class="info-left">
+                      <div class="info-text">
+                        <div class="price-box">
+                          <div class="price">现价：¥{{item.platform_price}}</div>
+                          <div class="line-price">¥{{item.original_price}}</div>
+                        </div>
+                        <div class="price-text">销   量：{{item.sale_count}}</div>
+                      </div>
+                    </div>
+                    <img src="./icon-operate@2x.png" v-if="showIndex !== index || !showBox" alt="" class="info-img" @click="showChoose(index)">
+                    <img src="./icon-operate_pressed@2x.png" alt="" class="info-img" @click="showChoose(index)" v-if="showBox && showIndex === index">
+                  </div>
+                </div>
+              </div>
+              <div class="up-list-big-choose" >
+                <div class="up-list-choose" :class="showBox && showIndex === index ? 'up-list-choose-active' : ''">
                   <div class="choose-box">
                     <img src="./icon-compile@2x.png" alt="" class="box-top">
                     <p class="box-top-text">编辑</p>
@@ -54,34 +101,166 @@
       </scroll>
       <div class="sumbit-btn">新建商品</div>
       <toast ref="toast"></toast>
+      <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <router-view></router-view>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
+  import {Product} from 'api'
+  import {ERR_OK} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import ConfirmMsg from 'components/confirm-msg/confirm-msg'
 
   export default {
     name: 'porduct-list',
     data() {
       return {
-        menuIdx: 0,
-        showBox: false
+        listenScroll: true,
+        probeType: 3,
+        itemlist: [],
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        menuIdx: 1,
+        showBox: false,
+        upPage: 1,
+        upMore: false,
+        downPage: 1,
+        downMore: false,
+        upList: [],
+        downList: [],
+        showIndex: '',
+        type: 0,
+        curItem: {}
       }
     },
+    created() {
+      this.getNewUpList()
+      this.getNewDownList()
+    },
     methods: {
+      getNewUpList () {
+        Product.getProductList(1, this.upPage).then(res => {
+          if (res.error === ERR_OK) {
+            console.log(res)
+            this.upList = res.data
+            this._isUpList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getMoreUpList() {
+        if (this.upMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
+        Product.getProductList(1, this.upPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.upList.push(...res.data)
+            this._isUpList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+          setTimeout(() => {
+            this.$refs.scroll.forceUpdate()
+          }, 20)
+        })
+      },
+      _isUpList(res) {
+        this.upPage++
+        if (this.upList.length >= res.meta.total * 1) {
+          this.upMore = true
+        }
+      },
+      getNewDownList () {
+        Product.getProductList(0, this.downPage).then(res => {
+          if (res.error === ERR_OK) {
+            console.log(res)
+            this.downList = res.data
+            this._isDownList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getMoreDownList() {
+        if (this.downMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
+        Product.getProductList(0, this.downPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.downList.push(...res.data)
+            this._isDownList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+          setTimeout(() => {
+            this.$refs.scroll.forceUpdate()
+          }, 20)
+        })
+      },
+      _isDownList(res) {
+        this.downPage++
+        if (this.downList.length >= res.meta.total * 1) {
+          this.downMore = true
+        }
+      },
       changeTab(index) {
         this.menuIdx = index
       },
-      showChoose() {
-        this.showBox = !this.showBox
+      showChoose(index) {
+        if (this.showIndex !== index) {
+          this.showBox = true
+        } else {
+          this.showBox = !this.showBox
+        }
+        this.showIndex = index
+      },
+      msgConfirm() {},
+      msgCancel() {},
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
+      },
+      onPullingUp() {
+        if (this.menuIdx === 1) {
+          this.getMoreUpList()
+        } else {
+          this.getMoreDownList()
+        }
+      },
+      delProductBtn(item) {},
+      downProductBtn(item) {
+        this.type = 0
+      },
+      upProductBtn(item) {}
+    },
+    computed: {
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
       }
     },
     components: {
       Toast,
-      Scroll
+      Scroll,
+      ConfirmMsg
+    },
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          this.rebuildScroll()
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -137,6 +316,7 @@
       border: 1px solid rgba(32,32,46,0.10)
       padding-left: 10px
       position: relative
+      margin-bottom: 15px
       .up-list-top
         height: 45px
         line-height: 45px
@@ -172,12 +352,23 @@
             position: relative
             .info-left
               layout(row)
+            .price-box
+              layout(row)
+              .price
+                color: $color-888888
+                font-family: $font-family-regular
+                font-size: $font-size-12
+                margin-right: 4px
+              .line-price
+                color: $color-ccc
+                font-family: $font-family-regular
+                font-size: $font-size-12
+                text-decoration: line-through
             .price-text
-              font-size: $font-size-12
+              color: $color-888888
               font-family: $font-family-regular
-              color: $color-text-88
-              margin-right: 16px
-              margin-bottom:7px
+              font-size: $font-size-12
+              margin-top: 4px
             .price-right
               margin-right: 0
           .info-img
@@ -191,8 +382,8 @@
         height: 52px
         overflow: hidden
         position:absolute
-        right: 65px
-        bottom: 0
+        right: 55px
+        bottom: 7px
         width: 163.5px
       .up-list-choose
         position:absolute

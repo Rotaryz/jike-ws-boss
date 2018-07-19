@@ -13,7 +13,7 @@
           </div>
         </div>
       </scroll>
-      <div class="sumbit-btn" :class="name.length !== 0 && name.length !== 0 ? '' : 'sumbit-no-btn'">保存</div>
+      <div class="sumbit-btn" :class="name.length !== 0 && name.length !== 0 ? '' : 'sumbit-no-btn'" @click="saveNewMember">保存</div>
       <toast ref="toast"></toast>
       <router-view></router-view>
     </div>
@@ -23,6 +23,8 @@
 <script type="text/ecmascript-6">
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import {Member} from 'api'
+  import {ERR_OK} from 'common/js/config'
 
   export default {
     name: 'manage-member',
@@ -32,7 +34,32 @@
         phone: ''
       }
     },
-    methods: {},
+    methods: {
+      saveNewMember() {
+        if (this.name.length === 0) {
+          this.$refs.toast.show('请输入姓名')
+          return
+        }
+        if (this.phone.length !== 11) {
+          this.$refs.toast.show('请输入11位的手机号码')
+          return
+        }
+        this.saveNewMemberApi()
+      },
+      saveNewMemberApi() {
+        Member.newMember(this.name, this.phone).then(res => {
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show(res.message)
+            this.$emit('refresh')
+            setTimeout(() => {
+              this.$router.back()
+            }, 500)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      }
+    },
     components: {
       Toast,
       Scroll
@@ -56,6 +83,7 @@
   .add-box
     background: $color-white-fff
     padding-left: 15px
+
   .add-list
     layout(row)
     height: 55px
@@ -76,13 +104,14 @@
       font-size: $font-size-medium
       color: #20202e
       font-family: $font-family-regular
-      outline:none
+      outline: none
     .right-input::-webkit-input-placeholder
       color: #ccc
     .right-input::-ms-input-placeholder
       color: #ccc
     .right-input::-moz-placeholder
       color: #ccc
+
   .sumbit-btn
     position: fixed
     z-index: 51

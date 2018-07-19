@@ -14,7 +14,7 @@ const CapacityModel = () => import('pages/capacity-model/capacity-model')
 const BusinessCard = () => import('pages/business-card/business-card')
 const PageError = () => import('pages/page-error/page-error')
 const Mine = () => import('pages/mine/mine')
-const MangageMember = () => import('pages/manage-member/manage-member')
+const ManageMember = () => import('pages/manage-member/manage-member')
 const AddMember = () => import('pages/add-member/add-member')
 const ManageProduct = () => import('pages/manage-product/manage-product')
 const ManageActivity = () => import('pages/manage-activity/manage-activity')
@@ -152,8 +152,8 @@ const route = new Router({
       },
       children: [
         {
-          path: 'mangage-member',
-          component: MangageMember,
+          path: 'manage-member',
+          component: ManageMember,
           meta: {
             title: '成员管理'
           },

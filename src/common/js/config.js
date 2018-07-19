@@ -5,7 +5,7 @@ const LOCAL_URL = {
 }
 
 const DEV_URL = {
-  api: 'http://business-api.jerryf.cn'
+  api: 'http://ws-api.jerryf.cn'
 }
 
 const TEST_URL = {

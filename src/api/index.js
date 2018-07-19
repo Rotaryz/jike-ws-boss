@@ -6,6 +6,8 @@ import rank from './rank'
 import analyse from './ai-analyse'
 import client from './client'
 import business from './business'
+import member from './member'
+import product from './product'
 
 // 授权模块
 export const Jwt = jwt
@@ -27,3 +29,9 @@ export const Analyse = analyse
 
 // 客户
 export const Client = client
+
+// 用户
+export const Member = member
+
+// 用户
+export const Product = product

@@ -1,15 +1,17 @@
 <template>
   <div class="manage-item">
     <div class="manage-left">
-      <img src="./pic-defaultavatar@2x.png" alt="" class="left-img">
+      <img :src="itemAvatar" alt="" class="left-img">
       <div class="left-text">
-        <div class="name">李牧</div>
-        <div class="phone">13512345678</div>
+        <div class="name">{{memberitem.name}}</div>
+        <div class="phone">{{memberitem.mobile}}</div>
+
       </div>
     </div>
     <div class="manage-right">
-      <div class="right-choose" @click="chooseBtn" :class="bgChoose ? '' : 'right-choose-active'">
-        <div class="choose-btn" :class="choose ? 'choose-btn-active' : ''"></div>
+      <div class="right-choose" @click="chooseBtn(memberitem)"
+           :class="memberitem.boss_radar_status === 1 ? '' : 'right-choose-active'">
+        <div class="choose-btn" :class="memberitem.boss_radar_status === 1 ? 'choose-btn-active' : ''"></div>
       </div>
     </div>
   </div>
@@ -17,19 +19,34 @@
 
 <script type="text/ecmascript-6">
   export default {
+    props: {
+      memberitem: Object,
+      default: {}
+    },
     name: 'manage-item',
     data() {
       return {
-        choose: false,
-        bgChoose: false
+        choose: 1,
+        bgChoose: 1
       }
     },
     methods: {
-      chooseBtn() {
-        this.choose = !this.choose
-        setTimeout(() => {
-          this.bgChoose = !this.bgChoose
-        }, 300)
+      chooseBtn(item) {
+        if (this.memberitem.boss_radar_status === 1) {
+          this.memberitem.boss_radar_status = 0
+        } else {
+          this.memberitem.boss_radar_status = 1
+        }
+        console.log(item)
+        this.$emit('openRararBtn', item, this.memberitem.boss_radar_status)
+      }
+    },
+    computed: {
+      itemAvatar () {
+        if (this.memberitem.avatar.length === 0) {
+          this.memberitem.avatar = './pic-defaultavatar@2x.png'
+        }
+        return this.memberitem.avatar
       }
     }
   }

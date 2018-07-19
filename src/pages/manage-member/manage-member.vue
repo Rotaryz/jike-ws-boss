@@ -1,35 +1,34 @@
 <template>
   <transition name="slide">
     <div class="manage-box">
-      <scroll bcColor="#fff">
-        <div class="manage-top">已开通账号数：5位</div>
+      <scroll ref="scroll"
+              bcColor="#fff"
+              :data="itemlist"
+              :probeType="probeType"
+              :pullUpLoad="pullUpLoadObj"
+              :showNoMore="false"
+              :listenScroll="listenScroll"
+              @pullingUp="onPullingUp">
+        <div class="manage-top">已开通账号数：{{total}}位</div>
         <ul class="manage-list">
-          <li class="manage-list-item">
+          <li class="manage-list-item" v-for="(item, index) in itemlist" v-bind:key="index">
             <slide-view :useType="3" :item="item" @del="delHandler">
-              <manage-item slot="content"></manage-item>
-            </slide-view>
-          </li>
-          <li class="manage-list-item">
-            <slide-view :useType="3" :item="item">
-              <manage-item slot="content"></manage-item>
-            </slide-view>
-          </li>
-          <li class="manage-list-item">
-            <slide-view :useType="3" :item="item">
-              <manage-item slot="content"></manage-item>
+              <manage-item :memberitem="item" @openRararBtn="openRararBtn" slot="content"></manage-item>
             </slide-view>
           </li>
         </ul>
       </scroll>
-      <div class="sumbit-btn">添加成员</div>
+      <div class="sumbit-btn" @click="jumpAddMember">添加成员</div>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <toast ref="toast"></toast>
-      <router-view></router-view>
+      <router-view @refresh="refresh"></router-view>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
+  import {Member} from 'api'
+  import {ERR_OK} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
   import SlideView from 'components/slide-view/slide-view'
@@ -40,24 +39,122 @@
     name: 'manage-member',
     data() {
       return {
-        item: {}
+        listenScroll: true,
+        probeType: 3,
+        itemlist: [],
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        item: {},
+        page: 1,
+        noMore: false,
+        total: 0,
+        nowItem: {}
       }
     },
+    created() {
+      this.getNewMemberList()
+    },
     methods: {
-      delHandler() {
-        console.log(11)
+      refresh() {
+        this.getNewMemberList()
+      },
+      delHandler(index, item) {
+        this.nowItem = item
+        console.log(this.nowItem)
         this.$refs.confirm.show()
       },
-      msgConfirm() {},
-      msgCancel() {}
+      msgConfirm() {
+        const idx = this.itemlist.findIndex(val => val.id === this.nowItem.id)
+        this.itemlist.splice(idx, 1)
+        this.total--
+        Member.delMember(this.nowItem.id).then(res => {
+          if (res.error === ERR_OK) {
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      msgCancel() {
+      },
+      getNewMemberList() {
+        this.page = 1
+        Member.getMemberList(this.page).then(res => {
+          if (res.error === ERR_OK) {
+            this.itemlist = res.data
+            this.total = res.meta.total
+            this._isMemberList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getMoreFlowList() {
+        if (this.noMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
+        Member.getMemberList(this.page).then((res) => {
+          if (res.error === ERR_OK) {
+            this.itemlist.push(...res.data)
+            this._isMemberList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+          setTimeout(() => {
+            this.$refs.scroll.forceUpdate()
+          }, 20)
+        })
+      },
+      openRararBtn(item, index) {
+        console.log(item, 1111, index)
+        Member.openRarar(item.id, index).then(res => {
+          if (res.error === ERR_OK) {
+            console.log(res.message)
+          }
+        })
+      },
+      _isMemberList(res) {
+        this.Page++
+        if (this.itemlist.length >= res.meta.total * 1) {
+          this.noMore = true
+        }
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
+      },
+      onPullingUp() {
+        this.getMoreFlowList()
+      },
+      jumpAddMember() {
+        let path = `mangage-member/add-member`
+        this.$router.push(path)
+      }
     },
-    mounted() {},
+    computed: {
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
+      }
+    },
     components: {
       Toast,
       Scroll,
       SlideView,
       ManageItem,
       ConfirmMsg
+    },
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          this.rebuildScroll()
+        },
+        deep: true
+      }
     }
   }
 </script>
