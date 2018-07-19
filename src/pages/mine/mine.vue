@@ -99,10 +99,6 @@
     data() {
       return {}
     },
-    created() {
-      this.id = this.$route.query.id
-      this.getClientData(this.id)
-    },
     methods: {},
     components: {
       Toast,

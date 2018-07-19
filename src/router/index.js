@@ -15,6 +15,12 @@ const BusinessCard = () => import('pages/business-card/business-card')
 const PageError = () => import('pages/page-error/page-error')
 const Mine = () => import('pages/mine/mine')
 const MangageMember = () => import('pages/manage-member/manage-member')
+const AddMember = () => import('pages/add-member/add-member')
+const ManageProduct = () => import('pages/manage-product/manage-product')
+const ManageActivity = () => import('pages/manage-activity/manage-activity')
+const NewGoods = () => import('pages/new-goods/new-goods')
+const NewActivity = () => import('pages/new-activity/new-activity')
+const ChooseGoods = () => import('pages/choose-goods/choose-goods')
 
 Vue.use(Router)
 
@@ -150,7 +156,57 @@ const route = new Router({
           component: MangageMember,
           meta: {
             title: '成员管理'
-          }
+          },
+          children: [
+            {
+              path: 'add-member',
+              component: AddMember,
+              meta: {
+                title: '添加成员'
+              }
+            }
+          ]
+        },
+        {
+          path: 'manage-product',
+          component: ManageProduct,
+          meta: {
+            title: '我的产品'
+          },
+          children: [
+            {
+              path: 'new-goods',
+              component: NewGoods,
+              meta: {
+                title: '新建商品'
+              }
+            }
+          ]
+        },
+        {
+          path: 'manage-activity',
+          component: ManageActivity,
+          meta: {
+            title: '活动管理'
+          },
+          children: [
+            {
+              path: 'new-activity',
+              component: NewActivity,
+              meta: {
+                title: '新建活动'
+              },
+              children: [
+                {
+                  path: 'choose-goods',
+                  component: ChooseGoods,
+                  meta: {
+                    title: '选择商品'
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
