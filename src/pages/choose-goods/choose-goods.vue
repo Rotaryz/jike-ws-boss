@@ -9,10 +9,10 @@
                 :showNoMore="false"
                 :listenScroll="listenScroll"
                 @pullingUp="onPullingUp">
-          <div class="choose-box"  v-if="list.length !== 0">
+          <div class="choose-box" v-if="list.length !== 0">
             <div class="title">选择商品</div>
             <ul class="choose-list">
-              <li class="list-item"  v-for="(item, index) in list" v-bind:key="item.id" @click="chooceItem(item, index)">
+              <li class="list-item" v-for="(item, index) in list" v-bind:key="item.id" @click="chooceItem(item, index)">
                 <div class="item-left">
                   <img :src="item.image_url" alt="" class="item-img">
                   <div class="item-info">
@@ -164,6 +164,9 @@
         this.curItem = item
       },
       saveBack() {
+        if (this.chooseIndex <= 0) {
+          return
+        }
         this.saveInfo(this.curItem)
         this.$emit('getInfo')
         this.$router.back()
@@ -203,6 +206,7 @@
 
   .exception-box
     padding-top: 70px
+
   .manage-box
     fill-box()
     z-index: 51
@@ -213,12 +217,14 @@
       right: 0
       bottom: 45px
       overflow: hidden
+
   .choose-box
     padding: 15px
     .title
       font-size: $font-size-16
       color: $color-20202E
       font-family: $font-family-regular
+
   .sumbit-btn
     position: fixed
     z-index: 51
@@ -232,19 +238,20 @@
     font-family: $font-family-meddle
     font-size: $font-size-16
     bottom: 0
+
   .list-item
     margin-top: 15px
     background: $color-white-fff
     layout(row)
     align-items: center
-    justify-content:space-between
+    justify-content: space-between
     .item-left
       layout(row)
       align-items: center
       flex: 1
       padding: 10px
       overflow: hidden
-      border-right: 0.5px dashed rgba(0,0,0,.1)
+      border-right: 0.5px dashed rgba(0, 0, 0, .1)
       .item-img
         display: block
         width: 70px
@@ -301,6 +308,7 @@
         top: 0
         bottom: 0
         margin: auto
+
   .sumbit-no-btn
     background: #888
 </style>
