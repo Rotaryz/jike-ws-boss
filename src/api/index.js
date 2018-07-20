@@ -9,6 +9,8 @@ import business from './business'
 import member from './member'
 import product from './product'
 import activity from './activity'
+import assets from './assets'
+import customer from './customer'
 
 // 授权模块
 export const Jwt = jwt
@@ -39,3 +41,9 @@ export const Product = product
 
 // 活动
 export const Activity = activity
+
+// 我的资产
+export const Assets = assets
+
+// 用户订单
+export const Customer = customer

@@ -12,7 +12,7 @@
       </div>
       <div class="order-box">
         <div class="order-con">
-          <div class="order-top">
+          <router-link tag="div" to="mine/sales-details" class="order-top">
             <div class="order-top-left">
               <div class="order-top-left-text">实际销售(元)</div>
               <div class="order-top-left-money">536.00</div>
@@ -21,9 +21,9 @@
               <img src="./icon-presed@2x.png" alt="">
               <div class="right-jump"></div>
             </div>
-          </div>
+          </router-link>
           <div class="order-bottom">
-            <div class="add-box border-right-1px add-right">
+            <router-link tag="div" to="mine/income-details" class="add-box border-right-1px add-right">
               <div class="add-box-left ">
                 <div class="title">累计收入(元)</div>
                 <div class="number">64.00</div>
@@ -32,8 +32,8 @@
                 <img src="./icon-presed@2x.png" alt="">
                 <div class="right-jump"></div>
               </div>
-            </div>
-            <div class="add-box add-left">
+            </router-link>
+            <router-link tag="div" to="mine/order-list" class="add-box add-left">
               <div class="add-box-left">
                 <div class="title">成交订单(元)</div>
                 <div class="number">64.00</div>
@@ -42,7 +42,7 @@
                 <img src="./icon-presed@2x.png" alt="">
                 <div class="right-jump"></div>
               </div>
-            </div>
+            </router-link>
           </div>
         </div>
       </div>
@@ -55,13 +55,13 @@
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
           </div>
-          <div class="list">
+          <router-link tag="div" to="mine/mine-assets" class="list">
             <div class="list-left">
               <img src="./icon-property@2x.png" alt="" class="list-left-img">
               <p class="text">资产管理</p>
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </div>
+          </router-link>
           <div class="list">
             <div class="list-left">
               <img src="./icon-member@2x.png" alt="" class="list-left-img">

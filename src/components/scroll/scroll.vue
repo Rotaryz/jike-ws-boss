@@ -146,7 +146,7 @@
     },
     computed: {
       pullUpTxt() {
-        const moreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) || '加载更多'
+        const moreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more)
         const noMoreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore) || '没有更多了'
         return this.pullUpDirty ? moreTxt : noMoreTxt
       },
