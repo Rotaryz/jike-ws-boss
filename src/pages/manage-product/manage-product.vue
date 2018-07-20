@@ -1,7 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="manage">
-      <div class="manage-box" @click="closeAll">
+    <div class="manage" @click="closeAll">
         <div class="product-tab"  v-if="upList.length !== 0 || downList.length !== 0">
           <div class="tab-box" @click="changeTab(1)">已上架</div>
           <div class="tab-box" @click="changeTab(0)">已下架</div>
@@ -9,115 +8,116 @@
             <div class="line-box"></div>
           </div>
         </div>
-        <scroll ref="scroll"
-                :data="itemlist"
-                :probeType="probeType"
-                :pullUpLoad="pullUpLoadObj"
-                :showNoMore="false"
-                :listenScroll="listenScroll"
-                @pullingUp="onPullingUp">
-          <div class="product-top"></div>
-          <div class="up-all-box" v-if="upList.length !== 0 || downList.length !== 0">
-            <div class="up-box" v-if="menuIdx * 1 === 1 && upList.length !== 0">
-              <ul class="up-list">
-                <li class="up-list-item" v-for="(item, index) in upList" v-bind:key="item.id">
-                  <div class="up-list-bottom">
-                    <img :src="item.image_url" alt="" class="img_url">
-                    <div class="bottom-right">
-                      <div class="title">{{item.title}}</div>
-                      <div class="info-box">
-                        <div class="info-left">
-                          <div class="info-text">
-                            <div class="price-box">
-                              <div class="price">现价：¥{{item.platform_price}}</div>
-                              <div class="line-price">¥{{item.original_price}}</div>
+        <div class="scroll-wrapper">
+          <scroll ref="scroll"
+                  :data="itemlist"
+                  :probeType="probeType"
+                  :pullUpLoad="pullUpLoadObj"
+                  :showNoMore="false"
+                  :listenScroll="listenScroll"
+                  @pullingUp="onPullingUp">
+            <div class="product-top"></div>
+            <div class="up-all-box" v-if="upList.length !== 0 || downList.length !== 0">
+              <div class="up-box" v-if="menuIdx * 1 === 1 && upList.length !== 0">
+                <ul class="up-list">
+                  <li class="up-list-item" v-for="(item, index) in upList" v-bind:key="item.id">
+                    <div class="up-list-bottom">
+                      <img :src="item.image_url" alt="" class="img_url">
+                      <div class="bottom-right">
+                        <div class="title">{{item.title}}</div>
+                        <div class="info-box">
+                          <div class="info-left">
+                            <div class="info-text">
+                              <div class="price-box">
+                                <div class="price">现价：¥{{item.platform_price}}</div>
+                                <div class="line-price">¥{{item.original_price}}</div>
+                              </div>
+                              <div class="price-text">销 量：{{item.sale_count}}</div>
                             </div>
-                            <div class="price-text">销 量：{{item.sale_count}}</div>
                           </div>
+                          <img src="./icon-operate@2x.png" v-if="upIndex !== index || !upShowBox" alt="" class="info-img"
+                               @click.stop="showChoose(index)">
+                          <img src="./icon-operate_pressed@2x.png" alt="" class="info-img" @click.stop="showChoose(index)"
+                               v-if="upShowBox && upIndex === index">
                         </div>
-                        <img src="./icon-operate@2x.png" v-if="upIndex !== index || !upShowBox" alt="" class="info-img"
-                             @click.stop="showChoose(index)">
-                        <img src="./icon-operate_pressed@2x.png" alt="" class="info-img" @click.stop="showChoose(index)"
-                             v-if="upShowBox && upIndex === index">
                       </div>
                     </div>
-                  </div>
-                  <div class="up-list-big-choose">
-                    <div class="up-list-choose" :class="upShowBox && upIndex === index ? 'up-list-choose-active' : ''">
-                      <div class="choose-box" @click="editProductBtn(item)">
-                        <img src="./icon-compile@2x.png" alt="" class="box-top">
-                        <p class="box-top-text">编辑</p>
-                      </div>
-                      <div class="choose-box" @click.stop="downProductBtn(item)">
-                        <img src="./icon-offline@2x.png" alt="" class="box-top">
-                        <p class="box-top-text">下架</p>
-                      </div>
-                      <div class="choose-box" @click.stop="delProductBtn(item, 3)">
-                        <img src="./icon-delete@2x.png" alt="" class="box-top">
-                        <p class="box-top-text">删除</p>
+                    <div class="up-list-big-choose">
+                      <div class="up-list-choose" :class="upShowBox && upIndex === index ? 'up-list-choose-active' : ''">
+                        <div class="choose-box" @click="editProductBtn(item)">
+                          <img src="./icon-compile@2x.png" alt="" class="box-top">
+                          <p class="box-top-text">编辑</p>
+                        </div>
+                        <div class="choose-box" @click.stop="downProductBtn(item)">
+                          <img src="./icon-offline@2x.png" alt="" class="box-top">
+                          <p class="box-top-text">下架</p>
+                        </div>
+                        <div class="choose-box" @click.stop="delProductBtn(item, 3)">
+                          <img src="./icon-delete@2x.png" alt="" class="box-top">
+                          <p class="box-top-text">删除</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <section class="exception-box" v-if="menuIdx * 1 === 1 && upList.length === 0">
-              <exception errType="nodata"></exception>
-            </section>
-            <div class="up-box" v-if="menuIdx * 1 === 0 && downList.length !== 0">
-              <ul class="up-list">
-                <li class="up-list-item" v-for="(item, index) in downList" v-bind:key="item.id">
-                  <div class="up-list-bottom">
-                    <img :src="item.image_url" alt="" class="img_url">
-                    <div class="bottom-right">
-                      <div class="title">{{item.title}}</div>
-                      <div class="info-box">
-                        <div class="info-left">
-                          <div class="info-text">
-                            <div class="price-box">
-                              <div class="price">现价：¥{{item.platform_price}}</div>
-                              <div class="line-price">¥{{item.original_price}}</div>
+                  </li>
+                </ul>
+              </div>
+              <section class="exception-box" v-if="menuIdx * 1 === 1 && upList.length === 0">
+                <exception errType="nodata"></exception>
+              </section>
+              <div class="up-box" v-if="menuIdx * 1 === 0 && downList.length !== 0">
+                <ul class="up-list">
+                  <li class="up-list-item" v-for="(item, index) in downList" v-bind:key="item.id">
+                    <div class="up-list-bottom">
+                      <img :src="item.image_url" alt="" class="img_url">
+                      <div class="bottom-right">
+                        <div class="title">{{item.title}}</div>
+                        <div class="info-box">
+                          <div class="info-left">
+                            <div class="info-text">
+                              <div class="price-box">
+                                <div class="price">现价：¥{{item.platform_price}}</div>
+                                <div class="line-price">¥{{item.original_price}}</div>
+                              </div>
+                              <div class="price-text">销 量：{{item.sale_count}}</div>
                             </div>
-                            <div class="price-text">销 量：{{item.sale_count}}</div>
                           </div>
+                          <img src="./icon-operate@2x.png" v-if="downIndex !== index || !downShowBox" alt=""
+                               class="info-img" @click.stop="showDownChoose(index)">
+                          <img src="./icon-operate_pressed@2x.png" alt="" class="info-img"
+                               @click.stop="showDownChoose(index)" v-if="downShowBox && downIndex === index">
                         </div>
-                        <img src="./icon-operate@2x.png" v-if="downIndex !== index || !downShowBox" alt=""
-                             class="info-img" @click.stop="showDownChoose(index)">
-                        <img src="./icon-operate_pressed@2x.png" alt="" class="info-img"
-                             @click.stop="showDownChoose(index)" v-if="downShowBox && downIndex === index">
                       </div>
                     </div>
-                  </div>
-                  <div class="up-list-big-choose">
-                    <div class="up-list-choose"
-                         :class="downShowBox && downIndex === index ? 'up-list-choose-active' : ''">
-                      <div class="choose-box" @click="editProductBtn(item)">
-                        <img src="./icon-compile@2x.png" alt="" class="box-top">
-                        <p class="box-top-text">编辑</p>
-                      </div>
-                      <div class="choose-box" @click.stop="upProductBtn(item)">
-                        <img src="./icon-shelves@2x.png" alt="" class="box-top">
-                        <p class="box-top-text">上架</p>
-                      </div>
-                      <div class="choose-box" @click.stop="delProductBtn(item, 4)">
-                        <img src="./icon-delete@2x.png" alt="" class="box-top">
-                        <p class="box-top-text">删除</p>
+                    <div class="up-list-big-choose">
+                      <div class="up-list-choose"
+                           :class="downShowBox && downIndex === index ? 'up-list-choose-active' : ''">
+                        <div class="choose-box" @click="editProductBtn(item)">
+                          <img src="./icon-compile@2x.png" alt="" class="box-top">
+                          <p class="box-top-text">编辑</p>
+                        </div>
+                        <div class="choose-box" @click.stop="upProductBtn(item)">
+                          <img src="./icon-shelves@2x.png" alt="" class="box-top">
+                          <p class="box-top-text">上架</p>
+                        </div>
+                        <div class="choose-box" @click.stop="delProductBtn(item, 4)">
+                          <img src="./icon-delete@2x.png" alt="" class="box-top">
+                          <p class="box-top-text">删除</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              </ul>
+                  </li>
+                </ul>
+              </div>
+              <section class="exception-box" v-if="menuIdx * 1 === 0 && downList.length === 0">
+                <exception errType="nodata"></exception>
+              </section>
             </div>
-            <section class="exception-box" v-if="menuIdx * 1 === 0 && downList.length === 0">
-              <exception errType="nodata"></exception>
+            <section class="exception-box" v-if="upList.length === 0 && downList.length === 0">
+              <exception errType="noProduct"></exception>
             </section>
-          </div>
-          <section class="exception-box" v-if="upList.length === 0 && downList.length === 0">
-            <exception errType="noProduct"></exception>
-          </section>
-        </scroll>
+          </scroll>
+        </div>
         <div class="sumbit-btn" @click="jumpNewGoods">新建商品</div>
-      </div>
       <toast ref="toast"></toast>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <router-view @refget="refget"></router-view>
@@ -412,10 +412,16 @@
     -webkit-box-sizing: border-box
   .exception-box
     padding-top: 70px
-  .manage-box
+  .manage
     fill-box()
-    z-index: 21
-    bottom: 45px
+    z-index: 31
+    .scroll-wrapper
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 45px
+      overflow: hidden
 
   .product-tab
     position: fixed
@@ -445,10 +451,6 @@
         height: 3px
         width: 40px
         margin: 0 auto
-
-  .product-top
-    padding-top: 45px
-
   .up-box
     padding: 15px
     .up-list-item

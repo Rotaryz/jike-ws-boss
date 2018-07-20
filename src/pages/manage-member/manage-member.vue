@@ -170,7 +170,6 @@
   .manage-box
     fill-box()
     z-index: 21
-    bottom: 45px
 
   .manage-top
     background: #F0F2F5

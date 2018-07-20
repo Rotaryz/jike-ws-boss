@@ -56,7 +56,7 @@ const route = new Router({
       },
       children: [
         {
-          path: '/overview',
+          path: 'overview',
           component: Overview,
           meta: {
             title: '总览'
@@ -90,7 +90,7 @@ const route = new Router({
           ]
         },
         {
-          path: '/ranking',
+          path: 'ranking',
           component: Ranking,
           meta: {
             title: '排行榜'
@@ -124,7 +124,7 @@ const route = new Router({
           ]
         },
         {
-          path: '/ai-analyse',
+          path: 'ai-analyse',
           component: AI,
           meta: {
             title: 'AI分析'

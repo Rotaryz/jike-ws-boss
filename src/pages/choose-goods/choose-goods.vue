@@ -1,39 +1,41 @@
 <template>
   <transition name="slide">
     <div class="manage-box">
-      <scroll ref="scroll"
-              :data="itemlist"
-              :probeType="probeType"
-              :pullUpLoad="pullUpLoadObj"
-              :showNoMore="false"
-              :listenScroll="listenScroll"
-              @pullingUp="onPullingUp">
-        <div class="choose-box"  v-if="list.length !== 0">
-          <div class="title">选择商品</div>
-          <ul class="choose-list">
-            <li class="list-item"  v-for="(item, index) in list" v-bind:key="item.id" @click="chooceItem(item, index)">
-              <div class="item-left">
-                <img :src="item.image_url" alt="" class="item-img">
-                <div class="item-info">
-                  <div class="title">{{item.title}}</div>
-                  <div class="price-box">
-                    <div class="price">现价：¥{{item.platform_price}}</div>
-                    <div class="line-price">¥{{item.original_price}}</div>
+      <div class="scroll-wrapper">
+        <scroll ref="scroll"
+                :data="itemlist"
+                :probeType="probeType"
+                :pullUpLoad="pullUpLoadObj"
+                :showNoMore="false"
+                :listenScroll="listenScroll"
+                @pullingUp="onPullingUp">
+          <div class="choose-box"  v-if="list.length !== 0">
+            <div class="title">选择商品</div>
+            <ul class="choose-list">
+              <li class="list-item"  v-for="(item, index) in list" v-bind:key="item.id" @click="chooceItem(item, index)">
+                <div class="item-left">
+                  <img :src="item.image_url" alt="" class="item-img">
+                  <div class="item-info">
+                    <div class="title">{{item.title}}</div>
+                    <div class="price-box">
+                      <div class="price">现价：¥{{item.platform_price}}</div>
+                      <div class="line-price">¥{{item.original_price}}</div>
+                    </div>
+                    <div class="sell-count">销量：{{item.sales_volume}}</div>
                   </div>
-                  <div class="sell-count">销量：{{item.sales_volume}}</div>
                 </div>
-              </div>
-              <div class="item-right">
-                <div class="item-icon" v-if="chooseIndex * 1 !== index"></div>
-                <img src="./icon-pitchup@2x.png" alt="" class="item-right-true" v-if="chooseIndex * 1 === index">
-              </div>
-            </li>
-          </ul>
-        </div>
-        <section class="exception-box" v-if="list.length === 0">
-          <exception errType="nodata"></exception>
-        </section>
-      </scroll>
+                <div class="item-right">
+                  <div class="item-icon" v-if="chooseIndex * 1 !== index"></div>
+                  <img src="./icon-pitchup@2x.png" alt="" class="item-right-true" v-if="chooseIndex * 1 === index">
+                </div>
+              </li>
+            </ul>
+          </div>
+          <section class="exception-box" v-if="list.length === 0">
+            <exception errType="nodata"></exception>
+          </section>
+        </scroll>
+      </div>
       <div class="sumbit-btn" :class="chooseIndex >=  0 ? '' : 'sumbit-no-btn'" @click="saveBack">完成</div>
       <toast ref="toast"></toast>
       <router-view></router-view>
@@ -204,7 +206,13 @@
   .manage-box
     fill-box()
     z-index: 51
-    bottom: 45px
+    .scroll-wrapper
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 45px
+      overflow: hidden
   .choose-box
     padding: 15px
     .title

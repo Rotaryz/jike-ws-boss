@@ -1,140 +1,142 @@
 <template>
   <transition name="slide">
     <div class="manage-box">
-      <scroll>
-        <div class="add-box">
-          <div class="add-list select-box">
-            <div class="left">活动类型</div>
-            <div class="select-right">
-              <select v-model='selectedType' class="right-selected" v-if="!editShow">
-                <option v-for="option in optionsType" v-bind:value="option.value">
-                  {{ option.value }}
-                </option>
-              </select>
-              <div class="select-text" :class="selectedType === '请选择' ? '':'active'">{{selectedType}}</div>
-              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+      <div class="scroll-wrapper">
+        <scroll>
+          <div class="add-box">
+            <div class="add-list select-box">
+              <div class="left">活动类型</div>
+              <div class="select-right">
+                <select v-model='selectedType' class="right-selected" v-if="!editShow">
+                  <option v-for="option in optionsType" v-bind:value="option.value">
+                    {{ option.value }}
+                  </option>
+                </select>
+                <div class="select-text" :class="selectedType === '请选择' ? '':'active'">{{selectedType}}</div>
+                <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+              </div>
+            </div>
+            <div class="add-list">
+              <div class="left">活动名称</div>
+              <input class="right-input" v-model="activeData.activity_name" type="text" placeholder="请输入" maxlength="20">
+            </div>
+            <div class="add-list select-box" @click="chooseGoods" v-if="!havaGoods">
+              <div class="left">选择商品</div>
+              <div class="select-right ">
+                <div class="select-text">请选择</div>
+                <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+              </div>
+            </div>
+            <div class="add-list select-box" @click="chooseGoods" v-if="havaGoods">
+              <div class="left">选择商品</div>
+              <div class="select-right">
+                <div class="select-text-active">{{getGoods.title}}</div>
+                <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+              </div>
+            </div>
+            <div class="add-list">
+              <div class="left">现价</div>
+              <div class="left-price" v-if="!havaGoods">请选择商品</div>
+              <div class="left-price-active" v-if="havaGoods">{{getGoods.platform_price}}</div>
+            </div>
+            <div class="add-list select-box" v-if="selectedType !== '拼团特惠'">
+              <div class="left">添加数量</div>
+              <div class="select-right">
+                <select v-model='selectedNumber' class="right-selected">
+                  <option v-for="option in optionsNumber" v-bind:value="option.value">
+                    {{ option.value }}
+                  </option>
+                </select>
+                <div class="select-text" :class="selectedNumber === '请选择' ? '':'active'">{{selectedNumber}}</div>
+                <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+                <div class="add-edit" v-if="editShow"></div>
+              </div>
+            </div>
+            <div class="add-list">
+              <div class="left">活动时间</div>
+              <div class="left-titme">{{curDate}}</div>
+              <div class="to">至</div>
+              <div class="select-right" @click="setDate">
+                <div class="select-text" v-if="date.length === 0">结束时间</div>
+                <div class="selecet-data" v-if="date.length !== 0">{{date}}</div>
+                <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+              </div>
             </div>
           </div>
-          <div class="add-list">
-            <div class="left">活动名称</div>
-            <input class="right-input" v-model="activeData.activity_name" type="text" placeholder="请输入" maxlength="20">
-          </div>
-          <div class="add-list select-box" @click="chooseGoods" v-if="!havaGoods">
-            <div class="left">选择商品</div>
-            <div class="select-right ">
-              <div class="select-text">请选择</div>
-              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+          <div class="add-line"></div>
+          <div class="add-box" v-if="selectedType !== '拼团特惠'">
+            <div class="add-edit" v-if="editShow"></div>
+            <div class="add-list">
+              <div class="left">底价</div>
+              <input class="right-input" v-model="bottom_price" type="number" placeholder="请输入" maxlength="10">
+            </div>
+            <div class="add-list select-box">
+              <div class="left">砍价次数</div>
+              <div class="select-right">
+                <select v-model='selectedCount' class="right-selected">
+                  <option v-for="option in optionsCount" v-bind:value="option.value">
+                    {{ option.value }}
+                  </option>
+                </select>
+                <div class="select-text" :class="selectedCount === '请选择' ? '':'active'">{{selectedCount}}</div>
+                <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+                <div class="add-edit" v-if="editShow"></div>
+              </div>
             </div>
           </div>
-          <div class="add-list select-box" @click="chooseGoods" v-if="havaGoods">
-            <div class="left">选择商品</div>
-            <div class="select-right">
-              <div class="select-text-active">{{getGoods.title}}</div>
-              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+          <div class="add-box" v-if="selectedType === '拼团特惠'">
+            <div class="add-edit" v-if="editShow"></div>
+            <div class="add-list">
+              <div class="left">团购价</div>
+              <input class="right-input" v-model="group_price" type="number" placeholder="成团后的商品价格" maxlength="10">
+            </div>
+            <div class="add-list select-box">
+              <div class="left">成团有效期</div>
+              <div class="select-right">
+                <select v-model='selectedTime' class="right-selected">
+                  <option v-for="option in optionsTime" v-bind:value="option.value">
+                    {{ option.value }}
+                  </option>
+                </select>
+                <div class="select-text" :class="selectedTime === '请选择' ? '':'active'">{{selectedTime}}</div>
+                <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+                <div class="add-edit" v-if="editShow"></div>
+              </div>
             </div>
           </div>
-          <div class="add-list">
-            <div class="left">现价</div>
-            <div class="left-price" v-if="!havaGoods">请选择商品</div>
-            <div class="left-price-active" v-if="havaGoods">{{getGoods.platform_price}}</div>
+          <div class="add-line"></div>
+          <div class="goods-deduct">
+            <div class="goods-left">商品提成</div>
+            <input type="number" v-model="activeData.commission_rate" placeholder="" class="goods-number" maxlength="2">
+            <div class="icon">%</div>
+            <div class="text">按成交价计算</div>
+            <div class="add-edit" v-if="editShow"></div>
           </div>
-          <div class="add-list select-box" v-if="selectedType !== '拼团特惠'">
-            <div class="left">添加数量</div>
-            <div class="select-right">
-              <select v-model='selectedNumber' class="right-selected">
-                <option v-for="option in optionsNumber" v-bind:value="option.value">
-                  {{ option.value }}
-                </option>
-              </select>
-              <div class="select-text" :class="selectedNumber === '请选择' ? '':'active'">{{selectedNumber}}</div>
-              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
-              <div class="add-edit" v-if="editShow"></div>
+          <div class="add-line"></div>
+          <div class="add-item-des" v-if="selectedType !== '拼团特惠'">
+            <div class="title">1.什么是疯狂砍价？</div>
+            <div class="text">疯狂砍价是由商家发起的一种营销类活动，商家可添加商品，设置能砍到的底价和砍到底价所需次数。用户若想以底价购买该商品，可邀请好友一起砍价，每次砍价金额随机。</div>
+            <div class="title">2.砍掉后的价格是否对所有用户有效？</div>
+            <div class="text">
+              是的。所有用户可对同一个商品进行砍价，并享有砍掉后的商品价格，如商品A现价100元，当某用户砍掉2元后，所有人看到的现价更新为98元，并可在98元的基础上再进行砍价，直到砍到底价为止。
             </div>
+            <div class="title">3.未砍到底价时，用户能否购买？</div>
+            <div class="text">能购买，如商品A现价100元，底价10元，当被砍到80元时，若某用户认为已达自己的可接受价位，即可下单购买（为突出商品稀有性，建议商家添加的数量在1-3个）。</div>
+            <div class="title">4.用户一次能购买几件商品？</div>
+            <div class="text">同一个用户一次下单只能购买一件商品。</div>
+            <div class="title">5.砍价商品设置错了怎么办？</div>
+            <div class="text">商家可在砍价列表页删除该商品，删除后所有用户不能对该商品进行砍价，已下单但未支付的用户不能再进行支付，已支付的用户不受影响。</div>
           </div>
-          <div class="add-list">
-            <div class="left">活动时间</div>
-            <div class="left-titme">{{curDate}}</div>
-            <div class="to">至</div>
-            <div class="select-right" @click="setDate">
-              <div class="select-text" v-if="date.length === 0">结束时间</div>
-              <div class="selecet-data" v-if="date.length !== 0">{{date}}</div>
-              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+          <div class="add-item-des" v-if="selectedType === '拼团特惠'">
+            <div class="title">1.什么是团购？</div>
+            <div class="text">
+              由商家发起的一种促销活动，商家可添加商品，设置成团价格、成团人数和成团有效期等信息。消费者可发起拼团活动或参与他人发起的拼团活动，若在有效期内若拼团成功，则可以成团价（较优惠的价格）购买商品或服务。目的是以部分优惠吸引多人购买，增加销售额。
             </div>
+            <div class="title">2.活动需要多少个用户才能拼团成功？</div>
+            <div class="text">平台统一设置为2人团，即两个用户即可成团。</div>
           </div>
-        </div>
-        <div class="add-line"></div>
-        <div class="add-box" v-if="selectedType !== '拼团特惠'">
-          <div class="add-edit" v-if="editShow"></div>
-          <div class="add-list">
-            <div class="left">底价</div>
-            <input class="right-input" v-model="bottom_price" type="number" placeholder="请输入" maxlength="10">
-          </div>
-          <div class="add-list select-box">
-            <div class="left">砍价次数</div>
-            <div class="select-right">
-              <select v-model='selectedCount' class="right-selected">
-                <option v-for="option in optionsCount" v-bind:value="option.value">
-                  {{ option.value }}
-                </option>
-              </select>
-              <div class="select-text" :class="selectedCount === '请选择' ? '':'active'">{{selectedCount}}</div>
-              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
-              <div class="add-edit" v-if="editShow"></div>
-            </div>
-          </div>
-        </div>
-        <div class="add-box" v-if="selectedType === '拼团特惠'">
-          <div class="add-edit" v-if="editShow"></div>
-          <div class="add-list">
-            <div class="left">团购价</div>
-            <input class="right-input" v-model="group_price" type="number" placeholder="成团后的商品价格" maxlength="10">
-          </div>
-          <div class="add-list select-box">
-            <div class="left">成团有效期</div>
-            <div class="select-right">
-              <select v-model='selectedTime' class="right-selected">
-                <option v-for="option in optionsTime" v-bind:value="option.value">
-                  {{ option.value }}
-                </option>
-              </select>
-              <div class="select-text" :class="selectedTime === '请选择' ? '':'active'">{{selectedTime}}</div>
-              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
-              <div class="add-edit" v-if="editShow"></div>
-            </div>
-          </div>
-        </div>
-        <div class="add-line"></div>
-        <div class="goods-deduct">
-          <div class="goods-left">商品提成</div>
-          <input type="number" v-model="activeData.commission_rate" placeholder="" class="goods-number" maxlength="2">
-          <div class="icon">%</div>
-          <div class="text">按成交价计算</div>
-          <div class="add-edit" v-if="editShow"></div>
-        </div>
-        <div class="add-line"></div>
-        <div class="add-item-des" v-if="selectedType !== '拼团特惠'">
-          <div class="title">1.什么是疯狂砍价？</div>
-          <div class="text">疯狂砍价是由商家发起的一种营销类活动，商家可添加商品，设置能砍到的底价和砍到底价所需次数。用户若想以底价购买该商品，可邀请好友一起砍价，每次砍价金额随机。</div>
-          <div class="title">2.砍掉后的价格是否对所有用户有效？</div>
-          <div class="text">
-            是的。所有用户可对同一个商品进行砍价，并享有砍掉后的商品价格，如商品A现价100元，当某用户砍掉2元后，所有人看到的现价更新为98元，并可在98元的基础上再进行砍价，直到砍到底价为止。
-          </div>
-          <div class="title">3.未砍到底价时，用户能否购买？</div>
-          <div class="text">能购买，如商品A现价100元，底价10元，当被砍到80元时，若某用户认为已达自己的可接受价位，即可下单购买（为突出商品稀有性，建议商家添加的数量在1-3个）。</div>
-          <div class="title">4.用户一次能购买几件商品？</div>
-          <div class="text">同一个用户一次下单只能购买一件商品。</div>
-          <div class="title">5.砍价商品设置错了怎么办？</div>
-          <div class="text">商家可在砍价列表页删除该商品，删除后所有用户不能对该商品进行砍价，已下单但未支付的用户不能再进行支付，已支付的用户不受影响。</div>
-        </div>
-        <div class="add-item-des" v-if="selectedType === '拼团特惠'">
-          <div class="title">1.什么是团购？</div>
-          <div class="text">
-            由商家发起的一种促销活动，商家可添加商品，设置成团价格、成团人数和成团有效期等信息。消费者可发起拼团活动或参与他人发起的拼团活动，若在有效期内若拼团成功，则可以成团价（较优惠的价格）购买商品或服务。目的是以部分优惠吸引多人购买，增加销售额。
-          </div>
-          <div class="title">2.活动需要多少个用户才能拼团成功？</div>
-          <div class="text">平台统一设置为2人团，即两个用户即可成团。</div>
-        </div>
-      </scroll>
+        </scroll>
+      </div>
       <div class="sumbit-btn" @click="upNewActivity" v-if="!editShow">发布</div>
       <div class="sumbit-btn" @click="editNewActivity" v-if="editShow">发布</div>
       <toast ref="toast"></toast>
@@ -487,7 +489,13 @@
   .manage-box
     fill-box()
     z-index: 41
-    bottom: 45px
+    .scroll-wrapper
+      position: absolute
+      top: 0px
+      left: 0
+      right: 0
+      bottom: 45px
+      overflow: hidden
 
   .add-box
     padding-left: 15px

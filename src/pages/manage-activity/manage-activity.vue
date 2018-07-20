@@ -1,14 +1,14 @@
 <template>
   <transition name="slide">
-    <div class="manage-all">
-      <div class="manage-box" @click="closeAll">
-        <div class="product-tab">
-          <div class="tab-box" @click="changeTab(0)">已上架</div>
-          <div class="tab-box" @click="changeTab(1)">已下架</div>
-          <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-            <div class="line-box"></div>
-          </div>
+    <div class="manage-activity" @click="closeAll">
+      <div class="product-tab">
+        <div class="tab-box" @click="changeTab(0)">已上架</div>
+        <div class="tab-box" @click="changeTab(1)">已下架</div>
+        <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+          <div class="line-box"></div>
         </div>
+      </div>
+      <div class="scroll-wrapper">
         <scroll ref="scroll"
                 :data="itemlist"
                 :probeType="probeType"
@@ -35,7 +35,7 @@
                           <div class="info-text">
                             <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
                             <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
-                            <div class="price-text">销   量：{{item.sales_volume}}</div>
+                            <div class="price-text">销 量：{{item.sales_volume}}</div>
                           </div>
                           <div class="info-text">
                             <div class="price-text price-right">原价：¥{{item.goods_price}}</div>
@@ -86,7 +86,7 @@
                           <div class="info-text">
                             <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
                             <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
-                            <div class="price-text">销   量：{{item.sales_volume}}</div>
+                            <div class="price-text">销 量：{{item.sales_volume}}</div>
                           </div>
                           <div class="info-text">
                             <div class="price-text price-right">原价：¥{{item.goods_price}}</div>
@@ -129,8 +129,8 @@
             </section>
           </div>
         </scroll>
-        <div class="sumbit-btn" @click="jumpNewActivity">新建活动</div>
       </div>
+      <div class="sumbit-btn" @click="jumpNewActivity">新建活动</div>
       <toast ref="toast"></toast>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <router-view @refgetActivity="refgetActivity"></router-view>
@@ -400,7 +400,8 @@
         let path = `manage-activity/new-activity`
         this.$router.push({path, query: {id: item.id, rule_id: item.rule_id}})
       },
-      msgCancel() {},
+      msgCancel() {
+      },
       jumpNewActivity() {
         let path = 'manage-activity/new-activity'
         this.$router.push(path)
@@ -438,12 +439,21 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+
   .exception-box
     padding-top: 70px
-  .manage-box
+
+  .manage-activity
     fill-box()
     z-index: 51
-    bottom: 45px
+    .scroll-wrapper
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 45px
+      overflow: hidden
+
   .product-tab
     position: fixed
     z-index: 21
@@ -473,16 +483,15 @@
         width: 40px
         margin: 0 auto
 
-  .product-top
-    padding-top: 45px
+
   .up-box
-    padding: 15px
+    padding: 15px 15px 0
     .up-list-item
       margin-bottom: 15px
       background: $color-white-fff
       border-radius: 2px
-      box-shadow: 0 4px 12px 0 rgba(43,43,145,0.08)
-      border: 1px solid rgba(32,32,46,0.10)
+      box-shadow: 0 4px 12px 0 rgba(43, 43, 145, 0.08)
+      border: 1px solid rgba(32, 32, 46, 0.10)
       padding-left: 10px
       position: relative
       .up-list-top
@@ -491,7 +500,7 @@
         layout(row)
         justify-content: space-between
         padding-right: 10px
-        border-bottom: 0.5px solid rgba(0,0,0,.1)
+        border-bottom: 0.5px solid rgba(0, 0, 0, .1)
         .top-left
           font-size: $font-size-14
           font-family: $font-family-regular
@@ -525,7 +534,7 @@
               font-family: $font-family-regular
               color: $color-text-88
               margin-right: 16px
-              margin-bottom:7px
+              margin-bottom: 7px
             .price-right
               margin-right: 0
           .info-img
@@ -538,17 +547,17 @@
       .up-list-big-choose
         height: 52px
         overflow: hidden
-        position:absolute
+        position: absolute
         right: 58px
         bottom: 0px
         width: 163.5px
       .up-list-choose
-        position:absolute
+        position: absolute
         height: 52px
         width: 0px
         right: 8px
         bottom: 0
-        background: rgba(32,32,46,0.80)
+        background: rgba(32, 32, 46, 0.80)
         border-radius: 2px
         layout(row)
         align-items: center
@@ -560,12 +569,12 @@
           right: -7.5px
           top: 0
           bottom: 0
-          width:0
-          height:0
-          border-top:8px solid transparent
-          border-bottom:8px solid transparent
-          border-left:0px solid rgba(32,32,46,0.80)
-          margin:  auto
+          width: 0
+          height: 0
+          border-top: 8px solid transparent
+          border-bottom: 8px solid transparent
+          border-left: 0px solid rgba(32, 32, 46, 0.80)
+          margin: auto
         .choose-box
           flex: 1
           layout()
@@ -576,7 +585,7 @@
           height: 16px
           margin: auto
         .box-top-text
-          white-space :nowrap
+          white-space: nowrap
           margin-top: 5.5px
           font-size: $font-size-10
           font-family: $font-family-regular
@@ -586,7 +595,8 @@
         width: 155.5px
         padding: 10px
         &:after
-          border-left:8px solid rgba(32,32,46,0.80)
+          border-left: 8px solid rgba(32, 32, 46, 0.80)
+
   .sumbit-btn
     position: fixed
     z-index: 21

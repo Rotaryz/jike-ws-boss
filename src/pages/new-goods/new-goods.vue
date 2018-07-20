@@ -1,75 +1,77 @@
 <template>
   <transition name="slide">
     <div class="manage-box">
-      <scroll>
-        <div class="add-box">
-          <div class="add-list">
-            <div class="left">商品标题</div>
-            <input v-model="goodsData.title" class="right-input" type="text" placeholder="请输入" maxlength="20">
-            <div class="add-number">{{goodsData.title.length}}/20</div>
+      <div class="scroll-wrapper">
+        <scroll>
+          <div class="add-box">
+            <div class="add-list">
+              <div class="left">商品标题</div>
+              <input v-model="goodsData.title" class="right-input" type="text" placeholder="请输入" maxlength="20">
+              <div class="add-number">{{goodsData.title.length}}/20</div>
+            </div>
+            <div class="add-list">
+              <div class="left">商品副标题</div>
+              <input v-model="goodsData.subtitle" class="right-input" type="text" placeholder="请输入" maxlength="50">
+              <div class="add-number">{{goodsData.subtitle.length}}/50</div>
+            </div>
+            <div class="top-img-title">封面图片</div>
+            <ul class="top-img-list">
+              <li class="top-img-item" v-for="(item, index) in goodsData.goods_banner_images" :key="index">
+                <img class="img-item" :src="item.image_url">
+                <div class="close-icon" @click.stop="_delImage(index)" v-if="showEdit">
+                  <img class="close-icon" src="./icon-del@2x.png">
+                </div>
+              </li>
+              <li class="top-img-item" v-if="goodsData.goods_banner_images.length < 5 && showEdit">
+                <img class="img-item" src="./icon-addpic@2x.png">
+                <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
+              </li>
+              <li class="top-img-item" v-for="(item, index) in (4 - saclLength)" v-if="showEdit">
+                <img class="img-item" src="./icon-addpicc@2x.png">
+              </li>
+            </ul>
+            <div class="top-img-des">可添加5张图片(尺寸:750x400,大小2M以下)</div>
+            <div class="add-list">
+              <div class="left">原价</div>
+              <input v-if="showEdit" v-model="goodsData.platform_price" class="right-input" type="number"
+                     placeholder="请输入" maxlength="50">
+              <div class="edit-price" v-if="!showEdit">{{goodsData.platform_price}}</div>
+            </div>
+            <div class="add-list">
+              <div class="left">现价</div>
+              <input v-if="showEdit" v-model="goodsData.original_price" class="right-input" type="number"
+                     placeholder="请输入" maxlength="50">
+              <div class="edit-price" v-if="!showEdit">{{goodsData.original_price}}</div>
+            </div>
           </div>
-          <div class="add-list">
-            <div class="left">商品副标题</div>
-            <input v-model="goodsData.subtitle" class="right-input" type="text" placeholder="请输入" maxlength="50">
-            <div class="add-number">{{goodsData.subtitle.length}}/50</div>
+          <div class="add-line"></div>
+          <div class="add-box">
+            <div class="top-img-title">详情图片</div>
+            <ul class="top-img-list">
+              <li class="top-img-item" v-for="(item, index) in goodsData.goods_images" :key="index">
+                <img class="img-item" :src="item.image_url">
+                <div class="close-icon" @click.stop="_delDetailImage(index)" v-if="showEdit">
+                  <img class="close-icon" src="./icon-del@2x.png">
+                </div>
+              </li>
+              <li class="top-img-item" v-if="goodsData.goods_images.length < 15 && showEdit">
+                <img class="img-item" src="./icon-addpic@2x.png">
+                <input type="file" class="image-file" @change="_fileDetailImage($event)" accept="image/*" multiple>
+              </li>
+            </ul>
+            <div class="top-img-des">可添加15张图片(尺寸:750x400,大小2M以下)</div>
           </div>
-          <div class="top-img-title">封面图片</div>
-          <ul class="top-img-list">
-            <li class="top-img-item" v-for="(item, index) in goodsData.goods_banner_images" :key="index">
-              <img class="img-item" :src="item.image_url">
-              <div class="close-icon" @click.stop="_delImage(index)" v-if="showEdit">
-                <img class="close-icon" src="./icon-del@2x.png">
-              </div>
-            </li>
-            <li class="top-img-item" v-if="goodsData.goods_banner_images.length < 5 && showEdit">
-              <img class="img-item" src="./icon-addpic@2x.png">
-              <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
-            </li>
-            <li class="top-img-item" v-for="(item, index) in (4 - saclLength)" v-if="showEdit">
-              <img class="img-item" src="./icon-addpicc@2x.png">
-            </li>
-          </ul>
-          <div class="top-img-des">可添加5张图片(尺寸:750x400,大小2M以下)</div>
-          <div class="add-list">
-            <div class="left">原价</div>
-            <input v-if="showEdit" v-model="goodsData.platform_price" class="right-input" type="number"
-                   placeholder="请输入" maxlength="50">
-            <div class="edit-price" v-if="!showEdit">{{goodsData.platform_price}}</div>
+          <div class="add-line"></div>
+          <div class="goods-deduct">
+            <div class="goods-left">商品提成</div>
+            <input type="number" v-if="showEdit" v-model="goodsData.commission_rate" placeholder="" class="goods-number"
+                   maxlength="2">
+            <div class="edit-price" v-if="!showEdit">{{goodsData.commission_rate}}</div>
+            <div class="icon">%</div>
+            <div class="text">按成交价计算</div>
           </div>
-          <div class="add-list">
-            <div class="left">现价</div>
-            <input v-if="showEdit" v-model="goodsData.original_price" class="right-input" type="number"
-                   placeholder="请输入" maxlength="50">
-            <div class="edit-price" v-if="!showEdit">{{goodsData.original_price}}</div>
-          </div>
-        </div>
-        <div class="add-line"></div>
-        <div class="add-box">
-          <div class="top-img-title">详情图片</div>
-          <ul class="top-img-list">
-            <li class="top-img-item" v-for="(item, index) in goodsData.goods_images" :key="index">
-              <img class="img-item" :src="item.image_url">
-              <div class="close-icon" @click.stop="_delDetailImage(index)" v-if="showEdit">
-                <img class="close-icon" src="./icon-del@2x.png">
-              </div>
-            </li>
-            <li class="top-img-item" v-if="goodsData.goods_images.length < 15 && showEdit">
-              <img class="img-item" src="./icon-addpic@2x.png">
-              <input type="file" class="image-file" @change="_fileDetailImage($event)" accept="image/*" multiple>
-            </li>
-          </ul>
-          <div class="top-img-des">可添加15张图片(尺寸:750x400,大小2M以下)</div>
-        </div>
-        <div class="add-line"></div>
-        <div class="goods-deduct">
-          <div class="goods-left">商品提成</div>
-          <input type="number" v-if="showEdit" v-model="goodsData.commission_rate" placeholder="" class="goods-number"
-                 maxlength="2">
-          <div class="edit-price" v-if="!showEdit">{{goodsData.commission_rate}}</div>
-          <div class="icon">%</div>
-          <div class="text">按成交价计算</div>
-        </div>
-      </scroll>
+        </scroll>
+      </div>
       <div class="sumbit-btn" @click="sumbitGoods">发布</div>
       <toast ref="toast"></toast>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
@@ -260,7 +262,13 @@
   .manage-box
     fill-box()
     z-index: 41
-    bottom: 45px
+    .scroll-wrapper
+      position: absolute
+      top: 0px
+      left: 0
+      right: 0
+      bottom: 45px
+      overflow: hidden
 
   .add-box
     padding-left: 15px

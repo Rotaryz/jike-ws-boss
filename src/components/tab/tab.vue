@@ -17,9 +17,9 @@
 
   const COMPONENT_NAME = 'Tab'
   const TABS = [
-    {text: '总览', path: '/overview', id: 1},
-    {text: '排行榜', path: '/ranking', id: 2},
-    {text: 'AI分析', path: '/ai-analyse', id: 3}
+    {text: '总览', path: '/radar/overview', id: 1},
+    {text: '排行榜', path: '/radar/ranking', id: 2},
+    {text: 'AI分析', path: '/radar/ai-analyse', id: 3}
   ]
   export default {
     name: COMPONENT_NAME,

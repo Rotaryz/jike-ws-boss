@@ -11,6 +11,9 @@
 
   export default {
     name: COMPONENT_NAME,
+    created() {
+      this.$router.replace('/radar/overview')
+    },
     components: {
       Tab
     }

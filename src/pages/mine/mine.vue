@@ -76,7 +76,7 @@
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
           </router-link>
-          <div class="list">
+          <div class="list" @click="showToast">
             <div class="list-left">
               <img src="./icon-distribution@2x.png" alt="" class="list-left-img">
               <p class="text">分销管理</p>
@@ -86,6 +86,7 @@
         </div>
       </div>
     </scroll>
+    <toast ref="toast"></toast>
     <router-view></router-view>
   </article>
 </template>
@@ -99,7 +100,11 @@
     data() {
       return {}
     },
-    methods: {},
+    methods: {
+      showToast() {
+        this.$refs.toast.show('敬请期待')
+      }
+    },
     components: {
       Toast,
       Scroll
