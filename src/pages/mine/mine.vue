@@ -1,6 +1,6 @@
 <template>
   <article class="mine-all">
-    <scroll>
+    <scroll ref="scroll">
       <div class="mine-top">
         <div class="mine-bg"></div>
         <div class="mine-box">
@@ -115,6 +115,7 @@
       Member.getMine().then(res => {
         if (res.error === ERR_OK) {
           this.mineData = res.data
+          this.$refs.scroll.refresh()
         } else {
           this.$refs.toast.show(res.message)
         }
