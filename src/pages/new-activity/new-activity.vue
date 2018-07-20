@@ -6,7 +6,7 @@
           <div class="add-list select-box">
             <div class="left">活动类型</div>
             <div class="select-right">
-              <select v-model='selectedType' class="right-selected">
+              <select v-model='selectedType' class="right-selected" v-if="!editShow">
                 <option v-for="option in optionsType" v-bind:value="option.value">
                   {{ option.value }}
                 </option>
@@ -17,20 +17,28 @@
           </div>
           <div class="add-list">
             <div class="left">活动名称</div>
-            <input class="right-input" type="text" placeholder="请输入" maxlength="20">
+            <input class="right-input" v-model="activeData.activity_name" type="text" placeholder="请输入" maxlength="20">
           </div>
-          <div class="add-list select-box">
+          <div class="add-list select-box" @click="chooseGoods" v-if="!havaGoods">
+            <div class="left">选择商品</div>
+            <div class="select-right ">
+              <div class="select-text">请选择</div>
+              <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+            </div>
+          </div>
+          <div class="add-list select-box" @click="chooseGoods" v-if="havaGoods">
             <div class="left">选择商品</div>
             <div class="select-right">
-              <div class="select-text">请选择</div>
+              <div class="select-text-active">{{getGoods.title}}</div>
               <img src="./icon-presed@2x.png" alt="" class="selcet-img">
             </div>
           </div>
           <div class="add-list">
             <div class="left">现价</div>
-            <div class="left-price">请选择商品</div>
+            <div class="left-price" v-if="!havaGoods">请选择商品</div>
+            <div class="left-price-active" v-if="havaGoods">{{getGoods.platform_price}}</div>
           </div>
-          <div class="add-list select-box"   v-if="selectedType !== '拼团特惠'">
+          <div class="add-list select-box" v-if="selectedType !== '拼团特惠'">
             <div class="left">添加数量</div>
             <div class="select-right">
               <select v-model='selectedNumber' class="right-selected">
@@ -40,11 +48,12 @@
               </select>
               <div class="select-text" :class="selectedNumber === '请选择' ? '':'active'">{{selectedNumber}}</div>
               <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+              <div class="add-edit" v-if="editShow"></div>
             </div>
           </div>
           <div class="add-list">
             <div class="left">活动时间</div>
-            <div class="left-titme">2018-5-16</div>
+            <div class="left-titme">{{curDate}}</div>
             <div class="to">至</div>
             <div class="select-right" @click="setDate">
               <div class="select-text" v-if="date.length === 0">结束时间</div>
@@ -55,9 +64,10 @@
         </div>
         <div class="add-line"></div>
         <div class="add-box" v-if="selectedType !== '拼团特惠'">
+          <div class="add-edit" v-if="editShow"></div>
           <div class="add-list">
             <div class="left">底价</div>
-            <input class="right-input" type="number" placeholder="请输入" maxlength="10">
+            <input class="right-input" v-model="bottom_price" type="number" placeholder="请输入" maxlength="10">
           </div>
           <div class="add-list select-box">
             <div class="left">砍价次数</div>
@@ -69,13 +79,15 @@
               </select>
               <div class="select-text" :class="selectedCount === '请选择' ? '':'active'">{{selectedCount}}</div>
               <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+              <div class="add-edit" v-if="editShow"></div>
             </div>
           </div>
         </div>
         <div class="add-box" v-if="selectedType === '拼团特惠'">
+          <div class="add-edit" v-if="editShow"></div>
           <div class="add-list">
             <div class="left">团购价</div>
-            <input class="right-input" type="number" placeholder="成团后的商品价格" maxlength="10">
+            <input class="right-input" v-model="group_price" type="number" placeholder="成团后的商品价格" maxlength="10">
           </div>
           <div class="add-list select-box">
             <div class="left">成团有效期</div>
@@ -87,22 +99,26 @@
               </select>
               <div class="select-text" :class="selectedTime === '请选择' ? '':'active'">{{selectedTime}}</div>
               <img src="./icon-presed@2x.png" alt="" class="selcet-img">
+              <div class="add-edit" v-if="editShow"></div>
             </div>
           </div>
         </div>
         <div class="add-line"></div>
         <div class="goods-deduct">
           <div class="goods-left">商品提成</div>
-          <input type="number" placeholder="" class="goods-number" maxlength="2">
+          <input type="number" v-model="activeData.commission_rate" placeholder="" class="goods-number" maxlength="2">
           <div class="icon">%</div>
           <div class="text">按成交价计算</div>
+          <div class="add-edit" v-if="editShow"></div>
         </div>
         <div class="add-line"></div>
-        <div class="add-item-des"  v-if="selectedType !== '拼团特惠'">
+        <div class="add-item-des" v-if="selectedType !== '拼团特惠'">
           <div class="title">1.什么是疯狂砍价？</div>
           <div class="text">疯狂砍价是由商家发起的一种营销类活动，商家可添加商品，设置能砍到的底价和砍到底价所需次数。用户若想以底价购买该商品，可邀请好友一起砍价，每次砍价金额随机。</div>
           <div class="title">2.砍掉后的价格是否对所有用户有效？</div>
-          <div class="text">是的。所有用户可对同一个商品进行砍价，并享有砍掉后的商品价格，如商品A现价100元，当某用户砍掉2元后，所有人看到的现价更新为98元，并可在98元的基础上再进行砍价，直到砍到底价为止。</div>
+          <div class="text">
+            是的。所有用户可对同一个商品进行砍价，并享有砍掉后的商品价格，如商品A现价100元，当某用户砍掉2元后，所有人看到的现价更新为98元，并可在98元的基础上再进行砍价，直到砍到底价为止。
+          </div>
           <div class="title">3.未砍到底价时，用户能否购买？</div>
           <div class="text">能购买，如商品A现价100元，底价10元，当被砍到80元时，若某用户认为已达自己的可接受价位，即可下单购买（为突出商品稀有性，建议商家添加的数量在1-3个）。</div>
           <div class="title">4.用户一次能购买几件商品？</div>
@@ -110,25 +126,33 @@
           <div class="title">5.砍价商品设置错了怎么办？</div>
           <div class="text">商家可在砍价列表页删除该商品，删除后所有用户不能对该商品进行砍价，已下单但未支付的用户不能再进行支付，已支付的用户不受影响。</div>
         </div>
-        <div class="add-item-des"  v-if="selectedType === '拼团特惠'">
+        <div class="add-item-des" v-if="selectedType === '拼团特惠'">
           <div class="title">1.什么是团购？</div>
-          <div class="text">由商家发起的一种促销活动，商家可添加商品，设置成团价格、成团人数和成团有效期等信息。消费者可发起拼团活动或参与他人发起的拼团活动，若在有效期内若拼团成功，则可以成团价（较优惠的价格）购买商品或服务。目的是以部分优惠吸引多人购买，增加销售额。</div>
+          <div class="text">
+            由商家发起的一种促销活动，商家可添加商品，设置成团价格、成团人数和成团有效期等信息。消费者可发起拼团活动或参与他人发起的拼团活动，若在有效期内若拼团成功，则可以成团价（较优惠的价格）购买商品或服务。目的是以部分优惠吸引多人购买，增加销售额。
+          </div>
           <div class="title">2.活动需要多少个用户才能拼团成功？</div>
           <div class="text">平台统一设置为2人团，即两个用户即可成团。</div>
         </div>
       </scroll>
-      <div class="sumbit-btn">发布</div>
+      <div class="sumbit-btn" @click="upNewActivity" v-if="!editShow">发布</div>
+      <div class="sumbit-btn" @click="editNewActivity" v-if="editShow">发布</div>
       <toast ref="toast"></toast>
-      <router-view></router-view>
+      <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
+      <router-view @getInfo="getInfo"></router-view>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapGetters} from 'vuex'
   import Vue from 'vue'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Calendar from 'vue2-datepick'
+  import {Activity} from 'api'
+  import {ERR_OK} from 'common/js/config'
 
   Vue.use(Calendar)
 
@@ -156,13 +180,89 @@
         ],
         selectedTime: '请选择',
         optionsTime: [
-          {value: '24小时'},
-          {value: '48小时'}
+          {value: '24'},
+          {value: '48'}
         ],
-        date: ''
+        date: '',
+        goodsId: '',
+        getGoods: {},
+        havaGoods: false,
+        bottom_price: '',
+        group_price: '',
+        curDate: '',
+        activeData: {
+          activity_name: '',
+          goods_id: '',
+          end_at: '',
+          commission_rate: '',
+          config: {
+            group_validity: ''
+          }
+        },
+        typeId: '',
+        ruleId: '',
+        editShow: false
       }
     },
+    created() {
+      this.typeId = this.$route.query.id
+      this.ruleId = this.$route.query.rule_id
+      if (this.ruleId * 1 === 3) {
+        Activity.editGetNewBargain(this.typeId).then(res => {
+          if (res.error === ERR_OK) {
+            console.log(res.data)
+            this.havaGoods = true
+            this.selectedType = '疯狂砍价'
+            this.activeData.activity_name = res.data.activity_name
+            this.getGoods.title = res.data.goods_data.goods_title
+            this.activeData.goods_id = res.data.goods_data.goods_id
+            this.getGoods.platform_price = res.data.goods_data.goods_price
+            this.selectedNumber = res.data.stock
+            this.date = res.data.end_at
+            this.bottom_price = res.data.bottom_price
+            this.selectedCount = res.data.max_cut_num
+            this.activeData.commission_rate = res.data.commission_rate
+            this.editShow = true
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      } else if (this.ruleId * 1 === 1) {
+        Activity.editGetNewGroupon(this.typeId).then(res => {
+          if (res.error === ERR_OK) {
+            console.log(res.data)
+            this.selectedType = '拼团特惠'
+            this.havaGoods = true
+            this.activeData.activity_name = res.data.activity_name
+            this.getGoods.title = res.data.goods_title
+            this.getGoods.platform_price = res.data.goods_price
+            this.activeData.goods_id = res.data.goods_id
+            this.date = res.data.end_at
+            this.selectedTime = res.data.group_validity
+            this.group_price = res.data.group_price
+            this.activeData.commission_rate = res.data.commission_rate
+            this.editShow = true
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      }
+      Activity.getCurData().then(res => {
+        if (res.error === ERR_OK) {
+          console.log(res.data.date)
+          this.curDate = res.data.date
+        } else {
+          this.$refs.toast.show(res.message)
+        }
+      })
+    },
     methods: {
+      ...mapGetters(['goodsInfo']),
+      getInfo() {
+        this.getGoods = this.goodsInfo()
+        this.havaGoods = true
+        console.log(this.getGoods, 1111)
+      },
       setDate() {
         this.$picker.show({
           type: 'datePicker',
@@ -171,11 +271,207 @@
             this.date = date
           }
         })
+      },
+      chooseGoods() {
+        if (this.editShow) {
+          return
+        }
+        if (this.selectedType === '拼团特惠') {
+          this.goodsId = 1
+        } else if (this.selectedType === '疯狂砍价') {
+          this.goodsId = 2
+        } else {
+          this.$refs.toast.show('请选择活动类型')
+          return
+        }
+        let path = 'new-activity/choose-goods'
+        this.$router.push({path, query: {id: this.goodsId}})
+      },
+      upNewActivity() {
+        switch (this.selectedType) {
+          case '拼团特惠':
+            if (this.activeData.activity_name.length === 0) {
+              this.$refs.toast.show('请选择输入活动名称')
+              return
+            }
+            if (!this.havaGoods) {
+              this.$refs.toast.show('请选择活动商品')
+              return
+            }
+            if (this.date.length === 0) {
+              this.$refs.toast.show('请选择活动时间')
+              return
+            }
+            let newEndDate = new Date(this.date).getTime()
+            let oldEndDate = new Date(this.curDate).getTime() + 2678400000
+            let curDate = newEndDate - oldEndDate
+            if (curDate < 0) {
+              this.$refs.toast.show('活动时间大于30天')
+              return
+            }
+            if (this.group_price.length === 0 || this.group_price * 1 <= 0) {
+              this.$refs.toast.show('请选择活动商品团购价')
+              return
+            }
+            if (this.selectedTime === '请选择') {
+              this.$refs.toast.show('请选择活动成团有效期')
+              return
+            }
+            if (this.activeData.commission_rate < 5 || this.activeData.commission_rate > 15 || this.activeData.commission_rate.length === 0) {
+              this.$refs.toast.show('商品提成，可设置5-15之间')
+              return
+            }
+            this.activeData.end_at = this.date
+            this.activeData.goods_id = this.getGoods.id
+            this.activeData.config.group_validity = this.selectedTime
+            this.activeData.config.group_number = 2
+            this.activeData.config.group_price = this.group_price
+            this.$refs.confirm.show('活动发布后将立刻上线？')
+            break
+          case '疯狂砍价':
+            if (this.activeData.activity_name.length === 0) {
+              this.$refs.toast.show('请选择输入活动名称')
+              return
+            }
+            if (!this.havaGoods) {
+              this.$refs.toast.show('请选择活动商品')
+              return
+            }
+            if (this.date.length === 0) {
+              this.$refs.toast.show('请选择活动时间')
+              return
+            }
+            let newEndDatett = new Date(this.date).getTime()
+            let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+            let curDatett = newEndDatett - oldEndDatett
+            if (curDatett < 0) {
+              this.$refs.toast.show('活动时间大于30天')
+              return
+            }
+            if (this.bottom_price.length === 0 || this.bottom_price * 1 <= 0) {
+              this.$refs.toast.show('请输入商品低价大于0')
+              return
+            }
+            if (this.selectedCount === '请选择') {
+              this.$refs.toast.show('请选择活动砍价次数')
+              return
+            }
+            if (this.activeData.commission_rate < 5 || this.activeData.commission_rate > 15 || this.activeData.commission_rate.length === 0) {
+              this.$refs.toast.show('商品提成，可设置5-15之间')
+              return
+            }
+            this.activeData.end_at = this.date
+            this.activeData.goods_id = this.getGoods.id
+            this.activeData.bottom_price = this.bottom_price
+            this.activeData.stock = this.selectedNumber
+            this.activeData.max_cut_num = this.selectedCount
+            this.$refs.confirm.show('活动发布后将立刻上线？')
+            break
+          default:
+            this.$refs.toast.show('请选择活动类型')
+            break
+        }
+      },
+      msgConfirm() {
+        if (this.selectedType === '拼团特惠') {
+          Activity.createNewGroupon(this.activeData).then(res => {
+            if (res.error === ERR_OK) {
+              this.$refs.toast.show('活动创建成功')
+              this.$emit('refgetActivity')
+              this.$router.back()
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        } else if (this.selectedType === '疯狂砍价') {
+          Activity.createNewBargain(this.activeData).then(res => {
+            if (res.error === ERR_OK) {
+              this.$refs.toast.show('活动创建成功')
+              this.$emit('refgetActivity')
+              setTimeout(() => {
+                this.$router.back()
+              }, 500)
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        }
+      },
+      msgCancel() {
+      },
+      editNewActivity() {
+        if (this.ruleId * 1 === 3) {
+          if (this.activeData.activity_name.length === 0) {
+            this.$refs.toast.show('请选择输入活动名称')
+            return
+          }
+          if (this.date.length === 0) {
+            this.$refs.toast.show('请选择活动时间')
+            return
+          }
+          let newEndDatett = new Date(this.date).getTime()
+          let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+          let curDatett = newEndDatett - oldEndDatett
+          if (curDatett < 0) {
+            this.$refs.toast.show('活动时间大于30天')
+            return
+          }
+          this.activeData.end_at = this.date
+          this.activeData.goods_id = this.getGoods.id
+          this.activeData.bottom_price = this.bottom_price
+          this.activeData.stock = this.selectedNumber
+          this.activeData.max_cut_num = this.selectedCount
+          Activity.editNewBargain(this.typeId, this.activeData).then(res => {
+            if (res.error === ERR_OK) {
+              console.log(res.data)
+              this.$refs.toast.show('活动编辑成功')
+              this.$emit('refgetActivity')
+              setTimeout(() => {
+                this.$router.back()
+              }, 500)
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        } else if (this.ruleId * 1 === 1) {
+          if (this.activeData.activity_name.length === 0) {
+            this.$refs.toast.show('请选择输入活动名称')
+            return
+          }
+          if (this.date.length === 0) {
+            this.$refs.toast.show('请选择活动时间')
+            return
+          }
+          let newEndDatett = new Date(this.date).getTime()
+          let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+          let curDatett = newEndDatett - oldEndDatett
+          if (curDatett < 0) {
+            this.$refs.toast.show('活动时间大于30天')
+            return
+          }
+          this.activeData.end_at = this.date
+          this.activeData.config.group_validity = this.selectedTime
+          this.activeData.config.group_number = 2
+          this.activeData.config.group_price = this.group_price
+          Activity.editNewGroupon(this.typeId, this.activeData).then(res => {
+            if (res.error === ERR_OK) {
+              console.log(res.data)
+              this.$refs.toast.show('活动编辑成功')
+              this.$emit('refgetActivity')
+              setTimeout(() => {
+                this.$router.back()
+              }, 500)
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        }
       }
     },
     components: {
       Toast,
-      Scroll
+      Scroll,
+      ConfirmMsg
     }
   }
 </script>
@@ -196,7 +492,14 @@
   .add-box
     padding-left: 15px
     background: $color-white-fff
-
+    position: relative
+  .add-edit
+    position: absolute
+    width: 100%
+    height: 100%
+    left: 0
+    top: 0
+    z-index: 11
   .add-list
     layout(row)
     height: 50px
@@ -221,6 +524,10 @@
       font-size: $font-size-14
       color: $color-ccc
       font-family: $font-family-regular
+    .left-price-active
+      font-size: $font-size-14
+      color: $color-20202E
+      font-family: $font-family-regular
     .right-selected
       position: absolute
       width: 100%
@@ -236,6 +543,13 @@
         font-size: $font-size-14
         color: $color-ccc
         font-family: $font-family-regular
+      .select-text-active
+        font-size: $font-size-14
+        color: $color-20202E
+        font-family: $font-family-regular
+        width: 220px
+        text-align: right
+        no-wrap()
       .selecet-data
         font-size: $font-size-14
         color: $color-20202E
@@ -247,6 +561,8 @@
         height: 14px
         display: block
         margin-left: 5px
+    .select-right-active
+      flex: 1
     .right-input
       display: block
       height: 40px
@@ -313,6 +629,7 @@
     layout(row)
     padding-left: 15px
     align-items: center
+    position: relative
     .goods-left
       font-size: $font-size-14
       color: $color-text-88
@@ -349,7 +666,8 @@
       color: $color-888888
       font-family: $font-family-regular
       line-height: 20px
-      text-align:justify
+      text-align: justify
+
   .sumbit-no-btn
     background: #888
 </style>

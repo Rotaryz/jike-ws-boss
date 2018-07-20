@@ -1,91 +1,432 @@
 <template>
   <transition name="slide">
-    <div class="manage-box">
-      <div class="product-tab">
-        <div class="tab-box" @click="changeTab(0)">已上架</div>
-        <div class="tab-box" @click="changeTab(1)">已下架</div>
-        <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-          <div class="line-box"></div>
+    <div class="manage-all">
+      <div class="manage-box" @click="closeAll">
+        <div class="product-tab">
+          <div class="tab-box" @click="changeTab(0)">已上架</div>
+          <div class="tab-box" @click="changeTab(1)">已下架</div>
+          <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+            <div class="line-box"></div>
+          </div>
         </div>
-      </div>
-      <scroll>
-        <div class="product-top"></div>
-        <div class="up-box">
-          <ul class="up-list">
-            <li class="up-list-item">
-              <div class="up-list-top">
-                <div class="top-left">拼团特惠</div>
-                <div class="top-left">距离本场结束：58:10:36</div>
-              </div>
-              <div class="up-list-bottom">
-                <img src="./pic-defaultavatar@2x.png" alt="" class="img_url">
-                <div class="bottom-right">
-                  <div class="title">卡诗（KERASTASE）新双重菁新双重菁纯修…</div>
-                  <div class="info-box">
-                    <div class="info-left">
-                      <div class="info-text">
-                        <div class="price-text">团购价：¥100.00</div>
-                        <div class="price-text">销   量：999</div>
-                      </div>
-                      <div class="info-text">
-                        <div class="price-text price-right">原价：¥100.00</div>
-                        <div class="price-text">库存：999</div>
+        <scroll ref="scroll"
+                :data="itemlist"
+                :probeType="probeType"
+                :pullUpLoad="pullUpLoadObj"
+                :showNoMore="false"
+                :listenScroll="listenScroll"
+                @pullingUp="onPullingUp">
+          <div class="product-top"></div>
+          <div class="up-box-all">
+            <div class="up-box" v-if="menuIdx * 1 === 0 && upList.length !== 0">
+              <ul class="up-list">
+                <li class="up-list-item" v-for="(item, index) in upList" v-bind:key="item.id">
+                  <div class="up-list-top">
+                    <div class="top-left" v-if="item.rule_id * 1 === 1">拼团特惠</div>
+                    <div class="top-left" v-if="item.rule_id * 1 === 3">疯狂砍价</div>
+                    <div class="top-left">距离本场结束：{{item.end_at}}</div>
+                  </div>
+                  <div class="up-list-bottom">
+                    <img :src="item.goods_image_url" alt="" class="img_url">
+                    <div class="bottom-right">
+                      <div class="title">{{item.goods_title}}</div>
+                      <div class="info-box">
+                        <div class="info-left">
+                          <div class="info-text">
+                            <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
+                            <div class="price-text">销   量：{{item.sales_volume}}</div>
+                          </div>
+                          <div class="info-text">
+                            <div class="price-text price-right">原价：¥{{item.goods_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 1">库存：无限量</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">库存：{{item.stock}}</div>
+                          </div>
+                        </div>
+                        <img src="./icon-operate@2x.png" v-if="upIndex !== index || !upShowBox" alt="" class="info-img"
+                             @click.stop="showChoose(index)">
+                        <img src="./icon-operate_pressed@2x.png" alt="" class="info-img" @click.stop="showChoose(index)"
+                             v-if="upShowBox && upIndex === index">
                       </div>
                     </div>
-                    <img src="./icon-operate@2x.png" alt="" class="info-img" @click="showChoose">
                   </div>
-                </div>
-              </div>
-              <div class="up-list-big-choose" >
-                <div class="up-list-choose" :class="showBox ? 'up-list-choose-active' : ''">
-                  <div class="choose-box">
-                    <img src="./icon-compile@2x.png" alt="" class="box-top">
-                    <p class="box-top-text">编辑</p>
+                  <div class="up-list-big-choose">
+                    <div class="up-list-choose" :class="upShowBox && upIndex === index ? 'up-list-choose-active' : ''">
+                      <div class="choose-box" @click="editProductBtn(item)">
+                        <img src="./icon-compile@2x.png" alt="" class="box-top">
+                        <p class="box-top-text">编辑</p>
+                      </div>
+                      <div class="choose-box" @click.stop="downProductBtn(item)">
+                        <img src="./icon-offline@2x.png" alt="" class="box-top">
+                        <p class="box-top-text">下架</p>
+                      </div>
+                      <div class="choose-box" @click.stop="delProductBtn(item, 3)">
+                        <img src="./icon-delete@2x.png" alt="" class="box-top">
+                        <p class="box-top-text">删除</p>
+                      </div>
+                    </div>
                   </div>
-                  <div class="choose-box">
-                    <img src="./icon-shelves@2x.png" alt="" class="box-top">
-                    <p class="box-top-text">下架</p>
+                </li>
+              </ul>
+            </div>
+            <div class="up-box" v-if="menuIdx * 1 === 1 && downList.length !== 0">
+              <ul class="up-list">
+                <li class="up-list-item" v-for="(item, index) in downList" v-bind:key="item.id">
+                  <div class="up-list-top">
+                    <div class="top-left" v-if="item.rule_id * 1 === 1">拼团特惠</div>
+                    <div class="top-left" v-if="item.rule_id * 1 === 3">疯狂砍价</div>
+                    <div class="top-left">距离本场结束：{{item.end_at}}</div>
                   </div>
-                  <div class="choose-box">
-                    <img src="./icon-delete@2x.png" alt="" class="box-top">
-                    <p class="box-top-text">删除</p>
+                  <div class="up-list-bottom">
+                    <img :src="item.goods_image_url" alt="" class="img_url">
+                    <div class="bottom-right">
+                      <div class="title">{{item.goods_title}}</div>
+                      <div class="info-box">
+                        <div class="info-left">
+                          <div class="info-text">
+                            <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
+                            <div class="price-text">销   量：{{item.sales_volume}}</div>
+                          </div>
+                          <div class="info-text">
+                            <div class="price-text price-right">原价：¥{{item.goods_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 1">库存：无限量</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">库存：{{item.stock}}</div>
+                          </div>
+                        </div>
+                        <img src="./icon-operate@2x.png" v-if="downIndex !== index || !downShowBox" alt=""
+                             class="info-img" @click.stop="showDownChoose(index)">
+                        <img src="./icon-operate_pressed@2x.png" alt="" class="info-img"
+                             @click.stop="showDownChoose(index)" v-if="downShowBox && downIndex === index">
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </scroll>
-      <div class="sumbit-btn">新建活动</div>
+                  <div class="up-list-big-choose">
+                    <div class="up-list-choose"
+                         :class="downShowBox && downIndex === index ? 'up-list-choose-active' : ''">
+                      <div class="choose-box" @click="editProductBtn(item)">
+                        <img src="./icon-compile@2x.png" alt="" class="box-top">
+                        <p class="box-top-text">编辑</p>
+                      </div>
+                      <div class="choose-box" @click.stop="upProductBtn(item)">
+                        <img src="./icon-shelves@2x.png" alt="" class="box-top">
+                        <p class="box-top-text">上架</p>
+                      </div>
+                      <div class="choose-box" @click.stop="delProductBtn(item, 4)">
+                        <img src="./icon-delete@2x.png" alt="" class="box-top">
+                        <p class="box-top-text">删除</p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <section class="exception-box" v-if="menuIdx * 1 === 0 && upList.length === 0">
+              <exception errType="nodata"></exception>
+            </section>
+            <section class="exception-box" v-if="menuIdx * 1 === 1 && downList.length === 0">
+              <exception errType="nodata"></exception>
+            </section>
+          </div>
+        </scroll>
+        <div class="sumbit-btn" @click="jumpNewActivity">新建活动</div>
+      </div>
       <toast ref="toast"></toast>
-      <router-view></router-view>
+      <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
+      <router-view @refgetActivity="refgetActivity"></router-view>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
+  import {Activity} from 'api'
+  import {ERR_OK} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import Exception from 'components/exception/exception'
+  import ConfirmMsg from 'components/confirm-msg/confirm-msg'
 
   export default {
     name: 'manage-activity',
     data() {
       return {
         menuIdx: 0,
-        showBox: false
+        listenScroll: true,
+        probeType: 3,
+        itemlist: [],
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        upShowBox: false,
+        upIndex: '',
+        downShowBox: false,
+        downIndex: '',
+        upList: [],
+        downList: [],
+        showBox: false,
+        upPage: 1,
+        curItem: {},
+        type: null,
+        delType: null,
+        rule_id: null
       }
     },
+    created() {
+      this.getNewUpActiveList()
+      this.getNewDownActiveList()
+    },
     methods: {
+      refgetActivity() {
+        this.menuIdx = 0
+        this.getNewUpActiveList()
+        this.getNewDownActiveList()
+      },
       changeTab(index) {
+        this.$refs.scroll.scrollTo(0, 0)
         this.menuIdx = index
       },
-      showChoose() {
-        this.showBox = !this.showBox
+      getNewUpActiveList() {
+        this.upPage = 1
+        Activity.getActivityList(1, this.upPage).then(res => {
+          if (res.error === ERR_OK) {
+            console.log(res)
+            this.upList = res.data
+            this._isUpList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getMoreUpActiveList() {
+        if (this.upMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
+        Activity.getActivityList(1, this.upPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.upList.push(...res.data)
+            this._isUpList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+          setTimeout(() => {
+            this.$refs.scroll.forceUpdate()
+          }, 20)
+        })
+      },
+      _isUpList(res) {
+        this.upPage++
+        if (this.upList.length >= res.meta.total * 1) {
+          this.upMore = true
+        }
+      },
+      getNewDownActiveList() {
+        this.downPage = 1
+        Activity.getActivityList(0, this.downPage).then(res => {
+          if (res.error === ERR_OK) {
+            console.log(res)
+            this.downList = res.data
+            this._isDownList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getMoreDownActiveList() {
+        if (this.downMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
+        Activity.getActivityList(0, this.downPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.downList.push(...res.data)
+            this._isDownList(res)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+          setTimeout(() => {
+            this.$refs.scroll.forceUpdate()
+          }, 20)
+        })
+      },
+      _isDownList(res) {
+        this.downPage++
+        if (this.downList.length >= res.meta.total * 1) {
+          this.downMore = true
+        }
+      },
+      showChoose(index) {
+        if (this.upIndex !== index) {
+          this.upShowBox = true
+        } else {
+          this.upShowBox = !this.upShowBox
+        }
+        this.upIndex = index
+      },
+      closeAll() {
+        this.downShowBox = false
+        this.upShowBox = false
+        this.upIndex = false
+        this.downIndex = false
+      },
+      showDownChoose(index) {
+        if (this.downIndex !== index) {
+          this.downShowBox = true
+        } else {
+          this.downShowBox = !this.downShowBox
+        }
+        this.downIndex = index
+      },
+      downProductBtn(item) {
+        this.type = 0
+        this.curItem = item
+        this.rule_id = item.rule_id
+        console.log(item)
+        this.$refs.confirm.show('确定下架该活动吗？')
+      },
+      upProductBtn(item) {
+        this.type = 1
+        this.curItem = item
+        this.rule_id = item.rule_id
+        console.log(item)
+        this.$refs.confirm.show('确定上架该活动吗？')
+      },
+      delProductBtn(item, index) {
+        this.type = 2
+        this.delType = index
+        console.log(index)
+        this.curItem = item
+        this.rule_id = item.rule_id
+        this.$refs.confirm.show('确定删除该活动吗？')
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
+      },
+      onPullingUp() {
+        if (this.menuIdx === 0) {
+          this.getMoreUpActiveList()
+        } else {
+          this.getMoreDownActiveList()
+        }
+      },
+      msgConfirm() {
+        if (this.type === 0 && this.rule_id * 1 === 1) {
+          Activity.grouponOffline(this.curItem.id).then(res => {
+            if (res.error === ERR_OK) {
+              const idx = this.upList.findIndex(val => val.id === this.curItem.id)
+              this.upList.splice(idx, 1)
+              this.upShowBox = false
+              this.downList.unshift(this.curItem)
+              this.$refs.toast.show('下架成功')
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        } else if (this.type === 0 && this.rule_id * 1 === 3) {
+          Activity.bargainOffline(this.curItem.id).then(res => {
+            if (res.error === ERR_OK) {
+              const idx = this.upList.findIndex(val => val.id === this.curItem.id)
+              this.upList.splice(idx, 1)
+              this.upShowBox = false
+              this.downList.unshift(this.curItem)
+              this.$refs.toast.show('下架成功')
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        } else if (this.type === 1 && this.rule_id * 1 === 1) {
+          Activity.grouponOnline(this.curItem.id).then(res => {
+            if (res.error === ERR_OK) {
+              const idx = this.downList.findIndex(val => val.id === this.curItem.id)
+              this.downList.splice(idx, 1)
+              this.downShowBox = false
+              this.upList.unshift(this.curItem)
+              this.$refs.toast.show('上架成功')
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        } else if (this.type === 1 && this.rule_id * 1 === 3) {
+          Activity.bargainOnline(this.curItem.id).then(res => {
+            if (res.error === ERR_OK) {
+              const idx = this.downList.findIndex(val => val.id === this.curItem.id)
+              this.downList.splice(idx, 1)
+              this.downShowBox = false
+              this.upList.unshift(this.curItem)
+              this.$refs.toast.show('上架成功')
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        } else if (this.type === 2 && this.rule_id * 1 === 1) {
+          Activity.deleteGrouponOnline(this.curItem.id).then(res => {
+            if (res.error === ERR_OK) {
+              if (this.delType * 1 === 3) {
+                const idx = this.upList.findIndex(val => val.id === this.curItem.id)
+                this.upList.splice(idx, 1)
+              } else {
+                const idx = this.downList.findIndex(val => val.id === this.curItem.id)
+                this.downList.splice(idx, 1)
+              }
+              this.upShowBox = false
+              this.downShowBox = false
+              this.$refs.toast.show('删除成功')
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        } else if (this.type === 2 && this.rule_id * 1 === 3) {
+          Activity.deleteBargainOnline(this.curItem.id).then(res => {
+            if (res.error === ERR_OK) {
+              if (this.delType * 1 === 3) {
+                const idx = this.upList.findIndex(val => val.id === this.curItem.id)
+                this.upList.splice(idx, 1)
+              } else {
+                const idx = this.downList.findIndex(val => val.id === this.curItem.id)
+                this.downList.splice(idx, 1)
+              }
+              this.upShowBox = false
+              this.downShowBox = false
+              this.$refs.toast.show('删除成功')
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        }
+      },
+      editProductBtn(item) {
+        let path = `manage-activity/new-activity`
+        this.$router.push({path, query: {id: item.id, rule_id: item.rule_id}})
+      },
+      msgCancel() {},
+      jumpNewActivity() {
+        let path = 'manage-activity/new-activity'
+        this.$router.push(path)
+      }
+    },
+    computed: {
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
       }
     },
     components: {
       Toast,
-      Scroll
+      Scroll,
+      ConfirmMsg,
+      Exception
+    },
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          this.rebuildScroll()
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -97,6 +438,8 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+  .exception-box
+    padding-top: 70px
   .manage-box
     fill-box()
     z-index: 21
@@ -135,6 +478,7 @@
   .up-box
     padding: 15px
     .up-list-item
+      margin-bottom: 15px
       background: $color-white-fff
       border-radius: 2px
       box-shadow: 0 4px 12px 0 rgba(43,43,145,0.08)
@@ -195,8 +539,8 @@
         height: 52px
         overflow: hidden
         position:absolute
-        right: 65px
-        bottom: 0
+        right: 58px
+        bottom: 0px
         width: 163.5px
       .up-list-choose
         position:absolute

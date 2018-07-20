@@ -4,6 +4,7 @@ const platform = utils.getPlatform()
 
 const state = {
   tabMode: tabMode.show,
+  goodsInfo: {},
   platform // 平台信息
 }
 

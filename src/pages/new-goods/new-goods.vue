@@ -5,51 +5,57 @@
         <div class="add-box">
           <div class="add-list">
             <div class="left">商品标题</div>
-            <input class="right-input" type="text" placeholder="请输入" maxlength="50">
+            <input v-model="goodsData.title" class="right-input" type="text" placeholder="请输入" maxlength="20">
+            <div class="add-number">{{goodsData.title.length}}/20</div>
           </div>
           <div class="add-list">
-            <div class="left">商品标题</div>
-            <input class="right-input" type="text" placeholder="请输入">
+            <div class="left">商品副标题</div>
+            <input v-model="goodsData.subtitle" class="right-input" type="text" placeholder="请输入" maxlength="50">
+            <div class="add-number">{{goodsData.subtitle.length}}/50</div>
           </div>
           <div class="top-img-title">封面图片</div>
           <ul class="top-img-list">
-            <li class="top-img-item" v-for="(item, index) in image" :key="index">
+            <li class="top-img-item" v-for="(item, index) in goodsData.goods_banner_images" :key="index">
               <img class="img-item" :src="item.image_url">
-              <div class="close-icon" @click.stop="_delImage(index)">
+              <div class="close-icon" @click.stop="_delImage(index)" v-if="showEdit">
                 <img class="close-icon" src="./icon-del@2x.png">
               </div>
             </li>
-            <li class="top-img-item" v-if="image.length < 5">
+            <li class="top-img-item" v-if="goodsData.goods_banner_images.length < 5 && showEdit">
               <img class="img-item" src="./icon-addpic@2x.png">
               <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
             </li>
-            <li class="top-img-item" v-for="(item, index) in (4 - saclLength)">
+            <li class="top-img-item" v-for="(item, index) in (4 - saclLength)" v-if="showEdit">
               <img class="img-item" src="./icon-addpicc@2x.png">
             </li>
           </ul>
           <div class="top-img-des">可添加5张图片(尺寸:750x400,大小2M以下)</div>
           <div class="add-list">
             <div class="left">原价</div>
-            <input class="right-input" type="number" placeholder="请输入" maxlength="50">
+            <input v-if="showEdit" v-model="goodsData.platform_price" class="right-input" type="number"
+                   placeholder="请输入" maxlength="50">
+            <div class="edit-price" v-if="!showEdit">{{goodsData.platform_price}}</div>
           </div>
           <div class="add-list">
             <div class="left">现价</div>
-            <input class="right-input" type="number" placeholder="请输入" maxlength="50">
+            <input v-if="showEdit" v-model="goodsData.original_price" class="right-input" type="number"
+                   placeholder="请输入" maxlength="50">
+            <div class="edit-price" v-if="!showEdit">{{goodsData.original_price}}</div>
           </div>
         </div>
         <div class="add-line"></div>
         <div class="add-box">
           <div class="top-img-title">详情图片</div>
           <ul class="top-img-list">
-            <li class="top-img-item" v-for="(item, index) in image" :key="index">
+            <li class="top-img-item" v-for="(item, index) in goodsData.goods_images" :key="index">
               <img class="img-item" :src="item.image_url">
-              <div class="close-icon" @click.stop="_delImage(index)">
+              <div class="close-icon" @click.stop="_delDetailImage(index)" v-if="showEdit">
                 <img class="close-icon" src="./icon-del@2x.png">
               </div>
             </li>
-            <li class="top-img-item" v-if="image.length < 15">
+            <li class="top-img-item" v-if="goodsData.goods_images.length < 15 && showEdit">
               <img class="img-item" src="./icon-addpic@2x.png">
-              <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
+              <input type="file" class="image-file" @change="_fileDetailImage($event)" accept="image/*" multiple>
             </li>
           </ul>
           <div class="top-img-des">可添加15张图片(尺寸:750x400,大小2M以下)</div>
@@ -57,29 +63,56 @@
         <div class="add-line"></div>
         <div class="goods-deduct">
           <div class="goods-left">商品提成</div>
-          <input type="number" placeholder="" class="goods-number" maxlength="2">
+          <input type="number" v-if="showEdit" v-model="goodsData.commission_rate" placeholder="" class="goods-number"
+                 maxlength="2">
+          <div class="edit-price" v-if="!showEdit">{{goodsData.commission_rate}}</div>
           <div class="icon">%</div>
           <div class="text">按成交价计算</div>
         </div>
       </scroll>
-      <div class="sumbit-btn">发布</div>
+      <div class="sumbit-btn" @click="sumbitGoods">发布</div>
       <toast ref="toast"></toast>
+      <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <router-view></router-view>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
-  // import {ERR_OK} from '../../common/js/config'
+  import {Product} from 'api'
+  import {ERR_OK} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import ConfirmMsg from 'components/confirm-msg/confirm-msg'
 
   export default {
     name: 'new-goods',
     data() {
       return {
-        image: []
+        id: null,
+        showEdit: true,
+        goodsData: {
+          title: '',
+          subtitle: '',
+          platform_price: '',
+          original_price: '',
+          goods_banner_images: [],
+          goods_images: [],
+          commission_rate: '',
+          is_online: 1,
+          image_id: ''
+        }
       }
+    },
+    created() {
+      this.id = this.$route.query.id
+      if (this.id) {
+        Product.geDetailProduct(this.id).then(res => {
+          this.goodsData = res.data
+          this.showEdit = false
+        })
+      }
+      console.log(this.id)
     },
     methods: {
       async _fileImage(e) {
@@ -91,40 +124,127 @@
         param.append('file', file, file.name)// 通过append向form对象添加数据
         return param
       },
-      // _upLoad(item) {
-      //   UpLoad.upLoadImage(item).then((res) => {
-      //     if (res.error === ERR_OK) {
-      //       let imageItem = {type: 1, detail_id: res.data.id, image_url: res.data.url}
-      //       this.image.push(imageItem)
-      //       this.image = this.image.slice(0, 9)
-      //     }
-      //   })
-      // },
+      _upLoad(item) {
+        Product.upLoadImage(item).then((res) => {
+          if (res.error === ERR_OK) {
+            let imageItem = {type: 1, image_id: res.data.id, image_url: res.data.url}
+            this.goodsData.goods_banner_images.push(imageItem)
+            this.goodsData.goods_banner_images = this.goodsData.goods_banner_images.slice(0, 9)
+          }
+        })
+      },
       async _moreImage(arr) {
         // let image = {}
         // let sequence = Promise.resolve()
         for (let item of arr) {
           item = this._infoImage(item)
-          // await this._upLoad(item)
-          this.image.push(item)
-          console.log(this.image)
+          await this._upLoad(item)
         }
       },
       _delImage(index) {
-        this.image.splice(index, 1)
+        this.goodsData.goods_banner_images.splice(index, 1)
+      },
+      async _fileDetailImage(e) {
+        // let param = this._infoDetailImage(e.target.files[0])
+        await this._moreDetailImage(e.target.files)
+      },
+      _infoDetailImage(file) {
+        let param = new FormData() // 创建form对象
+        param.append('file', file, file.name)// 通过append向form对象添加数据
+        return param
+      },
+      _upDetailLoad(item) {
+        Product.upLoadImage(item).then((res) => {
+          if (res.error === ERR_OK) {
+            let imageItem = {type: 1, image_id: res.data.id, image_url: res.data.url}
+            this.goodsData.goods_images.push(imageItem)
+            console.log(this.goodsData.goods_images)
+            this.goodsData.goods_images = this.goodsData.goods_images.slice(0, 9)
+          }
+        })
+      },
+      async _moreDetailImage(arr) {
+        // let image = {}
+        // let sequence = Promise.resolve()
+        for (let item of arr) {
+          item = this._infoDetailImage(item)
+          await this._upDetailLoad(item)
+        }
+      },
+      _delDetailImage(index) {
+        this.goodsData.goods_images.splice(index, 1)
+      },
+      msgConfirm() {
+        Product.newProduct(this.goodsData).then((res) => {
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show('发布成功')
+            this.$emit('refget')
+            setTimeout(() => {
+              this.$router.back()
+            }, 500)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      msgCancel() {
+      },
+      sumbitGoods() {
+        if (this.goodsData.title.length === 0) {
+          this.$refs.toast.show('请输入商品标题')
+          return
+        }
+        if (this.goodsData.goods_banner_images.length === 0) {
+          this.$refs.toast.show('请上传封面图片')
+          return
+        }
+        if (this.goodsData.platform_price.length === 0) {
+          this.$refs.toast.show('请输入商品原价')
+          return
+        }
+        if (this.goodsData.original_price.length === 0) {
+          this.$refs.toast.show('请输入商品现价')
+          return
+        }
+        if (this.goodsData.goods_images.length === 0) {
+          this.$refs.toast.show('请上传详情图片')
+          return
+        }
+        if (this.goodsData.commission_rate < 5 || this.goodsData.commission_rate > 15 || this.goodsData.commission_rate.length === 0) {
+          this.$refs.toast.show('商品提成，可设置5-15之间')
+          return
+        }
+        this.goodsData.image_id = this.goodsData.goods_banner_images[0].image_id
+        console.log(this.goodsData.image_id)
+        if (this.showEdit) {
+          this.$refs.confirm.show('商品发布后将立刻上线？')
+        } else {
+          Product.changeProduct(this.id, this.goodsData).then((res) => {
+            if (res.error === ERR_OK) {
+              this.$refs.toast.show('修改成功')
+              this.$emit('refget')
+              setTimeout(() => {
+                this.$router.back()
+              }, 500)
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
+        }
       }
     },
     computed: {
       saclLength() {
-        if (this.image.length > 4) {
-          this.image.length = 4
+        if (this.goodsData.goods_banner_images.length > 4) {
+          this.goodsData.goods_banner_images.length = 4
         }
-        return this.image.length
+        return this.goodsData.goods_banner_images.length
       }
     },
     components: {
       Toast,
-      Scroll
+      Scroll,
+      ConfirmMsg
     }
   }
 </script>
@@ -151,11 +271,26 @@
     height: 50px
     border-bottom: 0.5px solid rgba(0, 0, 0, .1)
     align-items: center
+    position: relative
+    padding-right: 50px
+    .add-number
+      font-size: $font-size-12
+      color: $color-ccc
+      font-family: $font-family-regular
+      position: absolute
+      right: 15px
+      top: 0
+      height: 50px
+      line-height: 50px
     .left
       font-size: $font-size-medium
       color: $color-text-88
       font-family: $font-family-regular
       width: 86px
+    .edit-price
+      font-size: $font-size-medium
+      color: #20202e
+      font-family: $font-family-regular
     .right-input
       display: block
       height: 40px
@@ -259,6 +394,15 @@
     .goods-number
       width: 66.5px
       height: 32px
+      border: 1px solid #ccc
+      border-radius: 2px
+      text-align: center
+      margin-right: 8px
+      outline: none
+    .edit-price
+      width: 66.5px
+      height: 32px
+      line-height: 32px
       border: 1px solid #ccc
       border-radius: 2px
       text-align: center

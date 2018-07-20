@@ -15,6 +15,7 @@
     'disablecard': ['pic-disablecard', '名片被禁用，请联系公司管理员'],
     'nodata': ['pic-nodata', '暂无数据'],
     'nogroup': ['pic-nogroup', '暂无分组'],
+    'noProduct': ['pic-nogroup', '开始创建你的第一个商品'],
     'nonews': ['pic-nonews', '暂无消息'],
     'noresult': ['pic-noresult', '找不到您所要的结果']
   }

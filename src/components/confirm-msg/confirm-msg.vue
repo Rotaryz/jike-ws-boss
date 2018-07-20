@@ -35,8 +35,9 @@
         this.$emit('close')
       },
       show(data) {
+        console.log(data)
         if (data) {
-          this.msg = data.msg || ''
+          this.msg = data || ''
         }
         this.isShow = true
       }
@@ -75,6 +76,8 @@
         font-size: $font-size-16
         color: $color-20202E
         letter-spacing: 0.8px
+        padding: 0 10px
+        text-align: justify
       .btn-group
         height: 45px
         layout(row)

@@ -2,3 +2,5 @@
 export const tabMode = state => state.tabMode
 
 export const ios = state => state.platform === 'ios'
+
+export const goodsInfo = state => state.goodsInfo

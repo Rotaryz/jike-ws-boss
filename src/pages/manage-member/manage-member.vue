@@ -11,7 +11,7 @@
               @pullingUp="onPullingUp">
         <div class="manage-top">已开通账号数：{{total}}位</div>
         <ul class="manage-list">
-          <li class="manage-list-item" v-for="(item, index) in itemlist" v-bind:key="index">
+          <li class="manage-list-item" v-for="(item, index) in itemlist" v-bind:key="item.id">
             <slide-view :useType="3" :item="item" @del="delHandler">
               <manage-item :memberitem="item" @openRararBtn="openRararBtn" slot="content"></manage-item>
             </slide-view>
