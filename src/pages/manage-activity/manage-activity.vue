@@ -442,7 +442,7 @@
     padding-top: 70px
   .manage-box
     fill-box()
-    z-index: 21
+    z-index: 51
     bottom: 45px
   .product-tab
     position: fixed

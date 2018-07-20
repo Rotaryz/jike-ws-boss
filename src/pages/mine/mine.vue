@@ -48,13 +48,13 @@
       </div>
       <div class="jump-list">
         <div class="list-box">
-          <div class="list">
+          <router-link tag="div" to="mine/manage-member" class="list">
             <div class="list-left">
               <img src="./icon-member@2x.png" alt="" class="list-left-img">
               <p class="text">成员管理</p>
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </div>
+          </router-link>
           <router-link tag="div" to="mine/mine-assets" class="list">
             <div class="list-left">
               <img src="./icon-property@2x.png" alt="" class="list-left-img">
@@ -62,20 +62,20 @@
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
           </router-link>
-          <div class="list">
+          <router-link  tag="div" to="mine/manage-product" class="list">
             <div class="list-left">
               <img src="./icon-member@2x.png" alt="" class="list-left-img">
               <p class="text">产品管理</p>
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </div>
-          <div class="list">
+          </router-link>
+          <router-link tag="div" to="mine/manage-activity" class="list">
             <div class="list-left">
               <img src="./icon-activity@2x.png" alt="" class="list-left-img">
               <p class="text">活动管理</p>
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </div>
+          </router-link>
           <div class="list">
             <div class="list-left">
               <img src="./icon-distribution@2x.png" alt="" class="list-left-img">
