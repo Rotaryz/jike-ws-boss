@@ -129,7 +129,7 @@
         this.getMoreFlowList()
       },
       jumpAddMember() {
-        let path = `mangage-member/add-member`
+        let path = `manage-member/add-member`
         this.$router.push(path)
       }
     },

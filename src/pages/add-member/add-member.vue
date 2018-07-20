@@ -1,18 +1,20 @@
 <template>
   <transition name="slide">
     <div class="manage-box">
-      <scroll>
-        <div class="add-box">
-          <div class="add-list">
-            <div class="left">成员姓名</div>
-            <input class="right-input" type="text" v-model="name" placeholder="请输入姓名" maxlength="10">
+      <div class="scroll-wrapper">
+        <scroll>
+          <div class="add-box">
+            <div class="add-list">
+              <div class="left">成员姓名</div>
+              <input class="right-input" type="text" v-model="name" placeholder="请输入姓名" maxlength="10">
+            </div>
+            <div class="add-list">
+              <div class="left">绑定微信手机号</div>
+              <input class="right-input" type="number" v-model="phone" placeholder="请输入手机号" maxlength="10">
+            </div>
           </div>
-          <div class="add-list">
-            <div class="left">绑定微信手机号</div>
-            <input class="right-input" type="number" v-model="phone" placeholder="请输入手机号" maxlength="10">
-          </div>
-        </div>
-      </scroll>
+        </scroll>
+      </div>
       <div class="sumbit-btn" :class="name.length !== 0 && name.length !== 0 ? '' : 'sumbit-no-btn'" @click="saveNewMember">保存</div>
       <toast ref="toast"></toast>
       <router-view></router-view>
@@ -78,7 +80,13 @@
   .manage-box
     fill-box()
     z-index: 51
-    bottom: 45px
+    .scroll-wrapper
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 45px
+      overflow: hidden
 
   .add-box
     background: $color-white-fff
