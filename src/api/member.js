@@ -35,5 +35,10 @@ export default {
       user_id
     }
     return request.get(url, data, loading)
+  },
+  // 订单资产
+  getMine(data, loading) {
+    const url = `/api/merchant/merchant-order-property`
+    return request.get(url, data, loading)
   }
 }
