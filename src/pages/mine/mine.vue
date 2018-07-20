@@ -142,8 +142,8 @@
 
   .mine-all
     fill-box()
-    z-index: 50
     bottom: 50px
+    overflow: hidden
 
   .mine-top
     padding: 54px 15px 0
