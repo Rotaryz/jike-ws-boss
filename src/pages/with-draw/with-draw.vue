@@ -58,7 +58,7 @@
         return this.ios ? '' : 'slide'
       },
       url () {
-        let url = this.money.withdrawal_info ? `bank-card?id=${this.money.withdrawal_info.id}` : 'bank-card'
+        let url = this.money.withdrawal_info && this.money.withdrawal_info.id ? `bank-card?id=${this.money.withdrawal_info.id}` : 'bank-card'
         return url
       }
     },

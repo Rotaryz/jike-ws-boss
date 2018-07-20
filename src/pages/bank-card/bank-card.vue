@@ -55,6 +55,7 @@
     created () {
       this._banksList()
       this.id = this.$route.query.id || null
+      console.log(this.id)
       if (!this.id) {
         return
       }
