@@ -86,6 +86,7 @@
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'new-goods',
@@ -117,6 +118,10 @@
       console.log(this.id)
     },
     methods: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       async _fileImage(e) {
         // let param = this._infoImage(e.target.files[0])
         await this._moreImage(e.target.files)

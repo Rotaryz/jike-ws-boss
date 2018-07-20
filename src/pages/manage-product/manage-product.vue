@@ -132,6 +132,7 @@
   import Scroll from 'components/scroll/scroll'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Exception from 'components/exception/exception'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'porduct-list',
@@ -163,6 +164,10 @@
       this.getNewDownList()
     },
     methods: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       refget() {
         this.menuIdx = 1
         this.getNewUpList()

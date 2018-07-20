@@ -27,6 +27,7 @@
   import Scroll from 'components/scroll/scroll'
   import {Member} from 'api'
   import {ERR_OK} from 'common/js/config'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'manage-member',
@@ -37,6 +38,10 @@
       }
     },
     methods: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       saveNewMember() {
         if (this.name.length === 0) {
           this.$refs.toast.show('请输入姓名')

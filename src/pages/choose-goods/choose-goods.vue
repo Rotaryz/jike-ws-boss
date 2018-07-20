@@ -44,7 +44,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapMutations} from 'vuex'
+  import {mapMutations, mapGetters} from 'vuex'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
   import {Activity} from 'api'
@@ -79,6 +79,10 @@
       }
     },
     methods: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       ...mapMutations({ // 同步
         saveInfo: 'GOODSINFO'
       }),

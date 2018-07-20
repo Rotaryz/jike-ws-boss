@@ -9,14 +9,14 @@
   import {ERR_OK} from 'common/js/config'
   import utils from 'common/js/utils'
 
-  const NORMAL_ROUTE = '/radar'
+  const NORMAL_ROUTE = '/radar/overview'
   const COMPONENT_NAME = 'Oauth'
   const oauth = new Oauth()
 
   export default {
     name: COMPONENT_NAME,
     created() {
-      this._checkAuthorize()
+      // this._checkAuthorize()
     },
     computed: {
       code() {

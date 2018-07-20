@@ -65,7 +65,7 @@
           </router-link>
           <router-link tag="div" to="mine/manage-product" class="list">
             <div class="list-left">
-              <img src="./icon-member@2x.png" alt="" class="list-left-img">
+              <img src="./icon-goods@2x.png" alt="" class="list-left-img">
               <p class="text">产品管理</p>
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
@@ -115,7 +115,9 @@
       Member.getMine().then(res => {
         if (res.error === ERR_OK) {
           this.mineData = res.data
-          this.$refs.scroll.refresh()
+          this.$nextTick(() => {
+            this.$refs.scroll.refresh()
+          })
         } else {
           this.$refs.toast.show(res.message)
         }

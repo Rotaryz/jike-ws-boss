@@ -259,6 +259,10 @@
       })
     },
     methods: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       ...mapGetters(['goodsInfo']),
       getInfo() {
         this.getGoods = this.goodsInfo()
