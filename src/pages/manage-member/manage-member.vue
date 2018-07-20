@@ -1,23 +1,25 @@
 <template>
   <transition name="slide">
     <div class="manage-box">
-      <scroll ref="scroll"
-              bcColor="#fff"
-              :data="itemlist"
-              :probeType="probeType"
-              :pullUpLoad="pullUpLoadObj"
-              :showNoMore="false"
-              :listenScroll="listenScroll"
-              @pullingUp="onPullingUp">
-        <div class="manage-top">已开通账号数：{{total}}位</div>
-        <ul class="manage-list">
-          <li class="manage-list-item" v-for="(item, index) in itemlist" v-bind:key="item.id">
-            <slide-view :useType="3" :item="item" @del="delHandler">
-              <manage-item :memberitem="item" @openRararBtn="openRararBtn" slot="content"></manage-item>
-            </slide-view>
-          </li>
-        </ul>
-      </scroll>
+      <div class="scroll-wrapper">
+        <scroll ref="scroll"
+                bcColor="#fff"
+                :data="itemlist"
+                :probeType="probeType"
+                :pullUpLoad="pullUpLoadObj"
+                :showNoMore="false"
+                :listenScroll="listenScroll"
+                @pullingUp="onPullingUp">
+          <div class="manage-top">已开通账号数：{{total}}位</div>
+          <ul class="manage-list">
+            <li class="manage-list-item" v-for="(item, index) in itemlist" v-bind:key="item.id">
+              <slide-view :useType="3" :item="item" @del="delHandler">
+                <manage-item :memberitem="item" @openRararBtn="openRararBtn" slot="content"></manage-item>
+              </slide-view>
+            </li>
+          </ul>
+        </scroll>
+      </div>
       <div class="sumbit-btn" @click="jumpAddMember">添加成员</div>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <toast ref="toast"></toast>
@@ -34,6 +36,7 @@
   import SlideView from 'components/slide-view/slide-view'
   import ManageItem from 'components/manage-item/manage-item'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'manage-member',
@@ -55,6 +58,10 @@
       this.getNewMemberList()
     },
     methods: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       refresh() {
         this.getNewMemberList()
       },
@@ -170,6 +177,13 @@
   .manage-box
     fill-box()
     z-index: 21
+    .scroll-wrapper
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 45px
+      overflow: hidden
 
   .manage-top
     background: #F0F2F5

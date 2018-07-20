@@ -1,247 +1,248 @@
 <template>
   <transition name="slide">
     <div class="client-detail">
-      <div class="container">
-        <scroll ref="scroll"
-                :data="actionList"
-                :probeType="probeType"
-                :bcColor="bcColor"
-                :listenScroll="listenScroll"
-                @scroll="scroll"
-                :showNoMore="false"
-                :pullUpLoad="pullUpLoadObj"
-                @pullingUp="onPullingUp">
-          <div class="client-top" ref="eleven">
-            <div class="cliten-bg"></div>
+      <scroll ref="scroll"
+              :data="actionList"
+              :probeType="probeType"
+              :bcColor="bcColor"
+              :listenScroll="listenScroll"
+              @scroll="scroll"
+              :showNoMore="false"
+              :pullUpLoad="pullUpLoadObj"
+              @pullingUp="onPullingUp">
+        <div class="client-top" ref="eleven">
+          <div class="cliten-bg"></div>
+          <div class="cliten-box">
+            <div class="cliten-con">
+              <div class="cliten-img">
+                <div class="detail-img-box">
+                  <div class="img">
+                    <img :src="clientData.image_url" alt="">
+                  </div>
+                  <div class="label-right">
+                    <div class="label-name">{{clientData.name}}</div>
+                    <div class="label-box">
+                      <div class="full-name">{{flow.job}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="detail-jump" @click="toBusinessCard">
+                  <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="select-tab select-client">
+          <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}
+          </div>
+          <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+            <div class="chilen-line"></div>
+          </div>
+        </div>
+        <div class="capacity" v-if="menuIdx * 1 === 0">
+          <div class=""></div>
+          <div class=""></div>
+          <div class=""></div>
+          <div class=""></div>
+          <div class=""></div>
+          <div class="six-box">
+            <div class="six-model-box">
+              <div id="six-model"></div>
+            </div>
+          </div>
+          <div class="six-title">
+            <div class="six-top">
+              <div class="left">销售力综合排名</div>
+              <div class="right">{{dataRank.sales_force}}</div>
+            </div>
+            <div class="six-bottom">
+              <div class="left">获客能力排名</div>
+              <div class="right">{{dataRank.customer_competence}}</div>
+            </div>
+            <div class="six-bottom">
+              <div class="left">个人魅力排名</div>
+              <div class="right">{{dataRank.personal_charm}}</div>
+            </div>
+            <div class="six-bottom">
+              <div class="left">客户互动力排名</div>
+              <div class="right">{{dataRank.customer_interaction}}</div>
+            </div>
+            <div class="six-bottom">
+              <div class="left">产品推广</div>
+              <div class="right">{{dataRank.product_drive}}</div>
+            </div>
+            <div class="six-bottom">
+              <div class="left">官网推广力排名</div>
+              <div class="right">{{dataRank.customer_followup}}</div>
+            </div>
+            <div class="six-bottom">
+              <div class="left">客户跟进力排名</div>
+              <div class="right">{{dataRank.website_seo}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-box" v-if="menuIdx * 1 === 1">
+          <div class="data-top">
             <div class="cliten-box">
-              <div class="cliten-con">
-                <div class="cliten-img">
-                  <div class="detail-img-box">
-                    <div class="img">
-                      <img :src="clientData.image_url" alt="">
-                    </div>
-                    <div class="label-right">
-                      <div class="label-name">{{clientData.name}}</div>
-                      <div class="label-box">
-                        <div class="full-name">{{flow.job}}</div>
-                      </div>
-                    </div>
+              <div class="data-number-box">
+                <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
+                <div class="data-tab">
+                  <div class="tab" v-for="(item, index) in tabMoreList" v-bind:key="index"
+                       :class="tabNumber === index ? 'active' : '' " @click="getAllTab(item, index)">{{item.text}}
                   </div>
-                  <div class="detail-jump" @click="toBusinessCard">
-                    <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                </div>
+                <div class="data-list">
+                  <div class="list-box">
+                    <div class="number">{{allDatas.customer_sum}}</div>
+                    <div class="text">客户总数</div>
+                  </div>
+                  <div class="list-box">
+                    <div class="number">{{allDatas.follow_up_sum}}</div>
+                    <div class="text">跟进总数</div>
+                  </div>
+                  <div class="list-box">
+                    <div class="number">{{allDatas.card_visits_sum}}</div>
+                    <div class="text">名片访问数</div>
+                  </div>
+                  <div class="list-box">
+                    <div class="number">{{allDatas.website_visits_sum}}</div>
+                    <div class="text">官网访问数</div>
+                  </div>
+                  <div class="list-box">
+                    <div class="number">{{allDatas.goods_visits_sum}}</div>
+                    <div class="text">产品访问数</div>
+                  </div>
+                  <div class="list-box">
+                    <div class="number">{{allDatas.live_logs_sum}}</div>
+                    <div class="text">动态访问数</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="select-tab select-client">
-            <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}
+          <div class="pie-box ">
+            <div id="mySuccess"></div>
+            <div class="title-box">
+              <div class="title">成交率漏斗</div>
+              <div class="sub-title">(每小时更新)</div>
             </div>
-            <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-              <div class="chilen-line"></div>
-            </div>
-          </div>
-          <div class="capacity" v-if="menuIdx * 1 === 0">
-            <div class=""></div>
-            <div class=""></div>
-            <div class=""></div>
-            <div class=""></div>
-            <div class=""></div>
-            <div class="six-box">
-              <div class="six-model-box">
-                <div id="six-model"></div>
+            <div class="bottom-des">
+              <div class="tab">
+                <div class="icon"></div>
+                <div class="text">0-50%</div>
               </div>
-            </div>
-            <div class="six-title">
-              <div class="six-top">
-                <div class="left">销售力综合排名</div>
-                <div class="right">{{dataRank.sales_force}}</div>
+              <div class="tab">
+                <div class="icon two"></div>
+                <div class="text">51-80%</div>
               </div>
-              <div class="six-bottom">
-                <div class="left">获客能力排名</div>
-                <div class="right">{{dataRank.customer_competence}}</div>
+              <div class="tab">
+                <div class="icon thr"></div>
+                <div class="text">81-99%</div>
               </div>
-              <div class="six-bottom">
-                <div class="left">个人魅力排名</div>
-                <div class="right">{{dataRank.personal_charm}}</div>
-              </div>
-              <div class="six-bottom">
-                <div class="left">客户互动力排名</div>
-                <div class="right">{{dataRank.customer_interaction}}</div>
-              </div>
-              <div class="six-bottom">
-                <div class="left">产品推广</div>
-                <div class="right">{{dataRank.product_drive}}</div>
-              </div>
-              <div class="six-bottom">
-                <div class="left">官网推广力排名</div>
-                <div class="right">{{dataRank.customer_followup}}</div>
-              </div>
-              <div class="six-bottom">
-                <div class="left">客户跟进力排名</div>
-                <div class="right">{{dataRank.website_seo}}</div>
+              <div class="tab">
+                <div class="icon four"></div>
+                <div class="text">100%</div>
               </div>
             </div>
           </div>
-          <div class="ai-box" v-if="menuIdx * 1 === 1">
-            <div class="data-top">
-              <div class="cliten-box">
-                <div class="data-number-box">
-                  <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
-                  <div class="data-tab">
-                    <div class="tab"   v-for="(item, index) in tabMoreList" v-bind:key="index" :class="tabNumber === index ? 'active' : '' " @click="getAllTab(item, index)">{{item.text}}</div>
-                  </div>
-                  <div class="data-list">
-                    <div class="list-box">
-                      <div class="number">{{allDatas.customer_sum}}</div>
-                      <div class="text">客户总数</div>
-                    </div>
-                    <div class="list-box">
-                      <div class="number">{{allDatas.follow_up_sum}}</div>
-                      <div class="text">跟进总数</div>
-                    </div>
-                    <div class="list-box">
-                      <div class="number">{{allDatas.card_visits_sum}}</div>
-                      <div class="text">名片访问数</div>
-                    </div>
-                    <div class="list-box">
-                      <div class="number">{{allDatas.website_visits_sum}}</div>
-                      <div class="text">官网访问数</div>
-                    </div>
-                    <div class="list-box">
-                      <div class="number">{{allDatas.goods_visits_sum}}</div>
-                      <div class="text">产品访问数</div>
-                    </div>
-                    <div class="list-box">
-                      <div class="number">{{allDatas.live_logs_sum}}</div>
-                      <div class="text">动态访问数</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="pie-box">
+            <div id="myPie"></div>
+            <div class="title-box">
+              <div class="title">客户兴趣占比</div>
+              <div class="sub-title">(每小时更新)</div>
             </div>
-            <div class="pie-box ">
-              <div id="mySuccess"></div>
-              <div class="title-box">
-                <div class="title">成交率漏斗</div>
-                <div class="sub-title">(每小时更新)</div>
+            <div class="pie-list">
+              <div class="list">
+                <div class="icon one"></div>
+                <div class="text">对我感兴趣</div>
               </div>
-              <div class="bottom-des">
-                <div class="tab">
-                  <div class="icon"></div>
-                  <div class="text">0-50%</div>
-                </div>
-                <div class="tab">
-                  <div class="icon two"></div>
-                  <div class="text">51-80%</div>
-                </div>
-                <div class="tab">
-                  <div class="icon thr"></div>
-                  <div class="text">81-99%</div>
-                </div>
-                <div class="tab">
-                  <div class="icon four"></div>
-                  <div class="text">100%</div>
-                </div>
+              <div class="list">
+                <div class="icon two"></div>
+                <div class="text">对产品感兴趣</div>
               </div>
-            </div>
-            <div class="pie-box">
-              <div id="myPie"></div>
-              <div class="title-box">
-                <div class="title">客户兴趣占比</div>
-                <div class="sub-title">(每小时更新)</div>
-              </div>
-              <div class="pie-list">
-                <div class="list">
-                  <div class="icon one"></div>
-                  <div class="text">对我感兴趣</div>
-                </div>
-                <div class="list">
-                  <div class="icon two"></div>
-                  <div class="text">对产品感兴趣</div>
-                </div>
-                <div class="list">
-                  <div class="icon thr"></div>
-                  <div class="text">对公司感兴趣</div>
-                </div>
-              </div>
-            </div>
-            <div class="pie-box line-box">
-              <div id="myLine"></div>
-              <div class="title-box">
-                <div class="title">近7日客户活跃度</div>
-                <div class="sub-title">(每小时更新)</div>
-              </div>
-            </div>
-            <div class="pie-box bar-box">
-              <div id="myBar"></div>
-              <div class="title-box">
-                <div class="title">客户与我的互动</div>
-                <div class="sub-title">(每天0点更新)</div>
+              <div class="list">
+                <div class="icon thr"></div>
+                <div class="text">对公司感兴趣</div>
               </div>
             </div>
           </div>
-          <div class="visitor-box" v-if="menuIdx * 1 === 2">
-            <div class="box-list" v-if="actionList.length * 1 !== 0">
-              <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
-                <img :src="item.image_url" class="msgs-left">
-                <div class="msgs-right">
-                  <div class="msgs-container">
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span
-                      class="green">查看</span>了<span
-                      class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
-                      class="green">点了</span><span class="green">赞</span>，看来认可你</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span
-                      class="green">取消</span>给你点的<span
-                      class="green">赞</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span
-                      class="green">复制</span>了你的<span
-                      class="green">邮箱</span>，请留意邮件</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span
-                      class="green">浏览</span>了你的<span
-                      class="green">地址</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span
-                      class="green">转发</span>了你的<span
-                      class="green">名片</span>，你的人脉圈正在裂变</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span
-                      class="green">保存</span>了你的<span
-                      class="green">名片海报</span>，看来TA对你感兴趣</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span
-                      class="green">拨打</span>了你的<span
-                      class="green">手机</span>，请记录跟进内容</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
-                      class="green">保存</span>了你的<span
-                      class="green">电话</span>，可以考虑主动沟通</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
-                      class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
-                      class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
-                      class="green">咨询</span>，请做好准备应答</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span
-                      class="green">转发</span>了<span
-                      class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
-                      class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
-                      class="green">点了</span><span class="green">赞</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span
-                      class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span
-                      class="green">咨询</span>，请做好准备应答</p>
-                  </div>
-                  <!--<img src="./icon-pressed@2x.png" class="msgs-rt">-->
+          <div class="pie-box line-box">
+            <div id="myLine"></div>
+            <div class="title-box">
+              <div class="title">近7日客户活跃度</div>
+              <div class="sub-title">(每小时更新)</div>
+            </div>
+          </div>
+          <div class="pie-box bar-box">
+            <div id="myBar"></div>
+            <div class="title-box">
+              <div class="title">客户与我的互动</div>
+              <div class="sub-title">(每天0点更新)</div>
+            </div>
+          </div>
+        </div>
+        <div class="visitor-box" v-if="menuIdx * 1 === 2">
+          <div class="box-list" v-if="actionList.length * 1 !== 0">
+            <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
+              <img :src="item.image_url" class="msgs-left">
+              <div class="msgs-right">
+                <div class="msgs-container">
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span
+                    class="green">查看</span>了<span
+                    class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
+                    class="green">点了</span><span class="green">赞</span>，看来认可你</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span
+                    class="green">取消</span>给你点的<span
+                    class="green">赞</span></p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span
+                    class="green">复制</span>了你的<span
+                    class="green">邮箱</span>，请留意邮件</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span
+                    class="green">浏览</span>了你的<span
+                    class="green">地址</span></p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span
+                    class="green">转发</span>了你的<span
+                    class="green">名片</span>，你的人脉圈正在裂变</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span
+                    class="green">保存</span>了你的<span
+                    class="green">名片海报</span>，看来TA对你感兴趣</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span
+                    class="green">拨打</span>了你的<span
+                    class="green">手机</span>，请记录跟进内容</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
+                    class="green">保存</span>了你的<span
+                    class="green">电话</span>，可以考虑主动沟通</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span class="green">保存</span>了你的<span
+                    class="green">名片海报</span></p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
+                    class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
+                    class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
+                    class="green">咨询</span>，请做好准备应答</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span
+                    class="green">转发</span>了<span
+                    class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
+                    class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
+                    class="green">点了</span><span class="green">赞</span></p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span
+                    class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span
+                    class="green">咨询</span>，请做好准备应答</p>
                 </div>
+                <!--<img src="./icon-pressed@2x.png" class="msgs-rt">-->
               </div>
             </div>
-            <section class="exception-box" v-if="actionList.length * 1 === 0">
-              <exception errType="nodata"></exception>
-            </section>
           </div>
-        </scroll>
-      </div>
+          <section class="exception-box" v-if="actionList.length * 1 === 0">
+            <exception errType="nodata"></exception>
+          </section>
+        </div>
+      </scroll>
       <div class="select-tab" v-if="showTab">
         <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
         <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
@@ -712,7 +713,8 @@
       },
       toBusinessCard() {
         const id = this.id
-        const pageUrl = `${this.pageUrl}/business-card`
+        const pageUrl = `capacity-model/business-card`
+        console.log(pageUrl)
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
       onPullingUp() {
@@ -844,7 +846,14 @@
 
   .client-detail
     fill-box()
-    z-index: 70
+    z-index: 21
+    .scroll-wrapper
+      position: absolute
+      top: 0px
+      left: 0
+      right: 0
+      bottom: 0
+      overflow: hidden
 
   .tab-padding
     height: 48px
@@ -1155,6 +1164,7 @@
 
   .msgs-item:last-child
     margin-bottom: 0
+
   .six-title
     padding: 0 15px 20px 30px
     .six-top
@@ -1162,7 +1172,7 @@
       justify-content: space-between
       height: 45px
       line-height: 45px
-      border-bottom: 0.5px solid rgba(0,0,0,.1)
+      border-bottom: 0.5px solid rgba(0, 0, 0, .1)
       padding-right: 5px
       .left
         font-size: $font-size-16
@@ -1177,7 +1187,7 @@
       justify-content: space-between
       height: 45px
       line-height: 45px
-      border-bottom: 0.5px solid rgba(0,0,0,.1)
+      border-bottom: 0.5px solid rgba(0, 0, 0, .1)
       padding-right: 5px
       .left
         font-size: $font-size-14

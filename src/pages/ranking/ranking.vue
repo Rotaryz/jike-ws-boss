@@ -315,12 +315,11 @@
   .ranking
     position: fixed
     top: 62px
-    bottom: 0
+    bottom: 50px
     left: 0
     right: 0
     layout(column, block, nowrap)
     background-color: $color-white-fff
-    z-index: 2
     .tool-bar-box
       .tab-one
         width: 270px

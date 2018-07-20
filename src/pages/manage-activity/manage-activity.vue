@@ -145,6 +145,7 @@
   import Scroll from 'components/scroll/scroll'
   import Exception from 'components/exception/exception'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'manage-activity',
@@ -175,6 +176,10 @@
       this.getNewDownActiveList()
     },
     methods: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       refgetActivity() {
         this.menuIdx = 0
         this.getNewUpActiveList()

@@ -58,7 +58,7 @@
       },
       toCapacityModel(item) {
         const id = item.employee_id
-        const pageUrl = `/ai-analyse/capacity-model`
+        const pageUrl = `ai-analyse/capacity-model`
         console.log(pageUrl)
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
@@ -136,9 +136,9 @@
     padding-top: 137px
 
   .ai-analyse
-    position: absolute
+    position: fixed
     top: 62px
-    bottom: 0
+    bottom: 50px
     left: 0
     right: 0
     overflow: hidden
