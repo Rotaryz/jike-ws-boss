@@ -112,7 +112,7 @@
         await this._getOrderList()
       },
       async _getOrderList () {
-        let data = {page: this.page, status: this.status}
+        let data = {page: this.page}
         let res = await Customer.customerOrder(data)
         if (res.error !== ERR_OK) {
           return
