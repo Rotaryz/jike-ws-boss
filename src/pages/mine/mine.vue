@@ -4,9 +4,10 @@
       <div class="mine-top">
         <div class="mine-bg"></div>
         <div class="mine-box">
-          <p>雅诗兰黛华南代理商</p>
+          <p>{{mineData.name}}</p>
           <div class="mine-imgurl">
-            <img src="./pic-defaultavatar@2x.png" alt="">
+            <img :src="mineData.image_url" alt="" v-if="mineData.image_url.length !== 0">
+            <img src="./pic-defaultavatar@2x.png" alt="" v-if="mineData.image_url.length === 0">
           </div>
         </div>
       </div>
@@ -15,7 +16,7 @@
           <router-link tag="div" to="mine/sales-details" class="order-top">
             <div class="order-top-left">
               <div class="order-top-left-text">实际销售(元)</div>
-              <div class="order-top-left-money">536.00</div>
+              <div class="order-top-left-money">{{mineData.actual_sales}}</div>
             </div>
             <div class="order-top-right">
               <img src="./icon-presed@2x.png" alt="">
@@ -26,7 +27,7 @@
             <router-link tag="div" to="mine/income-details" class="add-box border-right-1px add-right">
               <div class="add-box-left ">
                 <div class="title">累计收入(元)</div>
-                <div class="number">64.00</div>
+                <div class="number">{{mineData.total}}</div>
               </div>
               <div class="add-box-right">
                 <img src="./icon-presed@2x.png" alt="">
@@ -36,7 +37,7 @@
             <router-link tag="div" to="mine/order-list" class="add-box add-left">
               <div class="add-box-left">
                 <div class="title">成交订单(元)</div>
-                <div class="number">64.00</div>
+                <div class="number">{{mineData.order_count}}</div>
               </div>
               <div class="add-box-right">
                 <img src="./icon-presed@2x.png" alt="">
@@ -62,7 +63,7 @@
             </div>
             <img src="./icon-presed@2x.png" alt="" class="list-right">
           </router-link>
-          <router-link  tag="div" to="mine/manage-product" class="list">
+          <router-link tag="div" to="mine/manage-product" class="list">
             <div class="list-left">
               <img src="./icon-member@2x.png" alt="" class="list-left-img">
               <p class="text">产品管理</p>
@@ -94,11 +95,30 @@
 <script type="text/ecmascript-6">
   import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
+  import {Member} from 'api'
+  import {ERR_OK} from 'common/js/config'
 
   export default {
     name: 'mine',
     data() {
-      return {}
+      return {
+        mineData: {
+          actual_sales: '',
+          image_url: '',
+          name: '',
+          total: '',
+          order_count: ''
+        }
+      }
+    },
+    created() {
+      Member.getMine().then(res => {
+        if (res.error === ERR_OK) {
+          this.mineData = res.data
+        } else {
+          this.$refs.toast.show(res.message)
+        }
+      })
     },
     methods: {
       showToast() {
@@ -241,7 +261,7 @@
         align-items: center
         height: 55px
         padding-right: 15px
-        border-bottom: 0.5px solid rgba(0,0,0,.1)
+        border-bottom: 0.5px solid rgba(0, 0, 0, .1)
         .list-left
           layout(row)
           align-items: center
@@ -257,6 +277,7 @@
         .list-right
           width: 8px
           height: 16px
+
   .z
     width: 100%
 </style>
