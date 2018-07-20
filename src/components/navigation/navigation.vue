@@ -1,40 +1,20 @@
 <template>
-  <div class="navigation border-top-1px">
-    <div class="item" @click="changeRoute(0)">
-      <i class="icon icon-radar" :class="{active: current === 0}"></i>
+  <div class="navigation">
+    <router-link tag="div" class="navigation-item" to="/radar">
+      <i class="icon icon-radar"></i>
       <span class="title">雷达</span>
-    </div>
-    <div class="item" @click="changeRoute(1)">
-      <i class="icon icon-mine" :class="{active: current === 1}"></i>
+    </router-link>
+    <router-link tag="div" class="navigation-item" to="/mine">
+      <i class="icon icon-mine"></i>
       <span class="title">我的</span>
-    </div>
+    </router-link>
   </div>
 </template>
 <script type="text/ecmascript-6">
   const COMPONENT_NAME = 'navigation'
 
-  const ROUTES = [
-    '/radar',
-    '/mine'
-  ]
-
   export default {
-    name: COMPONENT_NAME,
-    data() {
-      return {
-        current: 0
-      }
-    },
-    methods: {
-      changeRoute(index) {
-        if (this.current === index) {
-          return
-        }
-        this.current = index
-        const route = ROUTES[index]
-        this.$router.push(route)
-      }
-    }
+    name: COMPONENT_NAME
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
@@ -49,7 +29,7 @@
     display: flex
     height: 50px
     background: $color-white
-    .item
+    .navigation-item
       flex: 1
       display: flex
       flex-direction: column
@@ -63,14 +43,15 @@
         background-size: 22px 22px
         &.icon-radar
           bg-image('./icon-radar_tabbar')
-          &.active
-            bg-image('./icon-radar_selected')
         &.icon-mine
           bg-image('./icon-my_tabbar')
-          &.active
-            bg-image('./icon-my_selected')
       .title
         font-family: $font-family-regular
         font-size: $font-size-12
         color: $color-20202E
+      &.router-link-active
+        .icon-radar
+          bg-image('./icon-radar_selected')
+        .icon-mine
+          bg-image('./icon-my_selected')
 </style>
