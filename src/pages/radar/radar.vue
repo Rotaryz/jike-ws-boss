@@ -29,4 +29,6 @@
     left: 0
     right: 0
     bottom: 50px
+    z-index: 1
+    overflow: hidden
 </style>
