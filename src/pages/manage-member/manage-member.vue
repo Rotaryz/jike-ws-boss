@@ -121,7 +121,7 @@
         })
       },
       _isMemberList(res) {
-        this.Page++
+        this.page++
         if (this.itemlist.length >= res.meta.total * 1) {
           this.noMore = true
         }
@@ -177,6 +177,7 @@
   .manage-box
     fill-box()
     z-index: 21
+    overflow: hidden
     .scroll-wrapper
       position: absolute
       top: 0
@@ -194,7 +195,7 @@
 
   .sumbit-btn
     position: fixed
-    z-index: 21
+    z-index: 31
     height: 45px
     background: $color-20202E
     width: 100%

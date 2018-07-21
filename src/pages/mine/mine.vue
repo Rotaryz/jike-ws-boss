@@ -5,7 +5,7 @@
         <div class="mine-top">
           <div class="mine-bg"></div>
           <div class="mine-box">
-            <p>{{mineData.name}}v.1</p>
+            <p>{{mineData.name}}v.2</p>
             <div class="mine-imgurl">
               <img :src="mineData.image_url" alt="" v-if="mineData.image_url.length !== 0">
               <img src="./pic-defaultavatar@2x.png" alt="" v-if="mineData.image_url.length === 0">
@@ -148,12 +148,14 @@
   .mine-all
     fill-box()
     overflow: hidden
+    bottom: 50px
+    z-index: 1
     .scroll-wrapper
       position: absolute
       top: 0px
       left: 0
       right: 0
-      bottom: 50px
+      bottom: 0
       overflow: hidden
 
   .mine-top
