@@ -1,92 +1,94 @@
 <template>
   <article class="mine-all">
-    <scroll ref="scroll">
-      <div class="mine-top">
-        <div class="mine-bg"></div>
-        <div class="mine-box">
-          <p>{{mineData.name}}</p>
-          <div class="mine-imgurl">
-            <img :src="mineData.image_url" alt="" v-if="mineData.image_url.length !== 0">
-            <img src="./pic-defaultavatar@2x.png" alt="" v-if="mineData.image_url.length === 0">
+    <div class="scroll-wrapper">
+      <scroll ref="scroll">
+        <div class="mine-top">
+          <div class="mine-bg"></div>
+          <div class="mine-box">
+            <p>{{mineData.name}}</p>
+            <div class="mine-imgurl">
+              <img :src="mineData.image_url" alt="" v-if="mineData.image_url.length !== 0">
+              <img src="./pic-defaultavatar@2x.png" alt="" v-if="mineData.image_url.length === 0">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="order-box">
-        <div class="order-con">
-          <router-link tag="div" to="mine/sales-details" class="order-top">
-            <div class="order-top-left">
-              <div class="order-top-left-text">实际销售(元)</div>
-              <div class="order-top-left-money">{{mineData.actual_sales}}</div>
-            </div>
-            <div class="order-top-right">
-              <img src="./icon-presed@2x.png" alt="">
-              <div class="right-jump"></div>
-            </div>
-          </router-link>
-          <div class="order-bottom">
-            <router-link tag="div" to="mine/income-details" class="add-box border-right-1px add-right">
-              <div class="add-box-left ">
-                <div class="title">累计收入(元)</div>
-                <div class="number">{{mineData.total}}</div>
+        <div class="order-box">
+          <div class="order-con">
+            <router-link tag="div" to="mine/sales-details" class="order-top">
+              <div class="order-top-left">
+                <div class="order-top-left-text">实际销售(元)</div>
+                <div class="order-top-left-money">{{mineData.actual_sales}}</div>
               </div>
-              <div class="add-box-right">
+              <div class="order-top-right">
                 <img src="./icon-presed@2x.png" alt="">
                 <div class="right-jump"></div>
               </div>
             </router-link>
-            <router-link tag="div" to="mine/order-list" class="add-box add-left">
-              <div class="add-box-left">
-                <div class="title">成交订单(元)</div>
-                <div class="number">{{mineData.order_count}}</div>
+            <div class="order-bottom">
+              <router-link tag="div" to="mine/income-details" class="add-box border-right-1px add-right">
+                <div class="add-box-left ">
+                  <div class="title">累计收入(元)</div>
+                  <div class="number">{{mineData.total}}</div>
+                </div>
+                <div class="add-box-right">
+                  <img src="./icon-presed@2x.png" alt="">
+                  <div class="right-jump"></div>
+                </div>
+              </router-link>
+              <router-link tag="div" to="mine/order-list" class="add-box add-left">
+                <div class="add-box-left">
+                  <div class="title">成交订单(元)</div>
+                  <div class="number">{{mineData.order_count}}</div>
+                </div>
+                <div class="add-box-right">
+                  <img src="./icon-presed@2x.png" alt="">
+                  <div class="right-jump"></div>
+                </div>
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="jump-list">
+          <div class="list-box">
+            <router-link tag="div" to="mine/manage-member" class="list">
+              <div class="list-left">
+                <img src="./icon-member@2x.png" alt="" class="list-left-img">
+                <p class="text">成员管理</p>
               </div>
-              <div class="add-box-right">
-                <img src="./icon-presed@2x.png" alt="">
-                <div class="right-jump"></div>
-              </div>
+              <img src="./icon-presed@2x.png" alt="" class="list-right">
             </router-link>
+            <router-link tag="div" to="mine/mine-assets" class="list">
+              <div class="list-left">
+                <img src="./icon-property@2x.png" alt="" class="list-left-img">
+                <p class="text">资产管理</p>
+              </div>
+              <img src="./icon-presed@2x.png" alt="" class="list-right">
+            </router-link>
+            <router-link tag="div" to="mine/manage-product" class="list">
+              <div class="list-left">
+                <img src="./icon-goods@2x.png" alt="" class="list-left-img">
+                <p class="text">产品管理</p>
+              </div>
+              <img src="./icon-presed@2x.png" alt="" class="list-right">
+            </router-link>
+            <router-link tag="div" to="mine/manage-activity" class="list">
+              <div class="list-left">
+                <img src="./icon-activity@2x.png" alt="" class="list-left-img">
+                <p class="text">活动管理</p>
+              </div>
+              <img src="./icon-presed@2x.png" alt="" class="list-right">
+            </router-link>
+            <div class="list" @click="showToast">
+              <div class="list-left">
+                <img src="./icon-distribution@2x.png" alt="" class="list-left-img">
+                <p class="text">分销管理</p>
+              </div>
+              <img src="./icon-presed@2x.png" alt="" class="list-right">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="jump-list">
-        <div class="list-box">
-          <router-link tag="div" to="mine/manage-member" class="list">
-            <div class="list-left">
-              <img src="./icon-member@2x.png" alt="" class="list-left-img">
-              <p class="text">成员管理</p>
-            </div>
-            <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </router-link>
-          <router-link tag="div" to="mine/mine-assets" class="list">
-            <div class="list-left">
-              <img src="./icon-property@2x.png" alt="" class="list-left-img">
-              <p class="text">资产管理</p>
-            </div>
-            <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </router-link>
-          <router-link tag="div" to="mine/manage-product" class="list">
-            <div class="list-left">
-              <img src="./icon-goods@2x.png" alt="" class="list-left-img">
-              <p class="text">产品管理</p>
-            </div>
-            <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </router-link>
-          <router-link tag="div" to="mine/manage-activity" class="list">
-            <div class="list-left">
-              <img src="./icon-activity@2x.png" alt="" class="list-left-img">
-              <p class="text">活动管理</p>
-            </div>
-            <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </router-link>
-          <div class="list" @click="showToast">
-            <div class="list-left">
-              <img src="./icon-distribution@2x.png" alt="" class="list-left-img">
-              <p class="text">分销管理</p>
-            </div>
-            <img src="./icon-presed@2x.png" alt="" class="list-right">
-          </div>
-        </div>
-      </div>
-    </scroll>
+      </scroll>
+    </div>
     <toast ref="toast"></toast>
     <router-view></router-view>
   </article>
@@ -145,9 +147,14 @@
 
   .mine-all
     fill-box()
-    bottom: 50px
     overflow: hidden
-    z-index: 1
+    .scroll-wrapper
+      position: absolute
+      top: 0px
+      left: 0
+      right: 0
+      bottom: 50px
+      overflow: hidden
 
   .mine-top
     padding: 54px 15px 0

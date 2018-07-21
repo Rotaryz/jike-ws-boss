@@ -5,7 +5,7 @@
         <scroll>
           <div class="add-box">
             <div class="add-list select-box">
-              <div class="left">活动类型</div>{{pickText}}
+              <div class="left">活动类型</div>
               <div class="select-right">
                 <select v-model='selectedType' class="right-selected" v-if="!editShow">
                   <option v-for="option in optionsType" v-bind:value="option.value">
@@ -137,7 +137,6 @@
           </div>
         </scroll>
       </div>
-      <date-picker @sureClick="sureClick"></date-picker>
       <div class="sumbit-btn" @click="upNewActivity" v-if="!editShow">发布</div>
       <div class="sumbit-btn" @click="editNewActivity" v-if="editShow">发布</div>
       <toast ref="toast"></toast>
@@ -152,7 +151,6 @@
   import Vue from 'vue'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
-  import DatePicker from 'components/date-picker/date-picker'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Calendar from 'vue2-datepick'
   import {Activity} from 'api'
@@ -164,7 +162,6 @@
     name: 'new-activity',
     data() {
       return {
-        pickText: '',
         selectedType: '请选择',
         optionsType: [
           {text: '1', value: '拼团特惠'},
@@ -262,9 +259,6 @@
       })
     },
     methods: {
-      sureClick(item, index) {
-        this.pickText = index
-      },
       ...mapGetters(['ios']),
       slide () {
         return this.ios ? '' : 'slide'
@@ -483,8 +477,7 @@
     components: {
       Toast,
       Scroll,
-      ConfirmMsg,
-      DatePicker
+      ConfirmMsg
     }
   }
 </script>
