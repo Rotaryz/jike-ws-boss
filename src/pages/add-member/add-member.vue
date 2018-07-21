@@ -10,7 +10,7 @@
             </div>
             <div class="add-list">
               <div class="left">绑定微信手机号</div>
-              <input class="right-input" type="number" v-model="phone" placeholder="请输入手机号" maxlength="10">
+              <input class="right-input" type="number" v-model="phone" placeholder="请输入手机号" maxlength="11">
             </div>
           </div>
         </scroll>

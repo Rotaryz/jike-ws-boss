@@ -147,6 +147,7 @@
     fill-box()
     bottom: 50px
     overflow: hidden
+    z-index: 1
 
   .mine-top
     padding: 54px 15px 0

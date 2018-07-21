@@ -137,6 +137,7 @@
           </div>
         </scroll>
       </div>
+      <date-picker></date-picker>
       <div class="sumbit-btn" @click="upNewActivity" v-if="!editShow">发布</div>
       <div class="sumbit-btn" @click="editNewActivity" v-if="editShow">发布</div>
       <toast ref="toast"></toast>
@@ -151,6 +152,7 @@
   import Vue from 'vue'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import DatePicker from 'components/date-picker/date-picker'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Calendar from 'vue2-datepick'
   import {Activity} from 'api'
@@ -477,7 +479,8 @@
     components: {
       Toast,
       Scroll,
-      ConfirmMsg
+      ConfirmMsg,
+      DatePicker
     }
   }
 </script>
