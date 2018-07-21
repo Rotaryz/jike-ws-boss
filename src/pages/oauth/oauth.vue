@@ -9,7 +9,7 @@
   import {ERR_OK} from 'common/js/config'
   import utils from 'common/js/utils'
 
-  const NORMAL_ROUTE = '/radar/overview'
+  const NORMAL_ROUTE = '/radar'
   const COMPONENT_NAME = 'Oauth'
   const oauth = new Oauth()
 
