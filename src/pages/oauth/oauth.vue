@@ -16,7 +16,7 @@
   export default {
     name: COMPONENT_NAME,
     created() {
-      // this._checkAuthorize()
+      this._checkAuthorize()
     },
     computed: {
       code() {

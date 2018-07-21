@@ -334,7 +334,8 @@
         showTab: false,
         allDatas: {},
         successData: [],
-        dataRank: {}
+        dataRank: {},
+        actionMore: false
       }
     },
     created() {
@@ -400,11 +401,6 @@
         let myChart = this.$echarts.init(document.getElementById('myLine'))
         // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '近30日客户活跃度',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -464,11 +460,6 @@
         let myChart = this.$echarts.init(document.getElementById('myBar'))
         // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '客户与我的互动',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           tooltip: {
             trigger: 'axis',
             formatter: '{b}数：{c}',
@@ -697,11 +688,16 @@
         })
       },
       getMoreActionList(id) {
+        if (this.actionMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
         this.actionPage++
         ClientDetail.getActionList(id, this.actionPage).then((res) => {
           if (res.error === ERR_OK) {
             if (res.data.length * 1 === 0) {
               this.actionPage--
+              this.actionMore = true
             } else {
               this.actionList.push(...res.data)
             }
