@@ -175,6 +175,8 @@
         if (!texts[texts.length]) {
           texts[texts.length - 1] = this.dateData[this.dateData.length - 1][this.dateData[this.dateData.length - 1].length - 1]
         }
+        console.log(texts)
+        console.log(this.hierarchy)
         this.$emit('sureClick', this.hierarchy, texts)
       },
       cancelClick() {
@@ -240,6 +242,7 @@
     left 0
     width 100%
     height 100%
+    z-index: 52
   .bg
     position absolute
     width 100%
