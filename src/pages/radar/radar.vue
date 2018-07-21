@@ -28,7 +28,7 @@
     top: 0
     left: 0
     right: 0
-    bottom: 50px
+    bottom: 0px
     z-index: 1
     overflow: hidden
 </style>
