@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation">
+  <div class="navigation" v-if="showNav">
     <router-link tag="div" class="navigation-item" to="/radar">
       <i class="icon icon-radar"></i>
       <span class="title">雷达</span>
@@ -14,7 +14,22 @@
   const COMPONENT_NAME = 'navigation'
 
   export default {
-    name: COMPONENT_NAME
+    name: COMPONENT_NAME,
+    data() {
+      return {
+        showNav: true
+      }
+    },
+    watch: {
+      '$route'(to) {
+        let path = to.path
+        if (path === '/mine' || path === '/radar/overview' || path === '/radar/ranking' || path === '/radar/ai-analyse') {
+          this.showNav = true
+        } else {
+          this.showNav = false
+        }
+      }
+    }
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
