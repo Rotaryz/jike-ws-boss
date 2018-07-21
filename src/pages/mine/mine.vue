@@ -5,7 +5,7 @@
         <div class="mine-top">
           <div class="mine-bg"></div>
           <div class="mine-box">
-            <p>{{mineData.name}}v.2</p>
+            <p>{{mineData.name}}v.3</p>
             <div class="mine-imgurl">
               <img :src="mineData.image_url" alt="" v-if="mineData.image_url.length !== 0">
               <img src="./pic-defaultavatar@2x.png" alt="" v-if="mineData.image_url.length === 0">
