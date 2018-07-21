@@ -17,12 +17,12 @@
               <div class="cliten-img">
                 <div class="detail-img-box">
                   <div class="img">
-                    <img :src="clientData.image_url" alt="">
+                    <img :src="clientData.avatar" alt="">
                   </div>
                   <div class="label-right">
                     <div class="label-name">{{clientData.name}}</div>
                     <div class="label-box">
-                      <div class="full-name">{{flow.job}}</div>
+                      <div class="full-name">{{clientData.position}}</div>
                     </div>
                   </div>
                 </div>
@@ -297,7 +297,7 @@
         dataEcharts: false,
         tabNumber: 0,
         clientData: {
-          image_url: '',
+          avatar: '',
           name: ''
         },
         flow: {},
@@ -671,11 +671,6 @@
           if (res.error === ERR_OK) {
             this.clientData = res.data
             this.flow = res.data.flow
-            if (this.flow.real_name.length * 1 === 0) {
-              this.clientData.name = this.flow.real_name
-            } else {
-              this.clientData.name = this.flow.nickname
-            }
             this.mobile = res.data.mobile
           }
         })

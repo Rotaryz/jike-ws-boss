@@ -271,7 +271,7 @@ const route = new Router({
 })
 
 const DEFAULT_TITLE = '总览'
-const DEFAULT_ROUTE = '/radar'
+const DEFAULT_ROUTE = '/overview'
 const OAUTH_ROUTE = '/oauth'
 
 route.beforeEach((to, from, next) => {
