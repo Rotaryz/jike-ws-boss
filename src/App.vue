@@ -22,4 +22,7 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
+  #app
+    position: relative
+    z-index: 0
 </style>
