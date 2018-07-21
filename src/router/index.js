@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import storage from 'storage-controller'
+import storage from 'storage-controller'
 
 const Oauth = () => import('pages/oauth/oauth')
 const Radar = () => import('pages/radar/radar')
@@ -271,19 +271,19 @@ const route = new Router({
 })
 
 const DEFAULT_TITLE = '总览'
-// const DEFAULT_ROUTE = '/overview'
-// const OAUTH_ROUTE = '/oauth'
+const DEFAULT_ROUTE = '/overview'
+const OAUTH_ROUTE = '/oauth'
 
 route.beforeEach((to, from, next) => {
   document.title = to.meta.title ? to.meta.title : DEFAULT_TITLE
-  // if (to.path === '/') {
-  //   const token = storage.get('token', '')
-  //   if (token) {
-  //     next(DEFAULT_ROUTE)
-  //   } else {
-  //     next(OAUTH_ROUTE)
-  //   }
-  // }
+  if (to.path === '/') {
+    const token = storage.get('token', '')
+    if (token) {
+      next(DEFAULT_ROUTE)
+    } else {
+      next(OAUTH_ROUTE)
+    }
+  }
   next()
 })
 

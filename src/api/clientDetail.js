@@ -5,9 +5,13 @@ export default {
    * 获得用户详情
    * @returns {*}
    */
-  getClientDetail(id) {
-    let url = `api/employee/employee-customer-flow/${id}`
-    return request.get(url)
+  getClientDetail(user_id = 0, current_type = 'weishang') {
+    let url = `api/merchant/get-user`
+    let data = {
+      user_id,
+      current_type
+    }
+    return request.get(url, data)
   },
   /**
    * 保存客户详情
