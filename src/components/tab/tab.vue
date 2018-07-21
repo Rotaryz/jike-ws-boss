@@ -1,5 +1,5 @@
 <template>
-  <div class="tab border-bottom-1px" v-show="tabMode === mode.show">
+  <div class="tab border-bottom-1px" v-show="tabMode === mode.show" v-if="showTab">
     <section class="line-wrapper" :style="tabStyle">
       <div class="line"></div>
     </section>
@@ -28,7 +28,8 @@
         tabList: TABS,
         activeIndex: 0,
         mode: tabMode,
-        tabTranslateX: 0
+        tabTranslateX: 0,
+        showTab: true
       }
     },
     created() {
@@ -46,6 +47,11 @@
     watch: {
       '$route'(to) {
         let path = to.path
+        if (path === '/radar/overview' || path === '/radar/ranking' || path === '/radar/ai-analyse') {
+          this.showTab = true
+        } else {
+          this.showTab = false
+        }
         let routeArr = this.tabList.filter((item) => {
           return item.path === path
         })
@@ -75,6 +81,7 @@
     height: 62px
     background: $color-20202E
     display: flex
+    z-index: 1
     .tab-item
       position: relative
       flex: 1

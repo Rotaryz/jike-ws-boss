@@ -44,7 +44,7 @@
     display: flex
     height: 50px
     background: $color-white
-    z-index: 0
+    z-index: 2
     .navigation-item
       flex: 1
       display: flex

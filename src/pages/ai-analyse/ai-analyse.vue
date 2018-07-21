@@ -1,16 +1,18 @@
 <template>
   <article class="ai-analyse">
-    <scroll ref="scroll"
-            v-if="dataArray.length"
-            bcColor="#fff"
-            :data="dataArray"
-            :pullUpLoad="pullUpLoadObj"
-            @pullingUp="onPullingUp"
-    >
-      <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCapacityModel(item)">
-        <user-card :cardInfo="item" :idx="index" useType="ai"></user-card>
-      </div>
-    </scroll>
+    <div class="ai-analyse-box">
+      <scroll ref="scroll"
+              v-if="dataArray.length"
+              bcColor="#fff"
+              :data="dataArray"
+              :pullUpLoad="pullUpLoadObj"
+              @pullingUp="onPullingUp"
+      >
+        <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCapacityModel(item)">
+          <user-card :cardInfo="item" :idx="index" useType="ai"></user-card>
+        </div>
+      </scroll>
+    </div>
     <section class="exception-box" v-if="isEmpty">
       <exception errType="nodata"></exception>
     </section>
@@ -138,9 +140,13 @@
   .ai-analyse
     fill-box()
     overflow: hidden
-    top: 62px
-    bottom: 50px
-    background-color: $color-white-fff
+    bottom: 0
+    .ai-analyse-box
+      fill-box()
+      overflow: hidden
+      top: 62px
+      bottom: 50px
+      background-color: $color-white-fff
     .user-card-box
       height: 75px
       padding-left: 15px
