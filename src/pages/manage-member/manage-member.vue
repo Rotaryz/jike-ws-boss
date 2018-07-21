@@ -183,7 +183,7 @@
       top: 0
       left: 0
       right: 0
-      bottom: 45px
+      bottom: 0
       overflow: hidden
 
   .manage-top
@@ -194,7 +194,7 @@
     padding: 10px 15px
 
   .sumbit-btn
-    position: fixed
+    position: absolute
     z-index: 31
     height: 45px
     background: $color-20202E
