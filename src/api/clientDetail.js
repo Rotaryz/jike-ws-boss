@@ -56,10 +56,11 @@ export default {
    * 行为记录列表
    * @returns {*}
    */
-  getActionList(customer_id = 0, page = 1, limit = 10) {
+  getActionList(employee_id = 0, page = 1, customer_id = 0, limit = 10) {
     let url = `api/employee/action-logs`
     let data = {
       customer_id,
+      employee_id,
       page,
       limit
     }

@@ -103,7 +103,8 @@
           goods_images: [],
           commission_rate: '',
           is_online: 1,
-          image_id: ''
+          image_id: '',
+          total_stock: '-1'
         }
       }
     },
@@ -205,12 +206,12 @@
           this.$refs.toast.show('请上传封面图片')
           return
         }
-        if (this.goodsData.platform_price.length === 0) {
-          this.$refs.toast.show('请输入商品原价')
+        if (this.goodsData.platform_price.length === 0 || this.goodsData.platform_price <= 0) {
+          this.$refs.toast.show('请输入商品原价大于零')
           return
         }
-        if (this.goodsData.original_price.length === 0) {
-          this.$refs.toast.show('请输入商品现价')
+        if (this.goodsData.original_price.length === 0 || this.goodsData.original_price <= 0) {
+          this.$refs.toast.show('请输入商品现价大于零')
           return
         }
         if (this.goodsData.goods_images.length === 0) {

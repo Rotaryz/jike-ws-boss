@@ -1,7 +1,8 @@
 <template>
   <div class="manage-item">
     <div class="manage-left">
-      <img :src="itemAvatar" alt="" class="left-img">
+      <img :src="memberitem.avatar" alt="" class="left-img" v-if="memberitem.avatar.length !== 0">
+      <img src="./pic-default_people@2x.png" alt="" class="left-img" v-if="memberitem.avatar.length === 0">
       <div class="left-text">
         <div class="name">{{memberitem.name}}</div>
         <div class="phone">{{memberitem.mobile}}</div>
