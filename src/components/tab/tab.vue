@@ -1,71 +1,28 @@
 <template>
-  <div class="tab border-bottom-1px" v-show="tabMode === mode.show" v-if="showTab">
-    <section class="line-wrapper" :style="tabStyle">
-      <div class="line"></div>
-    </section>
-    <div class="tab-item" v-for="(item, index) in tabList" :key="index">
-      <div class="item-container" @click="changeTab(item, index)">
+  <div class="tab border-bottom-1px">
+    <router-link tag="div" class="tab-item" v-for="(item,index) in tabList" :to="item.path" :key="index">
+      <div class="item-container">
+        <section class="line-wrapper">
+          <div class="line"></div>
+        </section>
         <p class="icon-text">{{item.text}}</p>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import {tabMode} from 'common/js/constants'
-
   const COMPONENT_NAME = 'Tab'
   const TABS = [
-    {text: '总览', path: '/radar/overview', id: 1},
-    {text: '排行榜', path: '/radar/ranking', id: 2},
-    {text: 'AI分析', path: '/radar/ai-analyse', id: 3}
+    {text: '总览', path: '/overview', id: 1},
+    {text: '排行榜', path: '/ranking', id: 2},
+    {text: 'AI分析', path: '/ai-analyse', id: 3}
   ]
   export default {
     name: COMPONENT_NAME,
     data() {
       return {
-        tabList: TABS,
-        activeIndex: 0,
-        mode: tabMode,
-        tabTranslateX: 0,
-        showTab: true
-      }
-    },
-    created() {
-    },
-    methods: {
-      changeTab(item, index) {
-        if (index === this.activeIndex) {
-          return
-        }
-        this.tabTranslateX = index * 100
-        this.activeIndex = index
-        this.$router.push(item.path)
-      }
-    },
-    watch: {
-      '$route'(to) {
-        let path = to.path
-        if (path === '/radar/overview' || path === '/radar/ranking' || path === '/radar/ai-analyse') {
-          this.showTab = true
-        } else {
-          this.showTab = false
-        }
-        let routeArr = this.tabList.filter((item) => {
-          return item.path === path
-        })
-        if (routeArr.length) {
-          this.activeIndex = routeArr[0].id - 1
-        }
-      }
-    },
-    computed: {
-      ...mapGetters([
-        'tabMode'
-      ]),
-      tabStyle() {
-        return `width:${100 / TABS.length}%;transform:translate3d(${this.tabTranslateX}%, 0, 0)`
+        tabList: TABS
       }
     }
   }
@@ -81,13 +38,13 @@
     height: 62px
     background: $color-20202E
     display: flex
-    z-index: 1
     .tab-item
       position: relative
       flex: 1
       overflow: hidden
       height: 62px
       .item-container
+        position: relative
         overflow: hidden
         width: 100%
         height: 100%
@@ -97,26 +54,32 @@
         align-items: center
         font-size: 0
         .icon
+          position: relative
           width: 20px
           height: 20px
           margin-bottom: 3px
         .icon-text
+          position: relative
           font-family: $font-family-regular
           font-size: $font-size-16
           color: $color-white-fff
-    .line-wrapper
-      position: absolute
-      top: 0
-      left: 0
-      display: flex
-      justify-content: center
-      align-items: center
-      height: 100%
-      transition: all .3s
-      transform: translate3d(0, 0, 0)
-      .line
-        width: 85px
-        height: 32px
-        background-color: $color-56BA15
-        border-radius: 100px
+        .line-wrapper
+          position: absolute
+          left: 0
+          right: 0
+          bottom: 0
+          top: 0
+          display: flex
+          justify-content: center
+          align-items: center
+          opacity :0
+          transition: all .6s
+          .line
+            width: 85px
+            height: 32px
+            background-color: $color-56BA15
+            border-radius: 100px
+      &.router-link-active
+        .line-wrapper
+          opacity :1
 </style>

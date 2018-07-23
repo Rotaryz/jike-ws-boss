@@ -6,21 +6,21 @@
       <div class="rank two" v-else-if="idx===1"></div>
       <div class="rank three" v-else-if="idx===2"></div>
       <div class="rank" v-else>{{idx+1}}</div>
-      <img class="user-logo" :src="cardInfo.avatar" alt="">
+      <div class="user-logo" :style="'background-image:url(' + cardInfo.avatar +')'"></div>
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
-          <div class="name">{{cardInfo.position}}</div>
+          <div class="sale-power">{{cardInfo.number}}</div>
         </div>
         <div class="info-box">
-          <div class="number">{{cardInfo.number}}</div>
+          <div class="number">{{cardInfo.position}}</div>
           <div class="number">销售力</div>
         </div>
       </section>
     </div>
     <!--overview总览 客户列表-->
     <div class="card-box" v-if="useType === 'overview'">
-      <img class="user-logo" :src="cardInfo.image_url" alt="">
+      <div class="user-logo" :style="'background-image:url(' + cardInfo.image_url +')'"></div>
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
@@ -34,7 +34,7 @@
     </div>
     <!--rank-list 排行客户工列表-->
     <div class="card-box" v-if="useType === 'rank-customer-list'">
-      <img class="user-logo" :src="cardInfo.image_url" alt="">
+      <div class="user-logo" :style="'background-image:url(' + cardInfo.image_url +')'"></div>
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
@@ -52,7 +52,7 @@
       <div class="rank two" v-else-if="idx===1"></div>
       <div class="rank three" v-else-if="idx===2"></div>
       <div class="rank" v-else>{{idx+1}}</div>
-      <img class="user-logo" :src="cardInfo.avatar" alt="">
+      <div class="user-logo" :style="'background-image:url(' + cardInfo.avatar +')'"></div>
       <section class="user-info-ranking">
         <div class="info-box-ranking">
           <div class="name">{{cardInfo.name}}</div>
@@ -107,6 +107,9 @@
       .user-logo
         width: 45px
         height: 45px
+        background-repeat: no-repeat
+        background-position: center content
+        background-size: 100%
         margin-left: 3px
         margin-right: 15px
       .user-info
@@ -121,6 +124,13 @@
           color: $color-20202E
           layout(row, block, nowrap)
           justify-content: space-between
+          .name
+            font-size: $font-size-16
+            color: $color-20202E
+            font-family: $font-family-regular
+          .sale-power
+            font-size: $font-size-20
+            font-family: $font-family-bold
           .number
             font-size: $font-size-12
             color: $color-888888
