@@ -219,7 +219,6 @@
       if (this.ruleId * 1 === 3) {
         Activity.editGetNewBargain(this.typeId).then(res => {
           if (res.error === ERR_OK) {
-            console.log(res.data)
             this.havaGoods = true
             this.selectedType = '疯狂砍价'
             this.activeData.activity_name = res.data.activity_name
@@ -239,7 +238,6 @@
       } else if (this.ruleId * 1 === 1) {
         Activity.editGetNewGroupon(this.typeId).then(res => {
           if (res.error === ERR_OK) {
-            console.log(res.data)
             this.selectedType = '拼团特惠'
             this.havaGoods = true
             this.activeData.activity_name = res.data.activity_name
@@ -258,7 +256,6 @@
       }
       Activity.getCurData().then(res => {
         if (res.error === ERR_OK) {
-          console.log(res.data.date)
           this.curDate = res.data.date
         } else {
           this.$refs.toast.show(res.message)
@@ -266,15 +263,10 @@
       })
     },
     methods: {
-      ...mapGetters(['ios']),
-      slide() {
-        return this.ios ? '' : 'slide'
-      },
       ...mapGetters(['goodsInfo']),
       getInfo() {
         this.getGoods = this.goodsInfo()
         this.havaGoods = true
-        console.log(this.getGoods, 1111)
       },
       handlePickerCancel() {
         //
@@ -447,7 +439,6 @@
           this.activeData.max_cut_num = this.selectedCount
           Activity.editNewBargain(this.typeId, this.activeData).then(res => {
             if (res.error === ERR_OK) {
-              console.log(res.data)
               this.$refs.toast.show('活动编辑成功')
               this.$emit('refgetActivity')
               setTimeout(() => {
@@ -479,7 +470,6 @@
           this.activeData.config.group_price = this.group_price
           Activity.editNewGroupon(this.typeId, this.activeData).then(res => {
             if (res.error === ERR_OK) {
-              console.log(res.data)
               this.$refs.toast.show('活动编辑成功')
               this.$emit('refgetActivity')
               setTimeout(() => {

@@ -189,7 +189,6 @@
         this.upPage = 1
         Activity.getActivityList(1, this.upPage).then(res => {
           if (res.error === ERR_OK) {
-            console.log(res)
             this.upList = res.data
             this._isUpList(res)
           } else {
@@ -224,7 +223,6 @@
         this.downPage = 1
         Activity.getActivityList(0, this.downPage).then(res => {
           if (res.error === ERR_OK) {
-            console.log(res)
             this.downList = res.data
             this._isDownList(res)
           } else {
@@ -281,20 +279,17 @@
         this.type = 0
         this.curItem = item
         this.rule_id = item.rule_id
-        console.log(item)
         this.$refs.confirm.show('确定下架该活动吗？')
       },
       upProductBtn(item) {
         this.type = 1
         this.curItem = item
         this.rule_id = item.rule_id
-        console.log(item)
         this.$refs.confirm.show('确定上架该活动吗？')
       },
       delProductBtn(item, index) {
         this.type = 2
         this.delType = index
-        console.log(index)
         this.curItem = item
         this.rule_id = item.rule_id
         this.$refs.confirm.show('确定删除该活动吗？')
