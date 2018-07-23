@@ -368,6 +368,10 @@
               this.$refs.toast.show('请输入商品低价大于0')
               return
             }
+            if (this.selectedNumber === '请选择') {
+              this.$refs.toast.show('请选择活动数量')
+              return
+            }
             if (this.selectedCount === '请选择') {
               this.$refs.toast.show('请选择活动砍价次数')
               return

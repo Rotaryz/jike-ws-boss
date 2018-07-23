@@ -164,7 +164,7 @@
         this.curItem = item
       },
       saveBack() {
-        if (this.chooseIndex <= 0) {
+        if (this.chooseIndex < 0) {
           return
         }
         this.saveInfo(this.curItem)
