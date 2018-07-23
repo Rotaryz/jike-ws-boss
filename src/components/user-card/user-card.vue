@@ -109,7 +109,7 @@
         height: 45px
         background-repeat: no-repeat
         background-position: center content
-        background-size: 100%
+        background-size: cover
         margin-left: 3px
         margin-right: 15px
       .user-info
