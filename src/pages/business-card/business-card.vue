@@ -27,7 +27,12 @@
       }
     },
     created () {
-      Business.Myqrcode().then((res) => {
+      let id = this.$route.query.id
+      console.log(id)
+      let data = {
+        employee_id: id
+      }
+      Business.Myqrcode(data).then((res) => {
         this.card = res.data || {}
         console.log(res)
       })
