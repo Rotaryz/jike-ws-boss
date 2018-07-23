@@ -142,21 +142,28 @@
       <toast ref="toast"></toast>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <router-view @getInfo="getInfo"></router-view>
+      <awesome-picker
+        ref="picker"
+        type="date"
+        @cancel="handlePickerCancel"
+        @confirm="handlePickerConfirm">
+      </awesome-picker>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
   import {mapGetters} from 'vuex'
-  import Vue from 'vue'
+  // import Vue from 'vue'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
-  import Calendar from 'vue2-datepick'
+  // import Calendar from 'vue2-datepick'
   import {Activity} from 'api'
   import {ERR_OK} from 'common/js/config'
+  // import AwesomePicker from 'vue-awesome-picker'
 
-  Vue.use(Calendar)
+  // Vue.use(Calendar)
 
   export default {
     name: 'new-activity',
@@ -260,7 +267,7 @@
     },
     methods: {
       ...mapGetters(['ios']),
-      slide () {
+      slide() {
         return this.ios ? '' : 'slide'
       },
       ...mapGetters(['goodsInfo']),
@@ -269,14 +276,25 @@
         this.havaGoods = true
         console.log(this.getGoods, 1111)
       },
-      setDate() {
-        this.$picker.show({
-          type: 'datePicker',
-          endTime: '2020-08-08',
-          onOk: (date) => {
-            this.date = date
-          }
+      handlePickerCancel() {
+        //
+      },
+      handlePickerConfirm(e) {
+        let reg = /[\u4E00-\u9FA5]/g
+        let arr = e.map(item => {
+          return item.value.replace(reg, '')
         })
+        this.date = arr.join('-')
+      },
+      setDate() {
+        this.$refs.picker.show()
+        // this.$picker.show({
+        //   type: 'datePicker',
+        //   endTime: '2020-08-08',
+        //   onOk: (date) => {
+        //     this.date = date
+        //   }
+        // })
       },
       chooseGoods() {
         if (this.editShow) {
@@ -478,6 +496,7 @@
       Toast,
       Scroll,
       ConfirmMsg
+      // AwesomePicker
     }
   }
 </script>
@@ -505,6 +524,7 @@
     padding-left: 15px
     background: $color-white-fff
     position: relative
+
   .add-edit
     position: absolute
     width: 100%
@@ -512,6 +532,7 @@
     left: 0
     top: 0
     z-index: 11
+
   .add-list
     layout(row)
     height: 50px
