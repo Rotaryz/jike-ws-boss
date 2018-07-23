@@ -16,20 +16,20 @@
                 <div class="text">客户总数</div>
               </div>
               <div class="list-box">
-                <div class="number">{{allDatas.follow_up_sum}}</div>
-                <div class="text">跟进总数</div>
+                <div class="number">{{allDatas.order_sum}}</div>
+                <div class="text">订单总数</div>
               </div>
               <div class="list-box">
-                <div class="number">{{allDatas.card_visits_sum}}</div>
-                <div class="text">名片访问数</div>
-              </div>
-              <div class="list-box">
-                <div class="number">{{allDatas.website_visits_sum}}</div>
-                <div class="text">官网访问数</div>
+                <div class="number">{{allDatas.order_finish_sum}}</div>
+                <div class="text">成交总数</div>
               </div>
               <div class="list-box">
                 <div class="number">{{allDatas.goods_visits_sum}}</div>
                 <div class="text">产品访问数</div>
+              </div>
+              <div class="list-box">
+                <div class="number">{{allDatas.activity_visits_sum}}</div>
+                <div class="text">活动访问数</div>
               </div>
               <div class="list-box">
                 <div class="number">{{allDatas.live_logs_sum}}</div>
@@ -238,7 +238,7 @@
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '新用户数：{c}',
+            formatter: '活跃度：{c}',
             axisPointer: {
               type: 'none'
             }
