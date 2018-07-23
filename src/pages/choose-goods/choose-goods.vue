@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="manage-box">
       <div class="scroll-wrapper">
         <scroll ref="scroll"
@@ -79,10 +79,6 @@
       }
     },
     methods: {
-      ...mapGetters(['ios']),
-      slide () {
-        return this.ios ? '' : 'slide'
-      },
       ...mapMutations({ // 同步
         saveInfo: 'GOODSINFO'
       }),
@@ -182,6 +178,10 @@
       Scroll
     },
     computed: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
           threshold: parseInt(this.pullUpLoadThreshold),

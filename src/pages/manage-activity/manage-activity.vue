@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="manage-activity" @click="closeAll">
       <div class="product-tab">
         <div class="tab-box" @click="changeTab(0)">已上架</div>
@@ -176,10 +176,6 @@
       this.getNewDownActiveList()
     },
     methods: {
-      ...mapGetters(['ios']),
-      slide () {
-        return this.ios ? '' : 'slide'
-      },
       refgetActivity() {
         this.menuIdx = 0
         this.getNewUpActiveList()
@@ -418,6 +414,10 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="manage-box">
       <div class="scroll-wrapper">
         <scroll>
@@ -38,10 +38,6 @@
       }
     },
     methods: {
-      ...mapGetters(['ios']),
-      slide () {
-        return this.ios ? '' : 'slide'
-      },
       saveNewMember() {
         if (this.name.length === 0) {
           this.$refs.toast.show('请输入姓名')
@@ -65,6 +61,12 @@
             this.$refs.toast.show(res.message)
           }
         })
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {
