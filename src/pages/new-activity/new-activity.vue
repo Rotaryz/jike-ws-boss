@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="manage-box">
       <div class="scroll-wrapper">
         <scroll>
@@ -259,10 +259,6 @@
       })
     },
     methods: {
-      ...mapGetters(['ios']),
-      slide () {
-        return this.ios ? '' : 'slide'
-      },
       ...mapGetters(['goodsInfo']),
       getInfo() {
         this.getGoods = this.goodsInfo()
@@ -472,6 +468,12 @@
             }
           })
         }
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

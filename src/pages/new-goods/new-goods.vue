@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="manage-box">
       <div class="scroll-wrapper">
         <scroll>
@@ -119,10 +119,6 @@
       console.log(this.id)
     },
     methods: {
-      ...mapGetters(['ios']),
-      slide () {
-        return this.ios ? '' : 'slide'
-      },
       async _fileImage(e) {
         // let param = this._infoImage(e.target.files[0])
         await this._moreImage(e.target.files)
@@ -247,6 +243,10 @@
           this.goodsData.goods_banner_images.length = 4
         }
         return this.goodsData.goods_banner_images.length
+      },
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

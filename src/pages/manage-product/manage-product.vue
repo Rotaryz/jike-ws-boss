@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="manage" @click="closeAll">
         <div class="product-tab"  v-if="upList.length !== 0 || downList.length !== 0">
           <div class="tab-box" @click="changeTab(1)">已上架</div>
@@ -164,10 +164,6 @@
       this.getNewDownList()
     },
     methods: {
-      ...mapGetters(['ios']),
-      slide () {
-        return this.ios ? '' : 'slide'
-      },
       refget() {
         this.menuIdx = 1
         this.getNewUpList()
@@ -384,6 +380,10 @@
       }
     },
     computed: {
+      ...mapGetters(['ios']),
+      slide () {
+        return this.ios ? '' : 'slide'
+      },
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
           threshold: parseInt(this.pullUpLoadThreshold),
