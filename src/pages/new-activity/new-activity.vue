@@ -426,13 +426,13 @@
             this.$refs.toast.show('请选择活动时间')
             return
           }
-          let newEndDatett = new Date(this.date).getTime()
-          let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
-          let curDatett = newEndDatett - oldEndDatett
-          if (curDatett < 0) {
-            this.$refs.toast.show('活动时间大于30天')
-            return
-          }
+          // let newEndDatett = new Date(this.date).getTime()
+          // let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+          // let curDatett = newEndDatett - oldEndDatett
+          // if (curDatett < 0) {
+          //   this.$refs.toast.show('活动时间大于30天')
+          //   return
+          // }
           this.activeData.end_at = this.date
           this.activeData.goods_id = this.getGoods.id
           this.activeData.bottom_price = this.bottom_price
@@ -458,13 +458,13 @@
             this.$refs.toast.show('请选择活动时间')
             return
           }
-          let newEndDatett = new Date(this.date).getTime()
-          let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
-          let curDatett = newEndDatett - oldEndDatett
-          if (curDatett < 0) {
-            this.$refs.toast.show('活动时间大于30天')
-            return
-          }
+          // let newEndDatett = new Date(this.date).getTime()
+          // let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+          // let curDatett = newEndDatett - oldEndDatett
+          // if (curDatett < 0) {
+          //   this.$refs.toast.show('活动时间大于30天')
+          //   return
+          // }
           this.activeData.end_at = this.date
           this.activeData.config.group_validity = this.selectedTime
           this.activeData.config.group_number = 2
