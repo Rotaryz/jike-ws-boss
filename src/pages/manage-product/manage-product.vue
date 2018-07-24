@@ -332,7 +332,7 @@
                 text = text + res.data[i] + '，'
               }
               console.log(text)
-              this.$refs.confirm.show(`该商品品已关联${text}下架/删除后会导致关联活动下架，是否确认下架？`)
+              this.$refs.confirm.show(`该商品已关联${text}下架/删除后会导致关联活动下架，是否确认下架？`)
             }
           } else {
             this.$refs.confirm.show('确定删除该商品吗？')

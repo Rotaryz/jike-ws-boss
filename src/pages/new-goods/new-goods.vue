@@ -112,6 +112,7 @@
     created() {
       this.id = this.$route.query.id
       if (this.id) {
+        document.title = '编辑商品'
         Product.geDetailProduct(this.id).then(res => {
           this.goodsData = res.data
           this.showEdit = false

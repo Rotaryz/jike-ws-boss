@@ -40,6 +40,7 @@
               <div class="left-price-active" v-if="havaGoods">{{getGoods.platform_price}}</div>
             </div>
             <div class="add-list select-box" v-if="selectedType !== '拼团特惠'">
+              <div class="add-edit" v-if="editShow"></div>
               <div class="left">添加数量</div>
               <div class="select-right">
                 <select v-model='selectedNumber' class="right-selected">
@@ -49,7 +50,6 @@
                 </select>
                 <div class="select-text" :class="selectedNumber === '请选择' ? '':'active'">{{selectedNumber}}</div>
                 <img src="./icon-presed@2x.png" alt="" class="selcet-img">
-                <div class="add-edit" v-if="editShow"></div>
               </div>
             </div>
             <div class="add-list">
@@ -221,6 +221,7 @@
       this.typeId = this.$route.query.id
       this.ruleId = this.$route.query.rule_id
       if (this.ruleId * 1 === 3) {
+        document.title = '编辑活动'
         Activity.editGetNewBargain(this.typeId).then(res => {
           if (res.error === ERR_OK) {
             this.havaGoods = true
@@ -240,6 +241,7 @@
           }
         })
       } else if (this.ruleId * 1 === 1) {
+        document.title = '编辑活动'
         Activity.editGetNewGroupon(this.typeId).then(res => {
           if (res.error === ERR_OK) {
             this.selectedType = '拼团特惠'
