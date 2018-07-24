@@ -160,5 +160,6 @@
         color: $color-888888
         font-size: $font-size-14
       .assets-sn-num
+        font-size :$font-size-14
         no-wrap()
 </style>
