@@ -468,7 +468,7 @@
         // myChart.on('click', this.eConsole)
       },
       getPieData() {
-        Echart.getPie(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
             this.drawPie()
@@ -478,7 +478,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
             this.drawLine()
@@ -488,7 +488,7 @@
         })
       },
       getAddActionLineData() {
-        Echart.getAddLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getAddLine(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.addationLine = res.data
             this.drawAddLine()
@@ -498,7 +498,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
             this.drawBar()
@@ -508,7 +508,7 @@
         })
       },
       getSuccessData() {
-        Echart.getSuccess(this.userInfo.merchant_id, this.userInfo.id, 1).then(res => {
+        Echart.getSuccess(this.userInfo.merchant_id, 0, 1).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
             this.drawSuccess()
@@ -527,7 +527,7 @@
         }
       },
       getAllDataObj(time) {
-        Echart.getAllData(time, this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getAllData(time, this.userInfo.merchant_id, 0).then(res => {
           if (res.error === ERR_OK) {
             this.allDatas = res.data
           } else {

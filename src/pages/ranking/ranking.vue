@@ -208,7 +208,7 @@
             break
           }
           case 2 : {
-            data.type = 1 // 默认值
+            data.type = 4 // 默认值
             data.time = 'all' // 默认值
             data.rate_type = this.tabTurnover.idx + 1
           }
