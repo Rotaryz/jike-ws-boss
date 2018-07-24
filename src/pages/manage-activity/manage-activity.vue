@@ -34,7 +34,7 @@
                         <div class="info-left">
                           <div class="info-text">
                             <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
-                            <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">底价：¥{{item.bottom_price}}</div>
                             <div class="price-text">销 量：{{item.sales_volume}}</div>
                           </div>
                           <div class="info-text">
@@ -85,7 +85,7 @@
                         <div class="info-left">
                           <div class="info-text">
                             <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
-                            <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">底价：¥{{item.bottom_price}}</div>
                             <div class="price-text">销 量：{{item.sales_volume}}</div>
                           </div>
                           <div class="info-text">

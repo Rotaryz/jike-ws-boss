@@ -362,7 +362,7 @@
             //   return
             // }
             if (this.bottom_price.length === 0 || this.bottom_price * 1 <= 0) {
-              this.$refs.toast.show('请输入商品低价大于0')
+              this.$refs.toast.show('请输入商品底价大于0')
               return
             }
             if (this.selectedNumber === '请选择') {
