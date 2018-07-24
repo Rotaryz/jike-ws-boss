@@ -251,7 +251,7 @@ const route = new Router({
             }
           ]
         }
-      ]
+g      ]
     },
     {
       path: '/customer-detail',
