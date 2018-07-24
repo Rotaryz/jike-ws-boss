@@ -29,7 +29,7 @@
                   <div class="up-list-bottom">
                     <img :src="item.goods_image_url" alt="" class="img_url">
                     <div class="bottom-right">
-                      <div class="title">{{item.goods_title}}</div>
+                      <div class="title">{{item.activity_name}}</div>
                       <div class="info-box">
                         <div class="info-left">
                           <div class="info-text">
@@ -80,7 +80,7 @@
                   <div class="up-list-bottom">
                     <img :src="item.goods_image_url" alt="" class="img_url">
                     <div class="bottom-right">
-                      <div class="title">{{item.goods_title}}</div>
+                      <div class="title">{{item.activity_name}}</div>
                       <div class="info-box">
                         <div class="info-left">
                           <div class="info-text">

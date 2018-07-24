@@ -8,7 +8,7 @@
               <div class="left">活动类型</div>
               <div class="select-right">
                 <select v-model='selectedType' class="right-selected" v-if="!editShow">
-                  <option v-for="option in optionsType" v-bind:value="option.value">
+                  <option v-for="option in optionsType" v-bind:value="option.value"  :selected="option.text">
                     {{ option.value }}
                   </option>
                 </select>
@@ -171,17 +171,20 @@
       return {
         selectedType: '请选择',
         optionsType: [
-          {text: '1', value: '拼团特惠'},
-          {text: '0', value: '疯狂砍价'}
+          {value: '请选择'},
+          {value: '拼团特惠'},
+          {value: '疯狂砍价'}
         ],
         selectedNumber: '请选择',
         optionsNumber: [
+          {value: '请选择'},
           {value: 1},
           {value: 2},
           {value: 3}
         ],
         selectedCount: '请选择',
         optionsCount: [
+          {value: '请选择'},
           {value: 30},
           {value: 50},
           {value: 70},
@@ -189,6 +192,7 @@
         ],
         selectedTime: '请选择',
         optionsTime: [
+          {value: '请选择'},
           {value: '24'},
           {value: '48'}
         ],
@@ -280,13 +284,6 @@
       },
       setDate() {
         this.$refs.picker.show()
-        // this.$picker.show({
-        //   type: 'datePicker',
-        //   endTime: '2020-08-08',
-        //   onOk: (date) => {
-        //     this.date = date
-        //   }
-        // })
       },
       chooseGoods() {
         if (this.editShow) {
@@ -496,7 +493,43 @@
       Toast,
       Scroll,
       ConfirmMsg
-      // AwesomePicker
+    },
+    watch: {
+      selectedType(val) {
+        if (this.selectedType !== '请选择') {
+          this.optionsType = [
+            {value: '拼团特惠'},
+            {value: '疯狂砍价'}
+          ]
+        }
+      },
+      selectedNumber(val) {
+        if (this.selectedNumber !== '请选择') {
+          this.optionsNumber = [
+            {value: 1},
+            {value: 2},
+            {value: 3}
+          ]
+        }
+      },
+      selectedCount(val) {
+        if (this.selectedCount !== '请选择') {
+          this.optionsCount = [
+            {value: 30},
+            {value: 50},
+            {value: 70},
+            {value: 100}
+          ]
+        }
+      },
+      selectedTime(val) {
+        if (this.selectedTime !== '请选择') {
+          this.optionsTime = [
+            {value: '24'},
+            {value: '48'}
+          ]
+        }
+      }
     }
   }
 </script>
