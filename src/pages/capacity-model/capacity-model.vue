@@ -61,8 +61,8 @@
               <div class="right">{{dataRank.customer_competence}}</div>
             </div>
             <div class="six-bottom">
-              <div class="left">个人魅力排名</div>
-              <div class="right">{{dataRank.personal_charm}}</div>
+              <div class="left">销售能力排行</div>
+              <div class="right">{{dataRank.order_force}}</div>
             </div>
             <div class="six-bottom">
               <div class="left">客户互动力排名</div>
@@ -77,8 +77,8 @@
               <div class="right">{{dataRank.customer_followup}}</div>
             </div>
             <div class="six-bottom">
-              <div class="left">客户跟进力排名</div>
-              <div class="right">{{dataRank.website_seo}}</div>
+              <div class="left">活动推动力排行</div>
+              <div class="right">{{dataRank.activity_drive}}</div>
             </div>
           </div>
         </div>
