@@ -69,11 +69,11 @@
               <div class="right">{{dataRank.customer_interaction}}</div>
             </div>
             <div class="six-bottom">
-              <div class="left">产品推广</div>
+              <div class="left">产品推动力排名</div>
               <div class="right">{{dataRank.product_drive}}</div>
             </div>
             <div class="six-bottom">
-              <div class="left">官网推广力排名</div>
+              <div class="left">客户跟进力排行</div>
               <div class="right">{{dataRank.customer_followup}}</div>
             </div>
             <div class="six-bottom">
