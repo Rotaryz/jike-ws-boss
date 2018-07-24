@@ -315,13 +315,13 @@
               this.$refs.toast.show('请选择活动时间')
               return
             }
-            let newEndDate = new Date(this.date).getTime()
-            let oldEndDate = new Date(this.curDate).getTime() + 2678400000
-            let curDate = newEndDate - oldEndDate
-            if (curDate < 0) {
-              this.$refs.toast.show('活动时间大于30天')
-              return
-            }
+            // let newEndDate = new Date(this.date).getTime()
+            // let oldEndDate = new Date(this.curDate).getTime() + 2678400000
+            // let curDate = newEndDate - oldEndDate
+            // if (curDate < 0) {
+            //   this.$refs.toast.show('活动时间大于30天')
+            //   return
+            // }
             if (this.group_price.length === 0 || this.group_price * 1 <= 0) {
               this.$refs.toast.show('请选择活动商品团购价')
               return
@@ -354,13 +354,13 @@
               this.$refs.toast.show('请选择活动时间')
               return
             }
-            let newEndDatett = new Date(this.date).getTime()
-            let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
-            let curDatett = newEndDatett - oldEndDatett
-            if (curDatett < 0) {
-              this.$refs.toast.show('活动时间大于30天')
-              return
-            }
+            // let newEndDatett = new Date(this.date).getTime()
+            // let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+            // let curDatett = newEndDatett - oldEndDatett
+            // if (curDatett < 0) {
+            //   this.$refs.toast.show('活动时间大于30天')
+            //   return
+            // }
             if (this.bottom_price.length === 0 || this.bottom_price * 1 <= 0) {
               this.$refs.toast.show('请输入商品低价大于0')
               return
