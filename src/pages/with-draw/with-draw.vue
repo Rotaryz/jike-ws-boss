@@ -85,7 +85,7 @@
           return
         }
         if (this.drawMoney * 1 < 10000) {
-          this.$refs.toast.show('提现金额不能小于1元')
+          this.$refs.toast.show('提现金额不能小于10000元')
           return
         }
         this._drawMoney()
