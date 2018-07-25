@@ -10,8 +10,8 @@
     </div>
     <div class="manage-right">
       <div class="right-choose" @click="chooseBtn(memberitem)"
-           :class="memberitem.boss_radar_status === 1 ? '' : 'right-choose-active'">
-        <div class="choose-btn" :class="memberitem.boss_radar_status === 1 ? 'choose-btn-active' : ''"></div>
+           :class="memberitem.ai_radar_status === 1 ? '' : 'right-choose-active'">
+        <div class="choose-btn" :class="memberitem.ai_radar_status === 1 ? 'choose-btn-active' : ''"></div>
       </div>
     </div>
   </div>
@@ -32,13 +32,13 @@
     },
     methods: {
       chooseBtn(item) {
-        if (this.memberitem.boss_radar_status === 1) {
-          this.memberitem.boss_radar_status = 0
+        if (this.memberitem.ai_radar_status === 1) {
+          this.memberitem.ai_radar_status = 0
         } else {
-          this.memberitem.boss_radar_status = 1
+          this.memberitem.ai_radar_status = 1
         }
         console.log(item)
-        this.$emit('openRararBtn', item, this.memberitem.boss_radar_status)
+        this.$emit('openRararBtn', item, this.memberitem.ai_radar_status)
       }
     },
     computed: {
