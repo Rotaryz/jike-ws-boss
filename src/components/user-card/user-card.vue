@@ -6,7 +6,8 @@
       <div class="rank two" v-else-if="idx===1"></div>
       <div class="rank three" v-else-if="idx===2"></div>
       <div class="rank" v-else>{{idx+1}}</div>
-      <div class="user-logo" :style="'background-image:url(' + cardInfo.avatar +')'"></div>
+      <div class="user-logo" :style="{'background-image': `url(${cardInfo.avatar? cardInfo.avatar : require('./pic-default_people@2x.png')})`}"></div>
+      <!--<div class="user-logo" v-else :style="'background-image:url(pic-default_people)'"></div>-->
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
@@ -20,7 +21,7 @@
     </div>
     <!--overview总览 客户列表-->
     <div class="card-box" v-if="useType === 'overview'">
-      <div class="user-logo" :style="'background-image:url(' + cardInfo.image_url +')'"></div>
+      <div class="user-logo" :style="{'background-image': `url(${cardInfo.avatar? cardInfo.avatar : require('./pic-default_people@2x.png')})`}"></div>
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
@@ -34,7 +35,7 @@
     </div>
     <!--rank-list 排行客户工列表-->
     <div class="card-box" v-if="useType === 'rank-customer-list'">
-      <div class="user-logo" :style="'background-image:url(' + cardInfo.image_url +')'"></div>
+      <div class="user-logo" :style="{'background-image': `url(${cardInfo.avatar? cardInfo.avatar : require('./pic-default_people@2x.png')})`}"></div>
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
@@ -52,7 +53,7 @@
       <div class="rank two" v-else-if="idx===1"></div>
       <div class="rank three" v-else-if="idx===2"></div>
       <div class="rank" v-else>{{idx+1}}</div>
-      <div class="user-logo" :style="'background-image:url(' + cardInfo.avatar +')'"></div>
+      <div class="user-logo" :style="{'background-image': `url(${cardInfo.avatar? cardInfo.avatar : require('./pic-default_people@2x.png')})`}"></div>
       <section class="user-info-ranking">
         <div class="info-box-ranking">
           <div class="name">{{cardInfo.name}}</div>
