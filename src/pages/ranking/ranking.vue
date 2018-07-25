@@ -84,6 +84,7 @@
   import {ERR_OK} from 'common/js/config'
   import ActionSheet from 'components/action-sheet/action-sheet'
   import Exception from 'components/exception/exception'
+  import storage from 'storage-controller'
 
   const LIMIT = 10
   const tabOne = ['按客户数', '按互动数', '按成交率']
@@ -131,7 +132,7 @@
         let page = ++this.page
         let limit = this.limit
         const data = {
-          merchant_id: 0,
+          merchant_id: this.userInfo.merchant_id,
           employee_id: 0,
           page,
           limit,
@@ -157,7 +158,7 @@
         // 成功率类型 1： 0~50% 2：51%~80% 3：81~99%，4：100% - 0
         const _data = this._formatData()
         const data = {
-          merchant_id: 0,
+          merchant_id: this.userInfo.merchant_id,
           employee_id: 0,
           page: 1,
           limit: LIMIT,
@@ -293,6 +294,9 @@
         let arr = this.groupList.data
         let idx = this.groupList.idx
         return arr[idx]
+      },
+      userInfo() {
+        return storage.get('info')
       }
     },
     components: {

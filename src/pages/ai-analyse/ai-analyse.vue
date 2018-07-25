@@ -27,6 +27,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from 'common/js/config'
   import Exception from 'components/exception/exception'
+  import storage from 'storage-controller'
 
   const LIMIT = 10
   export default {
@@ -65,7 +66,7 @@
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
       _rqGetStaffSellList() {
-        const data = {page: 1, limit: LIMIT}
+        const data = {page: 1, limit: LIMIT, merchant_id: this.userInfo.merchant_id}
         Analyse.getStaffSellList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
@@ -82,7 +83,7 @@
         console.info('pulling up and load data')
         let page = ++this.page
         let limit = this.limit
-        const data = {page, limit}
+        const data = {page, limit, merchant_id: this.userInfo.merchant_id}
         Analyse.getStaffSellList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
@@ -119,6 +120,9 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      userInfo() {
+        return storage.get('info')
       }
     },
     components: {
