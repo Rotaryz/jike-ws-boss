@@ -12,7 +12,7 @@ export default {
   },
   // 开启boss雷达权限
   openRarar(user_id = 0, is_open = 0, loading) {
-    const url = `/api/merchant/boss-boss-radar-change`
+    const url = `/api/merchant/boss-ai-radar-change`
     let data = {
       user_id,
       is_open
