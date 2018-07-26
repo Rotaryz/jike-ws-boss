@@ -27,14 +27,14 @@
                     <div class="top-left">距离本场结束：{{item.end_at}}</div>
                   </div>
                   <div class="up-list-bottom">
-                    <img :src="item.goods_image_url" alt="" class="img_url">
+                    <div :style="{backgroundImage: 'url(' + item.goods_image_url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" alt="" class="img_url"></div>
                     <div class="bottom-right">
-                      <div class="title">{{item.goods_title}}</div>
+                      <div class="title">{{item.activity_name}}</div>
                       <div class="info-box">
                         <div class="info-left">
                           <div class="info-text">
                             <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
-                            <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">底价：¥{{item.bottom_price}}</div>
                             <div class="price-text">销 量：{{item.sales_volume}}</div>
                           </div>
                           <div class="info-text">
@@ -78,14 +78,14 @@
                     <div class="top-left">距离本场结束：{{item.end_at}}</div>
                   </div>
                   <div class="up-list-bottom">
-                    <img :src="item.goods_image_url" alt="" class="img_url">
+                    <div :style="{backgroundImage: 'url(' + item.goods_image_url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" alt="" class="img_url"></div>
                     <div class="bottom-right">
-                      <div class="title">{{item.goods_title}}</div>
+                      <div class="title">{{item.activity_name}}</div>
                       <div class="info-box">
                         <div class="info-left">
                           <div class="info-text">
                             <div class="price-text" v-if="item.rule_id * 1 === 1">团购价：¥{{item.group_price}}</div>
-                            <div class="price-text" v-if="item.rule_id * 1 === 3">低价：¥{{item.bottom_price}}</div>
+                            <div class="price-text" v-if="item.rule_id * 1 === 3">底价：¥{{item.bottom_price}}</div>
                             <div class="price-text">销 量：{{item.sales_volume}}</div>
                           </div>
                           <div class="info-text">

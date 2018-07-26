@@ -37,7 +37,7 @@
               </router-link>
               <router-link tag="div" to="mine/order-list" class="add-box add-left">
                 <div class="add-box-left">
-                  <div class="title">成交订单(元)</div>
+                  <div class="title">成交订单(笔)</div>
                   <div class="number">{{mineData.order_count}}</div>
                 </div>
                 <div class="add-box-right">

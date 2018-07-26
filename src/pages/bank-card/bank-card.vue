@@ -64,6 +64,7 @@
     methods: {
       select (res, index, text) {
         this.bank = text[0]
+        console.log(this.bank)
       },
       _showPicker () {
         this.$refs.picker.show()

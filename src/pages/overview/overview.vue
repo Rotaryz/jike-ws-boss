@@ -81,15 +81,19 @@
           <div class="pie-list">
             <div class="list">
               <div class="icon one"></div>
-              <div class="text">对我感兴趣</div>
+              <div class="text">个人</div>
             </div>
             <div class="list">
               <div class="icon two"></div>
-              <div class="text">对产品感兴趣</div>
+              <div class="text">商品</div>
             </div>
             <div class="list">
               <div class="icon thr"></div>
-              <div class="text">对公司感兴趣</div>
+              <div class="text">拼团</div>
+            </div>
+            <div class="list">
+              <div class="icon four"></div>
+              <div class="text">砍价</div>
             </div>
           </div>
         </div>
@@ -192,7 +196,7 @@
             trigger: 'item',
             formatter: '{d}%'
           },
-          color: ['#F9543C', '#23799D', '#8E3C68'],
+          color: ['#F9543C', '#23799D', '#8E3C68', '#F9B43C'],
           series: [
             {
               name: '访问222来源',
@@ -371,7 +375,11 @@
             axisLabel: {
               interval: 0,
               color: '#20202E',
-              fontSize: 14
+              fontSize: 14,
+              formatter: function (value) {
+                return value
+              },
+              align: 'right'
             },
             axisLine: {
               lineStyle: {
@@ -394,7 +402,7 @@
             }
           },
           series: [{
-            data: this.barData.x,
+            data: [2000, 300, 30, 20],
             type: 'bar',
             showSymbol: false,
             barWidth: 25,
@@ -468,7 +476,7 @@
         // myChart.on('click', this.eConsole)
       },
       getPieData() {
-        Echart.getPie(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
             this.drawPie()
@@ -478,7 +486,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
             this.drawLine()
@@ -488,7 +496,7 @@
         })
       },
       getAddActionLineData() {
-        Echart.getAddLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getAddLine(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.addationLine = res.data
             this.drawAddLine()
@@ -498,7 +506,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
             this.drawBar()
@@ -508,7 +516,7 @@
         })
       },
       getSuccessData() {
-        Echart.getSuccess(this.userInfo.merchant_id, this.userInfo.id, 1).then(res => {
+        Echart.getSuccess(this.userInfo.merchant_id, 0, 1).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
             this.drawSuccess()
@@ -527,7 +535,7 @@
         }
       },
       getAllDataObj(time) {
-        Echart.getAllData(time, this.userInfo.merchant_id, this.userInfo.id).then(res => {
+        Echart.getAllData(time, this.userInfo.merchant_id, 0).then(res => {
           if (res.error === ERR_OK) {
             this.allDatas = res.data
           } else {
@@ -642,7 +650,7 @@
               margin-top: 5px
 
   .ai-box
-    padding: 15px
+    padding: 15px 15px 65px
     .pie-box
       position: relative
       background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)
@@ -735,6 +743,8 @@
             background: #23799D
           .thr
             background: #8E3C68
+          .four
+            background: #F9B43C
           .text
             line-height: 1
             font-size: $font-size-small

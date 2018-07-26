@@ -8,7 +8,7 @@
               <div class="left">活动类型</div>
               <div class="select-right">
                 <select v-model='selectedType' class="right-selected" v-if="!editShow">
-                  <option v-for="option in optionsType" v-bind:value="option.value">
+                  <option v-for="option in optionsType" v-bind:value="option.value"  :selected="option.text">
                     {{ option.value }}
                   </option>
                 </select>
@@ -40,6 +40,7 @@
               <div class="left-price-active" v-if="havaGoods">{{getGoods.platform_price}}</div>
             </div>
             <div class="add-list select-box" v-if="selectedType !== '拼团特惠'">
+              <div class="add-edit" v-if="editShow"></div>
               <div class="left">添加数量</div>
               <div class="select-right">
                 <select v-model='selectedNumber' class="right-selected">
@@ -49,7 +50,6 @@
                 </select>
                 <div class="select-text" :class="selectedNumber === '请选择' ? '':'active'">{{selectedNumber}}</div>
                 <img src="./icon-presed@2x.png" alt="" class="selcet-img">
-                <div class="add-edit" v-if="editShow"></div>
               </div>
             </div>
             <div class="add-list">
@@ -171,17 +171,20 @@
       return {
         selectedType: '请选择',
         optionsType: [
-          {text: '1', value: '拼团特惠'},
-          {text: '0', value: '疯狂砍价'}
+          {value: '请选择'},
+          {value: '拼团特惠'},
+          {value: '疯狂砍价'}
         ],
         selectedNumber: '请选择',
         optionsNumber: [
+          {value: '请选择'},
           {value: 1},
           {value: 2},
           {value: 3}
         ],
         selectedCount: '请选择',
         optionsCount: [
+          {value: '请选择'},
           {value: 30},
           {value: 50},
           {value: 70},
@@ -189,6 +192,7 @@
         ],
         selectedTime: '请选择',
         optionsTime: [
+          {value: '请选择'},
           {value: '24'},
           {value: '48'}
         ],
@@ -217,6 +221,7 @@
       this.typeId = this.$route.query.id
       this.ruleId = this.$route.query.rule_id
       if (this.ruleId * 1 === 3) {
+        document.title = '编辑活动'
         Activity.editGetNewBargain(this.typeId).then(res => {
           if (res.error === ERR_OK) {
             this.havaGoods = true
@@ -236,6 +241,7 @@
           }
         })
       } else if (this.ruleId * 1 === 1) {
+        document.title = '编辑活动'
         Activity.editGetNewGroupon(this.typeId).then(res => {
           if (res.error === ERR_OK) {
             this.selectedType = '拼团特惠'
@@ -280,13 +286,6 @@
       },
       setDate() {
         this.$refs.picker.show()
-        // this.$picker.show({
-        //   type: 'datePicker',
-        //   endTime: '2020-08-08',
-        //   onOk: (date) => {
-        //     this.date = date
-        //   }
-        // })
       },
       chooseGoods() {
         if (this.editShow) {
@@ -318,13 +317,13 @@
               this.$refs.toast.show('请选择活动时间')
               return
             }
-            let newEndDate = new Date(this.date).getTime()
-            let oldEndDate = new Date(this.curDate).getTime() + 2678400000
-            let curDate = newEndDate - oldEndDate
-            if (curDate < 0) {
-              this.$refs.toast.show('活动时间大于30天')
-              return
-            }
+            // let newEndDate = new Date(this.date).getTime()
+            // let oldEndDate = new Date(this.curDate).getTime() + 2678400000
+            // let curDate = newEndDate - oldEndDate
+            // if (curDate < 0) {
+            //   this.$refs.toast.show('活动时间大于30天')
+            //   return
+            // }
             if (this.group_price.length === 0 || this.group_price * 1 <= 0) {
               this.$refs.toast.show('请选择活动商品团购价')
               return
@@ -357,15 +356,15 @@
               this.$refs.toast.show('请选择活动时间')
               return
             }
-            let newEndDatett = new Date(this.date).getTime()
-            let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
-            let curDatett = newEndDatett - oldEndDatett
-            if (curDatett < 0) {
-              this.$refs.toast.show('活动时间大于30天')
-              return
-            }
+            // let newEndDatett = new Date(this.date).getTime()
+            // let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+            // let curDatett = newEndDatett - oldEndDatett
+            // if (curDatett < 0) {
+            //   this.$refs.toast.show('活动时间大于30天')
+            //   return
+            // }
             if (this.bottom_price.length === 0 || this.bottom_price * 1 <= 0) {
-              this.$refs.toast.show('请输入商品低价大于0')
+              this.$refs.toast.show('请输入商品底价大于0')
               return
             }
             if (this.selectedNumber === '请选择') {
@@ -429,13 +428,13 @@
             this.$refs.toast.show('请选择活动时间')
             return
           }
-          let newEndDatett = new Date(this.date).getTime()
-          let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
-          let curDatett = newEndDatett - oldEndDatett
-          if (curDatett < 0) {
-            this.$refs.toast.show('活动时间大于30天')
-            return
-          }
+          // let newEndDatett = new Date(this.date).getTime()
+          // let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+          // let curDatett = newEndDatett - oldEndDatett
+          // if (curDatett < 0) {
+          //   this.$refs.toast.show('活动时间大于30天')
+          //   return
+          // }
           this.activeData.end_at = this.date
           this.activeData.goods_id = this.getGoods.id
           this.activeData.bottom_price = this.bottom_price
@@ -461,13 +460,13 @@
             this.$refs.toast.show('请选择活动时间')
             return
           }
-          let newEndDatett = new Date(this.date).getTime()
-          let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
-          let curDatett = newEndDatett - oldEndDatett
-          if (curDatett < 0) {
-            this.$refs.toast.show('活动时间大于30天')
-            return
-          }
+          // let newEndDatett = new Date(this.date).getTime()
+          // let oldEndDatett = new Date(this.curDate).getTime() + 2678400000
+          // let curDatett = newEndDatett - oldEndDatett
+          // if (curDatett < 0) {
+          //   this.$refs.toast.show('活动时间大于30天')
+          //   return
+          // }
           this.activeData.end_at = this.date
           this.activeData.config.group_validity = this.selectedTime
           this.activeData.config.group_number = 2
@@ -496,7 +495,43 @@
       Toast,
       Scroll,
       ConfirmMsg
-      // AwesomePicker
+    },
+    watch: {
+      selectedType(val) {
+        if (this.selectedType !== '请选择') {
+          this.optionsType = [
+            {value: '拼团特惠'},
+            {value: '疯狂砍价'}
+          ]
+        }
+      },
+      selectedNumber(val) {
+        if (this.selectedNumber !== '请选择') {
+          this.optionsNumber = [
+            {value: 1},
+            {value: 2},
+            {value: 3}
+          ]
+        }
+      },
+      selectedCount(val) {
+        if (this.selectedCount !== '请选择') {
+          this.optionsCount = [
+            {value: 30},
+            {value: 50},
+            {value: 70},
+            {value: 100}
+          ]
+        }
+      },
+      selectedTime(val) {
+        if (this.selectedTime !== '请选择') {
+          this.optionsTime = [
+            {value: '24'},
+            {value: '48'}
+          ]
+        }
+      }
     }
   }
 </script>

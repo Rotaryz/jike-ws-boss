@@ -6,13 +6,12 @@
       <div class="left-text">
         <div class="name">{{memberitem.name}}</div>
         <div class="phone">{{memberitem.mobile}}</div>
-
       </div>
     </div>
     <div class="manage-right">
       <div class="right-choose" @click="chooseBtn(memberitem)"
-           :class="memberitem.boss_radar_status === 1 ? '' : 'right-choose-active'">
-        <div class="choose-btn" :class="memberitem.boss_radar_status === 1 ? 'choose-btn-active' : ''"></div>
+           :class="memberitem.ai_radar_status === 1 ? '' : 'right-choose-active'">
+        <div class="choose-btn" :class="memberitem.ai_radar_status === 1 ? 'choose-btn-active' : ''"></div>
       </div>
     </div>
   </div>
@@ -33,13 +32,13 @@
     },
     methods: {
       chooseBtn(item) {
-        if (this.memberitem.boss_radar_status === 1) {
-          this.memberitem.boss_radar_status = 0
+        if (this.memberitem.ai_radar_status === 1) {
+          this.memberitem.ai_radar_status = 0
         } else {
-          this.memberitem.boss_radar_status = 1
+          this.memberitem.ai_radar_status = 1
         }
         console.log(item)
-        this.$emit('openRararBtn', item, this.memberitem.boss_radar_status)
+        this.$emit('openRararBtn', item, this.memberitem.ai_radar_status)
       }
     },
     computed: {
@@ -71,20 +70,29 @@
     .manage-left
       layout(row)
       align-items: center
+      flex: 1
+      overflow: hidden
       .left-img
         display: block
         width: 45px
         height: 45px
         margin-right: 10px
-      .name
-        color: $color-20202E
-        font-family: $font-family-regular
-        font-size: $font-size-16
-      .phone
-        color: $color-888888
-        font-family: $font-family-regular
-        font-size: $font-size-14
-        margin-top: 10px
+      .left-text
+        flex: 1
+        overflow: hidden
+        .name
+          width: 100%
+          color: $color-20202E
+          font-family: $font-family-regular
+          font-size: $font-size-16
+          text-overflow: ellipsis
+          overflow: hidden
+          white-space: nowrap
+        .phone
+          color: $color-888888
+          font-family: $font-family-regular
+          font-size: $font-size-14
+          margin-top: 10px
 
   .right-choose
     position: relative

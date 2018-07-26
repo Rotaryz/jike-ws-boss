@@ -31,7 +31,6 @@
     },
     methods: {
       _checkAuthorize() {
-        // this.$router.replace(NORMAL_ROUTE)
         if (this.code && !this.hasToken) {
           // 有code没有token -> 申请拿token
           this._applyOauth()
@@ -42,7 +41,7 @@
         }
       },
       _getCode() {
-        window.location.href = oauth.oauthUri
+        window.location.replace(oauth.oauthUri)
       },
       _applyOauth() {
         Jwt.employeeLogin(this.code).then((res) => {

@@ -1,9 +1,13 @@
 <template>
   <div class="navigation" v-if="showNav">
-    <router-link tag="div" class="navigation-item" to="/radar">
+    <router-link tag="div" class="navigation-item" to="/radar" v-if="!showJump">
       <i class="icon icon-radar"></i>
       <span class="title">雷达</span>
     </router-link>
+    <div class="navigation-item" v-if="showJump">
+      <i class="icon icon-radar"></i>
+      <span class="title">雷达</span>
+    </div>
     <router-link tag="div" class="navigation-item" to="/mine">
       <i class="icon icon-mine"></i>
       <span class="title">我的</span>
@@ -17,7 +21,8 @@
     name: COMPONENT_NAME,
     data() {
       return {
-        showNav: true
+        showNav: true,
+        showJump: true
       }
     },
     watch: {
@@ -27,6 +32,11 @@
           this.showNav = true
         } else {
           this.showNav = false
+        }
+        if (path === '/radar/overview' || path === '/radar/ranking' || path === '/radar/ai-analyse') {
+          this.showJump = true
+        } else {
+          this.showJump = false
         }
       }
     }

@@ -33,15 +33,15 @@
             <div class="top-img-des">可添加5张图片(尺寸:750x400,大小2M以下)</div>
             <div class="add-list">
               <div class="left">原价</div>
-              <input v-if="showEdit" v-model="goodsData.platform_price" class="right-input" type="number"
-                     placeholder="请输入" maxlength="50">
-              <div class="edit-price" v-if="!showEdit">{{goodsData.platform_price}}</div>
-            </div>
-            <div class="add-list">
-              <div class="left">现价</div>
               <input v-if="showEdit" v-model="goodsData.original_price" class="right-input" type="number"
                      placeholder="请输入" maxlength="50">
               <div class="edit-price" v-if="!showEdit">{{goodsData.original_price}}</div>
+            </div>
+            <div class="add-list">
+              <div class="left">现价</div>
+              <input v-if="showEdit" v-model="goodsData.platform_price" class="right-input" type="number"
+                     placeholder="请输入" maxlength="50">
+              <div class="edit-price" v-if="!showEdit">{{goodsData.platform_price}}</div>
             </div>
           </div>
           <div class="add-line"></div>
@@ -86,7 +86,7 @@
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'new-goods',
@@ -105,18 +105,19 @@
           is_online: 1,
           image_id: '',
           total_stock: '-1'
-        }
+        },
+        goods_banner_images: []
       }
     },
     created() {
       this.id = this.$route.query.id
       if (this.id) {
+        document.title = '编辑商品'
         Product.geDetailProduct(this.id).then(res => {
           this.goodsData = res.data
           this.showEdit = false
         })
       }
-      console.log(this.id)
     },
     methods: {
       async _fileImage(e) {
@@ -133,7 +134,8 @@
           if (res.error === ERR_OK) {
             let imageItem = {type: 1, image_id: res.data.id, image_url: res.data.url}
             this.goodsData.goods_banner_images.push(imageItem)
-            this.goodsData.goods_banner_images = this.goodsData.goods_banner_images.slice(0, 9)
+            this.goodsData.goods_banner_images = this.goodsData.goods_banner_images.slice(0, 6)
+            this.goods_banner_images = this.goodsData.goods_banner_images.slice(0, 6)
           }
         })
       },
@@ -162,8 +164,7 @@
           if (res.error === ERR_OK) {
             let imageItem = {type: 1, image_id: res.data.id, image_url: res.data.url}
             this.goodsData.goods_images.push(imageItem)
-            console.log(this.goodsData.goods_images)
-            this.goodsData.goods_images = this.goodsData.goods_images.slice(0, 9)
+            this.goodsData.goods_images = this.goodsData.goods_images.slice(0, 16)
           }
         })
       },
@@ -219,7 +220,6 @@
           return
         }
         this.goodsData.image_id = this.goodsData.goods_banner_images[0].image_id
-        console.log(this.goodsData.image_id)
         if (this.showEdit) {
           this.$refs.confirm.show('商品发布后将立刻上线？')
         } else {
@@ -240,12 +240,13 @@
     computed: {
       saclLength() {
         if (this.goodsData.goods_banner_images.length > 4) {
-          this.goodsData.goods_banner_images.length = 4
+          return 4
+        } else {
+          return this.goodsData.goods_banner_images.length
         }
-        return this.goodsData.goods_banner_images.length
       },
       ...mapGetters(['ios']),
-      slide () {
+      slide() {
         return this.ios ? '' : 'slide'
       }
     },
