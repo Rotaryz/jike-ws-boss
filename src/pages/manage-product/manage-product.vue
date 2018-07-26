@@ -22,7 +22,8 @@
                 <ul class="up-list">
                   <li class="up-list-item" v-for="(item, index) in upList" v-bind:key="item.id">
                     <div class="up-list-bottom">
-                      <img :src="item.image_url" alt="" class="img_url">
+                      <div class="list-bottom-imgurl" :style="{backgroundImage: 'url(' + item.image_url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}">
+                      </div>
                       <div class="bottom-right">
                         <div class="title">{{item.title}}</div>
                         <div class="info-box">
@@ -68,7 +69,8 @@
                 <ul class="up-list">
                   <li class="up-list-item" v-for="(item, index) in downList" v-bind:key="item.id">
                     <div class="up-list-bottom">
-                      <img :src="item.image_url" alt="" class="img_url">
+                      <div class="list-bottom-imgurl" :style="{backgroundImage: 'url(' + item.image_url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}">
+                      </div>
                       <div class="bottom-right">
                         <div class="title">{{item.title}}</div>
                         <div class="info-box">
@@ -481,12 +483,20 @@
         padding: 15px 10px 15px 0
         align-items: center
         layout(row)
-        .img_url
+        .list-bottom-imgurl
           display: block
           border-radius: 2px
           width: 70px
           height: 70px
           margin-right: 10px
+          overflow: hidden
+          layout(row)
+          align-items: center
+          .img_url
+            display: block
+            border-radius: 2px
+            width: 100%
+            margin-right: 10px
         .bottom-right
           flex: 1
           overflow: hidden
