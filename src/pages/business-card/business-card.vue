@@ -121,7 +121,7 @@
           color: $color-20202E
           margin-top: 15px
         .code-padding
-          padding-bottom: 147px
+          padding-bottom: 87px
           width: 100%
         .code-phone
           layout(row)
