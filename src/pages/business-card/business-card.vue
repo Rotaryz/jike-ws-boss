@@ -1,32 +1,29 @@
 <template>
   <transition :name="slide">
     <div class="share-card">
-      <scroll :bcColor="'#20202E'">
-        <div class="share-box">
-          <p class="peo-name">{{card.name}}</p>
-          <p class="peo-position">{{card.position}}</p>
-          <p class="buss-name">{{card.department}}</p>
-          <img class="qr-code" :src="card.qrcode" alt="">
-          <p class="tip">长按识别图中小程序码</p>
-        </div>
-      </scroll>
+      <div class="share-box">
+        <p class="peo-name">{{card.name}}</p>
+        <p class="peo-position">{{card.position}}</p>
+        <p class="buss-name">{{card.department}}</p>
+        <img class="qr-code" :src="card.qrcode" alt="">
+        <p class="tip">长按识别图中小程序码</p>
+      </div>
     </div>
   </transition>
 </template>
 
 <script>
-  import Scroll from 'components/scroll/scroll'
-  import { Business } from 'api'
+  import {Business} from 'api'
   import {mapGetters} from 'vuex'
 
   export default {
     name: 'share-card',
-    data () {
+    data() {
       return {
         card: {}
       }
     },
-    created () {
+    created() {
       let id = this.$route.query.id
       console.log(id)
       let data = {
@@ -42,9 +39,6 @@
       slide() {
         return this.ios ? '' : 'slide'
       }
-    },
-    components: {
-      Scroll
     }
   }
 </script>
@@ -53,13 +47,6 @@
   @import '~common/stylus/mixin'
   .share-card
     background: $color-text
-    position: fixed
-    background: share-card
-    z-index: 10
-    left: 0
-    right: 0
-    bottom: 0
-    top: 0
     .share-box
       display: flex
       flex-direction: column

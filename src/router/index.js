@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import storage from 'storage-controller'
 
+const Home = () => import('pages/home/home')
 const Oauth = () => import('pages/oauth/oauth')
 const Radar = () => import('pages/radar/radar')
 const Overview = () => import('pages/overview/overview')
@@ -49,203 +50,200 @@ const route = new Router({
       }
     },
     {
-      path: '/radar',
-      component: Radar,
-      meta: {
-        title: '雷达'
-      },
+      path: '/',
+      component: Home,
       children: [
         {
-          path: 'overview',
-          component: Overview,
+          path: 'radar',
+          component: Radar,
           meta: {
-            title: '总览'
+            title: '雷达'
           },
           children: [
             {
-              path: 'customer-list',
-              component: CustomerList,
+              path: 'overview',
+              component: Overview,
               meta: {
-                title: '客户列表'
+                title: '总览'
               },
               children: [
                 {
-                  path: 'customer-detail',
-                  component: CustomerDetail,
+                  path: 'customer-list',
+                  component: CustomerList,
                   meta: {
-                    title: '客户详情'
+                    title: '客户列表'
                   },
                   children: [
                     {
-                      path: 'customer-data',
-                      component: CustomerData,
+                      path: 'customer-detail',
+                      component: CustomerDetail,
                       meta: {
-                        title: '客户资料'
-                      }
+                        title: '客户详情'
+                      },
+                      children: [
+                        {
+                          path: 'customer-data',
+                          component: CustomerData,
+                          meta: {
+                            title: '客户资料'
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          path: 'ranking',
-          component: Ranking,
-          meta: {
-            title: '排行榜'
-          },
-          children: [
+            },
             {
-              path: 'customer-list',
-              component: CustomerList,
+              path: 'ranking',
+              component: Ranking,
               meta: {
-                title: '客户'
+                title: '排行榜'
               },
               children: [
                 {
-                  path: 'customer-detail',
-                  component: CustomerDetail,
+                  path: 'customer-list',
+                  component: CustomerList,
                   meta: {
-                    title: '客户详情'
+                    title: '客户'
                   },
                   children: [
                     {
-                      path: 'customer-data',
-                      component: CustomerData,
+                      path: 'customer-detail',
+                      component: CustomerDetail,
                       meta: {
-                        title: '客户资料'
-                      }
+                        title: '客户详情'
+                      },
+                      children: [
+                        {
+                          path: 'customer-data',
+                          component: CustomerData,
+                          meta: {
+                            title: '客户资料'
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          path: 'ai-analyse',
-          component: AI,
-          meta: {
-            title: 'AI分析'
-          },
-          children: [
+            },
             {
-              path: 'capacity-model',
-              component: CapacityModel,
+              path: 'ai-analyse',
+              component: AI,
               meta: {
-                title: '能力模型'
+                title: 'AI分析'
               },
               children: [
                 {
-                  path: 'business-card',
-                  component: BusinessCard,
+                  path: 'capacity-model',
+                  component: CapacityModel,
                   meta: {
-                    title: '名片'
+                    title: '能力模型'
                   }
                 }
               ]
             }
           ]
-        }
-      ]
-    },
-    {
-      path: '/mine',
-      component: Mine,
-      meta: {
-        title: '我的'
-      },
-      children: [
-        {
-          path: 'manage-member',
-          component: ManageMember,
-          meta: {
-            title: '成员管理'
-          },
-          children: [
-            {
-              path: 'add-member',
-              component: AddMember,
-              meta: {
-                title: '添加成员'
-              }
-            }
-          ]
-        }, {
-          path: 'income-details',
-          component: IncomeDetails,
-          meta: {
-            title: '收入明细'
-          }
-        }, {
-          path: 'sales-details',
-          component: SalesDetails,
-          meta: {
-            title: '销售明细'
-          }
-        }, {
-          path: 'order-list',
-          component: OrderList,
-          meta: {
-            title: '订单明细'
-          }
-        }, {
-          path: 'mine-assets',
-          component: MineAssets,
-          meta: {
-            title: '我的资产'
-          },
-          children: [{
-            path: 'with-draw',
-            component: WithDraw,
-            meta: {
-              title: '提现'
-            }
-          }, {
-            path: 'bank-card',
-            component: BankCard,
-            meta: {
-              title: '绑定银行卡'
-            }
-          }]
         },
         {
-          path: 'manage-product',
-          component: ManageProduct,
+          path: 'mine',
+          component: Mine,
           meta: {
-            title: '我的产品'
+            title: '我的'
           },
           children: [
             {
-              path: 'new-goods',
-              component: NewGoods,
+              path: 'manage-member',
+              component: ManageMember,
               meta: {
-                title: '新建商品'
-              }
-            }
-          ]
-        },
-        {
-          path: 'manage-activity',
-          component: ManageActivity,
-          meta: {
-            title: '活动管理'
-          },
-          children: [
-            {
-              path: 'new-activity',
-              component: NewActivity,
-              meta: {
-                title: '新建活动'
+                title: '成员管理'
               },
               children: [
                 {
-                  path: 'choose-goods',
-                  component: ChooseGoods,
+                  path: 'add-member',
+                  component: AddMember,
                   meta: {
-                    title: '选择商品'
+                    title: '添加成员'
                   }
+                }
+              ]
+            }, {
+              path: 'income-details',
+              component: IncomeDetails,
+              meta: {
+                title: '收入明细'
+              }
+            }, {
+              path: 'sales-details',
+              component: SalesDetails,
+              meta: {
+                title: '销售明细'
+              }
+            }, {
+              path: 'order-list',
+              component: OrderList,
+              meta: {
+                title: '订单明细'
+              }
+            }, {
+              path: 'mine-assets',
+              component: MineAssets,
+              meta: {
+                title: '我的资产'
+              },
+              children: [{
+                path: 'with-draw',
+                component: WithDraw,
+                meta: {
+                  title: '提现'
+                }
+              }, {
+                path: 'bank-card',
+                component: BankCard,
+                meta: {
+                  title: '绑定银行卡'
+                }
+              }]
+            },
+            {
+              path: 'manage-product',
+              component: ManageProduct,
+              meta: {
+                title: '我的产品'
+              },
+              children: [
+                {
+                  path: 'new-goods',
+                  component: NewGoods,
+                  meta: {
+                    title: '新建商品'
+                  }
+                }
+              ]
+            },
+            {
+              path: 'manage-activity',
+              component: ManageActivity,
+              meta: {
+                title: '活动管理'
+              },
+              children: [
+                {
+                  path: 'new-activity',
+                  component: NewActivity,
+                  meta: {
+                    title: '新建活动'
+                  },
+                  children: [
+                    {
+                      path: 'choose-goods',
+                      component: ChooseGoods,
+                      meta: {
+                        title: '选择商品'
+                      }
+                    }
+                  ]
                 }
               ]
             }
@@ -265,6 +263,13 @@ const route = new Router({
       component: CustomerData,
       meta: {
         title: '客户资料'
+      }
+    },
+    {
+      path: 'business-card',
+      component: BusinessCard,
+      meta: {
+        title: '名片'
       }
     }
   ]

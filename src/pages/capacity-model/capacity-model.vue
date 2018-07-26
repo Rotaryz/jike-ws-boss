@@ -708,7 +708,7 @@
       },
       toBusinessCard() {
         const id = this.id
-        const pageUrl = `capacity-model/business-card`
+        const pageUrl = `/business-card`
         console.log(pageUrl)
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
