@@ -33,8 +33,8 @@
       _checkAuthorize() {
         if (this.code && !this.hasToken) {
           // 有code没有token -> 申请拿token
-          // this._applyOauth()
-          alert(this.code)
+          this._applyOauth()
+          // alert(this.code)
         } else if (!this.hasToken && !this.code) {
           this._getCode()
         } else {

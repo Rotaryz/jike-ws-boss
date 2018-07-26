@@ -1,10 +1,10 @@
 <template>
-  <div class="navigation" v-if="showNav">
+  <div class="navigation" v-if="showNav ">
     <router-link tag="div" class="navigation-item" to="/radar" v-if="!showJump">
       <i class="icon icon-radar"></i>
       <span class="title">雷达</span>
     </router-link>
-    <div class="navigation-item" v-if="showJump">
+    <div class="navigation-item router-link-active" v-if="showJump">
       <i class="icon icon-radar"></i>
       <span class="title">雷达</span>
     </div>

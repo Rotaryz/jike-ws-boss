@@ -58,6 +58,8 @@
     -webkit-box-sizing: border-box
     box-sizing: border-box
 
+  .share-card
+    min-height: 100vh
   .card-con
     padding-top: 31px
 

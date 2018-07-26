@@ -133,16 +133,7 @@ const route = new Router({
               component: AI,
               meta: {
                 title: 'AI分析'
-              },
-              children: [
-                {
-                  path: 'capacity-model',
-                  component: CapacityModel,
-                  meta: {
-                    title: '能力模型'
-                  }
-                }
-              ]
+              }
             }
           ]
         },
@@ -266,7 +257,14 @@ const route = new Router({
       }
     },
     {
-      path: 'business-card',
+      path: '/capacity-model',
+      component: CapacityModel,
+      meta: {
+        title: '能力模型'
+      }
+    },
+    {
+      path: '/business-card',
       component: BusinessCard,
       meta: {
         title: '名片'

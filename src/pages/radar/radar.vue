@@ -12,6 +12,11 @@
   export default {
     name: COMPONENT_NAME,
     created() {
+      const path = this.$route.path
+      if (path.indexOf('/radar') > -1) {
+        this.$router.replace(path)
+        return
+      }
       this.$router.replace('/radar/overview')
     },
     components: {
