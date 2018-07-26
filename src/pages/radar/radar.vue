@@ -13,7 +13,7 @@
     name: COMPONENT_NAME,
     created() {
       const path = this.$route.path
-      if (path.indexOf('/radar') > -1) {
+      if (path.indexOf('/radar/') > -1) {
         this.$router.replace(path)
         return
       }
