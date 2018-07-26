@@ -375,7 +375,11 @@
             axisLabel: {
               interval: 0,
               color: '#20202E',
-              fontSize: 14
+              fontSize: 14,
+              formatter: function (value) {
+                return value
+              },
+              align: 'right'
             },
             axisLine: {
               lineStyle: {
@@ -398,7 +402,7 @@
             }
           },
           series: [{
-            data: this.barData.x,
+            data: [2000, 300, 30, 20],
             type: 'bar',
             showSymbol: false,
             barWidth: 25,
@@ -646,7 +650,7 @@
               margin-top: 5px
 
   .ai-box
-    padding: 15px
+    padding: 15px 15px 65px
     .pie-box
       position: relative
       background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)

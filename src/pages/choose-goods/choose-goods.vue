@@ -14,7 +14,7 @@
             <ul class="choose-list">
               <li class="list-item" v-for="(item, index) in list" v-bind:key="item.id" @click="chooceItem(item, index)">
                 <div class="item-left">
-                  <img :src="item.image_url" alt="" class="item-img">
+                  <div :style="{backgroundImage: 'url(' + item.image_url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" alt="" class="item-img"></div>
                   <div class="item-info">
                     <div class="title">{{item.title}}</div>
                     <div class="price-box">
