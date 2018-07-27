@@ -60,13 +60,14 @@ export default {
    * 行为记录列表
    * @returns {*}
    */
-  getActionList(employee_id = 0, page = 1, customer_id = 0, limit = 10) {
+  getActionList(employee_id = 0, from = 0, customer_id = 0, limit = 30, page = 0) {
     let url = `api/employee/ws-action-logs`
     let data = {
       customer_id,
       employee_id,
-      page,
-      limit
+      from,
+      limit,
+      page
     }
     return request.post(url, data)
   }
