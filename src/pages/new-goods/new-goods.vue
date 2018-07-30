@@ -106,7 +106,8 @@
           image_id: '',
           total_stock: '-1'
         },
-        goods_banner_images: []
+        goods_banner_images: [],
+        arrImage: []
       }
     },
     created() {
@@ -120,39 +121,61 @@
       }
     },
     methods: {
-      async _fileImage(e) {
+      _fileImage(e) {
         // let param = this._infoImage(e.target.files[0])
-        await this._moreImage(e.target.files)
+        let arr = []
+        for (let item of e.target.files) {
+          arr.push(item)
+        }
+        this._getShopImg(arr)
       },
       _infoImage(file) {
         let param = new FormData() // 创建form对象
         param.append('file', file, file.name)// 通过append向form对象添加数据
         return param
       },
-      _upLoad(item) {
-        Product.upLoadImage(item).then((res) => {
-          if (res.error === ERR_OK) {
-            let imageItem = {type: 1, image_id: res.data.id, image_url: res.data.url}
-            this.goodsData.goods_banner_images.push(imageItem)
-            this.goodsData.goods_banner_images = this.goodsData.goods_banner_images.slice(0, 6)
-            this.goods_banner_images = this.goodsData.goods_banner_images.slice(0, 6)
-          }
+      async _getShopImg(arr) {
+        console.log(arr)
+        await Promise.all(arr.map(async (val, index) => {
+          val = this._infoImage(val)
+          let image = await Product.upLoadImage(val, index)
+          let imageItem = {type: 1, image_id: image.data.id, image_url: image.data.url, sort: image.data.sort * 1}
+          this.arrImage.push(imageItem)
         })
+        )
+        this.arrImage.sort(this._sort)
+        this.goodsData.goods_banner_images.push(...this.arrImage)
+        this.goodsData.goods_banner_images = this.goodsData.goods_banner_images.slice(0, 5)
+        this.arrImage = []
+        console.log(this.goodsData.goods_banner_images)
       },
-      async _moreImage(arr) {
-        // let image = {}
-        // let sequence = Promise.resolve()
-        for (let item of arr) {
-          item = this._infoImage(item)
-          await this._upLoad(item)
-        }
+      async _getFileShopImg(arr) {
+        await Promise.all(arr.map(async (val, index) => {
+          val = this._infoImage(val)
+          let image = await Product.upLoadImage(val, index)
+          let imageItem = {type: 1, image_id: image.data.id, image_url: image.data.url, sort: image.data.sort * 1}
+          this.arrImage.push(imageItem)
+        })
+        )
+        this.arrImage.sort(this._sort)
+        this.goodsData.goods_images.push(...this.arrImage)
+        this.goodsData.goods_images = this.goodsData.goods_images.slice(0, 15)
+        this.arrImage = []
+        console.log(this.goodsData.goods_images)
+      },
+      _sort(a, b) {
+        return a.sort - b.sort
       },
       _delImage(index) {
         this.goodsData.goods_banner_images.splice(index, 1)
       },
       async _fileDetailImage(e) {
         // let param = this._infoDetailImage(e.target.files[0])
-        await this._moreDetailImage(e.target.files)
+        let arr = []
+        for (let item of e.target.files) {
+          arr.push(item)
+        }
+        this._getFileShopImg(arr)
       },
       _infoDetailImage(file) {
         let param = new FormData() // 创建form对象

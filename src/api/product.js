@@ -12,9 +12,9 @@ export default {
     return request.get(url, data, loading)
   },
   // 上传图片
-  upLoadImage (data) {
+  upLoadImage (data, sort) {
     let url = '/api/employee/images'
-    return request.post(url, data)
+    return request.post(url, data, sort)
   },
   // 商品删除
   delProduct (id, data) {

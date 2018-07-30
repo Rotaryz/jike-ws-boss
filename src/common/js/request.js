@@ -76,13 +76,14 @@ function requestException(res) {
 }
 
 export default {
-  post(url, data) {
+  post(url, data, sort = 0) {
     return http({
       method: 'post',
       url,
       data, // post 请求时带的参数
       headers: {
-        Authorization: storage.get('token')
+        Authorization: storage.get('token'),
+        'Current-Sort': sort
       }
     }).then((response) => {
       return checkStatus(response)
