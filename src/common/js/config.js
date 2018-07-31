@@ -5,8 +5,8 @@ const LOCAL_URL = {
 }
 
 const DEV_URL = {
-  // api: 'http://ws-api.jerryf.cn'
-  api: 'https://ws-api.jkweixin.net'
+  api: 'http://ws-api.jerryf.cn'
+  // api: 'https://ws-api.jkweixin.net'
 }
 
 const TEST_URL = {

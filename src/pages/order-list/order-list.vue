@@ -32,6 +32,10 @@
               </div>
             </div>
           </div>
+          <div class="add-box" v-if="item.status_str === '已完成'">
+            <div class="order-add-name">{{item.address.receiver_name}} {{item.address.receiver_mobile}}</div>
+            <div class="order-add-detail">{{item.address.receiver_full_address}}</div>
+          </div>
           <div class="order-bottom">
             订单编号:{{item.order_sn}}
           </div>
@@ -150,7 +154,6 @@
 
   .order-item
     padding-left: 15px
-    height: 220px
     background: $color-white
     margin-top: 10px
     .order-top
@@ -234,6 +237,19 @@
             color: $color-20202E
             left: -8.5px
             bottom: 5px
+    .order-add-name
+      margin: 10px 0
+      font-size: $font-size-14
+      color: $color-20202E
+      font-family: $font-family-medium
+      no-wrap()
+    .order-add-detail
+      no-wrap()
+      font-family :$font-family-regular
+      font-size: $font-size-14
+      color :$color-888888
+      padding-bottom: 10px
+      border-bottom-1px()
 
   .order-bottom
     line-height: 40.5px
