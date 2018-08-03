@@ -28,7 +28,6 @@
     },
     created() {
       let id = this.$route.query.id
-      console.log(id)
       let data = {
         employee_id: id
       }

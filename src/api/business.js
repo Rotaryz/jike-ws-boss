@@ -15,6 +15,6 @@ export default {
    */
   Myshop (data) {
     let url = 'api/employee/shop-qrcode'
-    return request.get(url, data)
+    return request.get(url, Object.assign({}, data, {is_hyaline: 0}))
   }
 }
