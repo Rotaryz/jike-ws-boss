@@ -391,6 +391,7 @@
         height: 76%
         width: 76%
         all-center()
+        z-index: 999
       .close-icon
         height: 16.5px
         width: 16.5px
