@@ -319,7 +319,7 @@
   .ranking
     position: fixed
     top: 62px
-    bottom: 50px
+    bottom: 0px
     left: 0
     right: 0
     layout(column, block, nowrap)

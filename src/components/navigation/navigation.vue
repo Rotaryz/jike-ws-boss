@@ -1,18 +1,19 @@
 <template>
-  <div class="navigation" v-if="showNav ">
-    <router-link tag="div" class="navigation-item" to="/radar" v-if="!showJump">
-      <i class="icon icon-radar"></i>
-      <span class="title">雷达</span>
-    </router-link>
-    <div class="navigation-item router-link-active" v-if="showJump">
-      <i class="icon icon-radar"></i>
-      <span class="title">雷达</span>
-    </div>
-    <router-link tag="div" class="navigation-item" to="/mine">
-      <i class="icon icon-mine"></i>
-      <span class="title">我的</span>
-    </router-link>
-  </div>
+  <!--<div class="navigation" v-if="showNav ">-->
+    <!--<router-link tag="div" class="navigation-item" to="/radar" v-if="!showJump">-->
+      <!--<i class="icon icon-radar"></i>-->
+      <!--<span class="title">雷达</span>-->
+    <!--</router-link>-->
+    <!--<div class="navigation-item router-link-active" v-if="showJump">-->
+      <!--<i class="icon icon-radar"></i>-->
+      <!--<span class="title">雷达</span>-->
+    <!--</div>-->
+    <!--<router-link tag="div" class="navigation-item" to="/mine">-->
+      <!--<i class="icon icon-mine"></i>-->
+      <!--<span class="title">我的</span>-->
+    <!--</router-link>-->
+  <!--</div>-->
+  <div></div>
 </template>
 <script type="text/ecmascript-6">
   const COMPONENT_NAME = 'navigation'

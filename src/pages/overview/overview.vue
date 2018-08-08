@@ -81,7 +81,7 @@
           <div class="pie-list">
             <div class="list">
               <div class="icon one"></div>
-              <div class="text">个人</div>
+              <div class="text">动态</div>
             </div>
             <div class="list">
               <div class="icon two"></div>
@@ -650,7 +650,7 @@
               margin-top: 5px
 
   .ai-box
-    padding: 15px 15px 65px
+    padding: 15px 15px 25px
     .pie-box
       position: relative
       background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)

@@ -149,7 +149,7 @@
       fill-box()
       overflow: hidden
       top: 62px
-      bottom: 50px
+      bottom: 0
       background-color: $color-white-fff
     .user-card-box
       height: 75px
