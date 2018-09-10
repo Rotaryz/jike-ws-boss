@@ -40,32 +40,20 @@
         </div>
       </div>
       <div class="ai-box">
-        <div class="pie-box ">
+        <div class="pie-box">
           <div id="mySuccess"></div>
           <div class="title-box">
             <div class="title">成交率漏斗</div>
             <div class="sub-title">(每小时更新)</div>
           </div>
           <div class="bottom-des">
-            <div class="tab">
-              <div class="icon"></div>
-              <div class="text">0-50%</div>
-            </div>
-            <div class="tab">
-              <div class="icon two"></div>
-              <div class="text">51-80%</div>
-            </div>
-            <div class="tab">
-              <div class="icon thr"></div>
-              <div class="text">81-99%</div>
-            </div>
-            <div class="tab">
-              <div class="icon four"></div>
-              <div class="text">100%</div>
+            <div class="tab"  v-for="(item, index) in successHint" v-bind:key="index">
+              <div class="icon" :class="item.icon"></div>
+              <div class="text">{{item.text}}</div>
             </div>
           </div>
         </div>
-        <div class="pie-box line-box">
+        <div class="pie-box">
           <div id="myLine"></div>
           <div class="title-box">
             <div class="title">近7日客户活跃度</div>
@@ -79,32 +67,20 @@
             <div class="sub-title">(每小时更新)</div>
           </div>
           <div class="pie-list">
-            <div class="list">
-              <div class="icon one"></div>
-              <div class="text">动态</div>
-            </div>
-            <div class="list">
-              <div class="icon two"></div>
-              <div class="text">商品</div>
-            </div>
-            <div class="list">
-              <div class="icon thr"></div>
-              <div class="text">拼团</div>
-            </div>
-            <div class="list">
-              <div class="icon four"></div>
-              <div class="text">砍价</div>
+            <div class="list" v-for="(item, index) in pieHint" v-bind:key="index">
+              <div class="icon" :class="item.icon"></div>
+              <div class="text">{{item.text}}</div>
             </div>
           </div>
         </div>
-        <div class="pie-box line-box">
+        <div class="pie-box">
           <div id="myAddLine"></div>
           <div class="title-box">
             <div class="title">近7日新增客户数</div>
             <div class="sub-title">(每小时更新)</div>
           </div>
         </div>
-        <div class="pie-box bar-box">
+        <div class="pie-box">
           <div id="myBar"></div>
           <div class="title-box">
             <div class="title">客户与我的互动</div>
@@ -125,15 +101,13 @@
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
+  const PIEHINT = [{text: '动态', icon: 'one'}, {text: '商品', icon: 'two'}, {text: '拼团', icon: 'thr'}, {text: '砍价', icon: 'four'}]
+  const SUCCESSHINT = [{text: '0-50%', icon: ''}, {text: '51-80%', icon: 'two'}, {text: '81-99%', icon: 'thr'}, {text: '100%', icon: 'four'}]
   export default {
     name: 'my-data',
     data() {
       return {
-        pieData: [
-          {value: 1, name: '对我感兴趣'},
-          {value: 1, name: '对产品感兴趣'},
-          {value: 1, name: '对公司感兴趣'}
-        ],
+        pieData: [],
         ationLine: {
           x: [],
           y: []
@@ -146,12 +120,7 @@
           x: [],
           y: []
         },
-        successData: [
-          {value: 80, name: ' 3 ', text: '3'},
-          {value: 60, name: '  2  ', text: '2'},
-          {value: 40, name: '   2   ', text: '2'},
-          {value: 20, name: '    0    ', text: '0'}
-        ],
+        successData: [],
         allDatas: {},
         tabList: [
           {
@@ -171,7 +140,9 @@
             value: 'month'
           }
         ],
-        tabNumber: 0
+        tabNumber: 0,
+        pieHint: PIEHINT,
+        successHint: SUCCESSHINT
       }
     },
     created() {
@@ -185,13 +156,7 @@
     methods: {
       drawPie() {
         let myChart = this.$echarts.init(document.getElementById('myPie'))
-        // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '客户兴趣占比',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           tooltip: {
             trigger: 'item',
             formatter: '{d}%'
@@ -199,10 +164,10 @@
           color: ['#F9543C', '#23799D', '#8E3C68', '#F9B43C'],
           series: [
             {
-              name: '访问222来源',
+              name: '',
               type: 'pie',
-              radius: '40%',
-              center: ['50%', '55%'],
+              radius: '55%',
+              center: ['50%', '54%'],
               data: this.pieData,
               itemStyle: {
                 emphasis: {
@@ -217,13 +182,14 @@
       },
       drawLine() {
         let myChart = this.$echarts.init(document.getElementById('myLine'))
-        // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '近30日客户活跃度',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
+          grid: {
+            top: 45,
+            left: '2%',
+            right: '5%',
+            bottom: 15,
+            containLabel: true
+          },
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -231,12 +197,25 @@
             splitLine: {
               show: true,
               lineStyle: {
-                color: '#ddd'
+                color: '#E6E6E6',
+                width: 0.5
+              }
+            },
+            axisLabel: {
+              color: '#343439',
+              align: 'center'
+            },
+            axisTick: {
+              show: false,
+              lineStyle: {
+                color: '#c4c4c4',
+                width: 0.5
               }
             },
             axisLine: {
               lineStyle: {
-                color: '#888'
+                color: '#c4c4c4',
+                width: 0.5
               }
             }
           },
@@ -253,25 +232,55 @@
             splitLine: {
               show: true,
               lineStyle: {
-                color: '#ddd'
+                color: '#E6E6E6',
+                width: 0.5
               }
+            },
+            axisTick: {
+              show: false,
+              lineStyle: {
+                color: '#c4c4c4',
+                width: 0.5
+              }
+            },
+            axisLabel: {
+              formatter: '{value}',
+              color: '#343439'
             },
             axisLine: {
               lineStyle: {
-                color: '#888'
+                color: '#c4c4c4',
+                width: 0.5
               }
             }
           },
           series: [{
             data: this.ationLine.y,
             type: 'line',
+            smooth: true,
             showSymbol: false,
+            smoothMonotone: 'x',
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                x2: 0,
+                y: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(249,80,60,0.55)'
+                }, {
+                  offset: 1, color: 'rgba(249,80,60,0.05)'
+                }],
+                globalCoord: false
+              }
+            },
             itemStyle: {
               normal: {
-                color: '#F9543C',
+                color: 'rgba(249,80,60,0.85)',
                 borderWidth: 2,
                 lineStyle: {
-                  color: '#F9543C',
+                  color: 'rgba(249,80,60,0.75)',
                   width: 3
                 }
               }
@@ -281,13 +290,14 @@
       },
       drawAddLine() {
         let myChart = this.$echarts.init(document.getElementById('myAddLine'))
-        // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '近30日客户活跃度',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
+          grid: {
+            top: 45,
+            left: '2%',
+            right: '5%',
+            bottom: 15,
+            containLabel: true
+          },
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -295,12 +305,25 @@
             splitLine: {
               show: true,
               lineStyle: {
-                color: '#ddd'
+                color: '#E6E6E6',
+                width: 0.5
+              }
+            },
+            axisLabel: {
+              color: '#343439',
+              align: 'center'
+            },
+            axisTick: {
+              show: false,
+              lineStyle: {
+                color: '#c4c4c4',
+                width: 0.5
               }
             },
             axisLine: {
               lineStyle: {
-                color: '#888'
+                color: '#c4c4c4',
+                width: 0.5
               }
             }
           },
@@ -317,25 +340,55 @@
             splitLine: {
               show: true,
               lineStyle: {
-                color: '#ddd'
+                color: '#E6E6E6',
+                width: 0.5
               }
+            },
+            axisTick: {
+              show: false,
+              lineStyle: {
+                color: '#c4c4c4',
+                width: 0.5
+              }
+            },
+            axisLabel: {
+              formatter: '{value}',
+              color: '#343439'
             },
             axisLine: {
               lineStyle: {
-                color: '#888'
+                color: '#c4c4c4',
+                width: 0.5
               }
             }
           },
           series: [{
             data: this.addationLine.y,
             type: 'line',
+            smooth: true,
             showSymbol: false,
+            smoothMonotone: 'x',
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                x2: 0,
+                y: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(249,80,60,0.55)'
+                }, {
+                  offset: 1, color: 'rgba(249,80,60,0.05)'
+                }],
+                globalCoord: false
+              }
+            },
             itemStyle: {
               normal: {
-                color: '#F9543C',
+                color: 'rgba(249,80,60,0.85)',
                 borderWidth: 2,
                 lineStyle: {
-                  color: '#F9543C',
+                  color: 'rgba(249,80,60,0.75)',
                   width: 3
                 }
               }
@@ -345,13 +398,7 @@
       },
       drawBar() {
         let myChart = this.$echarts.init(document.getElementById('myBar'))
-        // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '客户与我的互动',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           tooltip: {
             trigger: 'axis',
             formatter: '{b}数：{c}',
@@ -360,9 +407,10 @@
             }
           },
           grid: {
+            top: 45,
             left: '0',
-            right: '4%',
-            bottom: '3%',
+            right: '5%',
+            bottom: 15,
             containLabel: true
           },
           xAxis: {
@@ -375,15 +423,22 @@
             axisLabel: {
               interval: 0,
               color: '#20202E',
-              fontSize: 14,
+              fontSize: 12,
               formatter: function (value) {
                 return value
               },
-              align: 'right'
+              align: 'center'
+            },
+            axisTick: {
+              lineStyle: {
+                color: '#c4c4c4',
+                width: 0.5
+              }
             },
             axisLine: {
               lineStyle: {
-                color: '#888'
+                color: '#c4c4c4',
+                width: 0.5
               }
             }
           },
@@ -393,11 +448,18 @@
             axisLabel: {
               interval: 0,
               color: '#20202E',
-              fontSize: 14
+              fontSize: 12
+            },
+            axisTick: {
+              lineStyle: {
+                color: '#c4c4c4',
+                width: 0.5
+              }
             },
             axisLine: {
               lineStyle: {
-                color: '#888'
+                color: '#c4c4c4',
+                width: 0.5
               }
             }
           },
@@ -421,13 +483,7 @@
       },
       drawSuccess() {
         let myChart = this.$echarts.init(document.getElementById('mySuccess'))
-        // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '成交漏斗图',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           tooltip: {
             trigger: 'item',
             formatter: '{b}'
@@ -473,7 +529,6 @@
             data: this.successData
           }]
         })
-        // myChart.on('click', this.eConsole)
       },
       getPieData() {
         Echart.getPie(this.userInfo.merchant_id).then(res => {
@@ -526,7 +581,6 @@
         })
       },
       eConsole(param) {
-        console.log(param.data.text)
         if (param.data.text > 0) {
           const progress = param.value // id为80则分组0-50,60则分组51-80,40则分组81-99,20则分组100
           const useType = 'overview'
@@ -600,10 +654,9 @@
         display: block
         width: 100%
         height: 100%
-        left: 0px
-        top: 0px
+        left: 0
+        top: 0
         z-index: 0
-
       .data-number-box
         padding-top: 20px
         position: relative
@@ -641,6 +694,7 @@
             padding: 18px 0 0
             .number
               font-size: 32px
+              line-height: 34px
               color: #20202e
               font-family: 'DINCondensed-Bold'
             .text
@@ -648,57 +702,61 @@
               color: #20202e
               font-family: $font-family-meddle
               margin-top: 5px
-
   .ai-box
-    padding: 15px 15px 25px
+    padding: 10px 15px
     .pie-box
       position: relative
-      background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)
+      background: $color-white
       height: 305px
       margin-bottom: 10px
       #myPie
         width: 100%
         height: 305px
-        margin: 20px auto
+        margin: 0 auto
         padding: 20px
-      #myLine
-        width: 100%
-        height: 300px
-        margin: 20px auto
-        padding: 35px 0px 0
-      #myAddLine
-        width: 100%
-        height: 300px
-        margin: 20px auto
-        padding: 35px 0px 0
-      #myBar
-        width: 100%
-        height: 300px
-        margin: 20px auto
-        padding: 35px 20px 0
       #mySuccess
         width: 100%
-        height: 300px
-        margin: 20px auto
-        padding: 35px 20px 0
+        height: 305px
+        margin: 0 auto
+        padding: 35px 0 0
+      #myLine
+        width: 100%
+        height: 305px
+        margin: 0 auto
+        padding: 35px 10px 0
+      #myAddLine
+        width: 100%
+        height: 305px
+        margin: 0 auto
+        padding: 35px 10px 0
+      #myBar
+        width: 100%
+        height: 305px
+        margin: 0 auto
+        padding: 35px 10px 0
+      #myChartfour
+        width: 100%
+        height: 305px
+        margin: 0 auto
+        padding: 35px 0 0
       .title-box
         position: absolute
         width: 100%
         text-align: center
-        top: 30px
+        top: 20px
         left: 0
         .title
           font-size: $font-size-medium-x
           color: #202020
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .sub-title
           margin-top: 5px
           font-size: $font-size-small
           color: $color-text-88
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
       .bottom-des
         position: absolute
-        bottom: 10px
+        bottom: 15px
         layout(row)
         width: 100%
         .tab
@@ -726,7 +784,7 @@
         layout(row)
         position: absolute
         width: 100%
-        bottom: 25px
+        bottom: 15px
         left: 0
         .list
           flex: 1
@@ -751,11 +809,4 @@
             color: #202020
             font-family: $font-family-regular
 
-    .line-box
-      height: 270px
-      #myLine
-        height: 270px
-
-  .z
-    width: 1px
 </style>
