@@ -10,7 +10,7 @@ const DEV_URL = {
 }
 
 const TEST_URL = {
-  api: 'https://ws-api.jkweixin.net'
+  // api: 'https://ws-api.jkweixin.net'
 }
 
 const PROD_URL = {
