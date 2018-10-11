@@ -154,13 +154,13 @@
               <div class="sub-title">(每小时更新)</div>
             </div>
           </div>
-          <div class="pie-box">
-            <div id="myBar"></div>
-            <div class="title-box">
-              <div class="title">客户与我的互动</div>
-              <div class="sub-title">(每天0点更新)</div>
-            </div>
-          </div>
+          <!--<div class="pie-box">-->
+            <!--<div id="myBar"></div>-->
+            <!--<div class="title-box">-->
+              <!--<div class="title">客户与我的互动</div>-->
+              <!--<div class="sub-title">(每天0点更新)</div>-->
+            <!--</div>-->
+          <!--</div>-->
         </div>
         <div class="visitor-box" v-if="menuIdx * 1 === 2">
           <div class="box-list" v-if="actionList.length * 1 !== 0">
@@ -699,7 +699,7 @@
           setTimeout(() => {
             this.drawPie()
             this.drawLine()
-            this.drawBar()
+            // this.drawBar()
             this.drawSuccess()
           }, 200)
         }

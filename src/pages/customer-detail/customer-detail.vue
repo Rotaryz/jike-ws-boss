@@ -176,13 +176,13 @@
                 <div class="sub-title">(每小时更新)</div>
               </div>
             </div>
-            <div class="pie-box bar-box">
-              <div id="myBar"></div>
-              <div class="title-box">
-                <div class="title">客户与我的互动</div>
-                <div class="sub-title">(每天0点更新)</div>
-              </div>
-            </div>
+            <!--<div class="pie-box bar-box">-->
+              <!--<div id="myBar"></div>-->
+              <!--<div class="title-box">-->
+                <!--<div class="title">客户与我的互动</div>-->
+                <!--<div class="sub-title">(每天0点更新)</div>-->
+              <!--</div>-->
+            <!--</div>-->
           </div>
         </scroll>
       </div>
@@ -542,7 +542,7 @@
           setTimeout(() => {
             this.drawPie()
             this.drawLine()
-            this.drawBar()
+            // this.drawBar()
           }, 200)
         } else if (index * 1 === 0) {
           this.list = this.flowList
