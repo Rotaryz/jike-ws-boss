@@ -61,7 +61,7 @@ export default {
    * @returns {*}
    */
   getActionList(employee_id = 0, from = 0, customer_id = 0, limit = 30, page = 0) {
-    let url = `api/employee/ws-action-logs`
+    let url = `api/employee/ws-boss-action-logs`
     let data = {
       customer_id,
       employee_id,
