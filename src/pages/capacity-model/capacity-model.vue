@@ -128,7 +128,7 @@
               <div class="sub-title">(每小时更新)</div>
             </div>
             <div class="bottom-des">
-              <div class="tab"  v-for="(item, index) in successHint" v-bind:key="index">
+              <div class="tab" v-for="(item, index) in successHint" v-bind:key="index">
                 <div class="icon" :class="item.icon"></div>
                 <div class="text">{{item.text}}</div>
               </div>
@@ -155,11 +155,11 @@
             </div>
           </div>
           <!--<div class="pie-box">-->
-            <!--<div id="myBar"></div>-->
-            <!--<div class="title-box">-->
-              <!--<div class="title">客户与我的互动</div>-->
-              <!--<div class="sub-title">(每天0点更新)</div>-->
-            <!--</div>-->
+          <!--<div id="myBar"></div>-->
+          <!--<div class="title-box">-->
+          <!--<div class="title">客户与我的互动</div>-->
+          <!--<div class="sub-title">(每天0点更新)</div>-->
+          <!--</div>-->
           <!--</div>-->
         </div>
         <div class="visitor-box" v-if="menuIdx * 1 === 2">
@@ -850,7 +850,7 @@
     },
     computed: {
       ...mapGetters(['ios']),
-      slide () {
+      slide() {
         return this.ios ? '' : 'slide'
       },
       pullUpLoadObj: function () {
@@ -947,16 +947,15 @@
           top: 0px
           z-index: 0
         .cliten-img
-          layout(row)
+          layout(row, block, no-wrap)
           justify-content: space-between
           align-items: center
           position: relative
           z-index: 1
           .detail-img-box
-            layout(row)
+            layout(row, block, no-wrap)
             .img
               position: relative
-              height: 0
               width: 60px
               height: 60px
               background: #333
@@ -972,6 +971,7 @@
                 font-family: $font-family-meddle
                 padding-top: 5px
                 margin-bottom: 20px
+                line-height: 20px
               .label-box
                 layout(row)
                 .full-name
@@ -1160,7 +1160,6 @@
             font-size: $font-size-small
             color: #202020
             font-family: $font-family-regular
-
 
   .six-box
     padding: 15px

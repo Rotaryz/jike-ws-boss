@@ -125,7 +125,13 @@
           color: $color-20202E
           layout(row, block, nowrap)
           justify-content: space-between
+          width: 100%
+          line-height: 1
+          margin-top: -2px
           .name
+            word-break: break-all
+            width: 88%
+            line-height: 18px
             font-size: $font-size-16
             color: $color-20202E
             font-family: $font-family-regular
